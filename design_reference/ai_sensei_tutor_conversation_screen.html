@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html class="h-full" lang="en" style="">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>VocabVoice - AI Sensei Interactive Conversation</title>
+    <!-- Material Symbols Outlined -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet">
+    <!-- Google Fonts: Noto Serif & Plus Jakarta Sans -->
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,500;0,600;0,700;1,400&amp;family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&amp;display=swap"
+        rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <!-- Tailwind Configuration Script -->
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-error": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-variant": "#dde4df",
+                        "secondary-fixed-dim": "#ffb59f",
+                        "tertiary-container": "#404743",
+                        "tertiary": "#2a302d",
+                        "on-primary-fixed-variant": "#204f40",
+                        "primary-fixed-dim": "#a0d1bd",
+                        "error": "#ba1a1a",
+                        "inverse-surface": "#2b322f",
+                        "inverse-on-surface": "#ebf2ed",
+                        "on-tertiary-container": "#adb5b0",
+                        "primary": "#013628",
+                        "secondary-fixed": "#ffdbd0",
+                        "on-secondary": "#ffffff",
+                        "surface-bright": "#f4fbf6",
+                        "primary-fixed": "#bbedd8",
+                        "surface-dim": "#d4dcd7",
+                        "secondary-container": "#fe997a",
+                        "surface-container-high": "#e3eae5",
+                        "surface-tint": "#396757",
+                        "primary-container": "#1e4d3e",
+                        "on-error-container": "#93000a",
+                        "on-tertiary-fixed-variant": "#414845",
+                        "surface-container-low": "#eef5f0",
+                        "outline-variant": "#c0c8c3",
+                        "surface-container": "#e8f0ea",
+                        "tertiary-fixed-dim": "#c1c8c3",
+                        "on-secondary-container": "#772f18",
+                        "on-surface-variant": "#404945",
+                        "on-primary": "#ffffff",
+                        "on-primary-container": "#8dbda9",
+                        "on-surface": "#161d1a",
+                        "on-tertiary-fixed": "#161d1a",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary-fixed": "#3a0a00",
+                        "inverse-primary": "#a0d1bd",
+                        "surface-container-highest": "#dde4df",
+                        "tertiary-fixed": "#dde4df",
+                        "on-primary-fixed": "#002117",
+                        "surface": "#f4fbf6",
+                        "on-secondary-fixed-variant": "#793019",
+                        "outline": "#717974",
+                        "on-background": "#161d1a",
+                        "background": "#f4fbf6",
+                        "secondary": "#97472e",
+                        "error-container": "#ffdad6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-mobile": "1.25rem",
+                        "space-md": "1rem",
+                        "space-xl": "2.5rem",
+                        "gutter-mobile": "1rem",
+                        "space-lg": "1.5rem",
+                        "margin-tablet": "2rem",
+                        "margin": "3rem",
+                        "gutter": "1.5rem",
+                        "space-xs": "0.25rem",
+                        "space-sm": "0.5rem"
+                    },
+                    "fontFamily": {
+                        "headline-lg-mobile": ["Noto Serif"],
+                        "body-sm": ["Plus Jakarta Sans"],
+                        "label-md": ["Plus Jakarta Sans"],
+                        "headline-sm": ["Noto Serif"],
+                        "body-md": ["Plus Jakarta Sans"],
+                        "headline-md": ["Noto Serif"],
+                        "label-sm": ["Plus Jakarta Sans"],
+                        "kanji-hero-mobile": ["Noto Serif"],
+                        "kanji-hero": ["Noto Serif"],
+                        "display-lg": ["Noto Serif"],
+                        "headline-lg": ["Noto Serif"],
+                        "label-lg": ["Plus Jakarta Sans"],
+                        "display-lg-mobile": ["Noto Serif"],
+                        "body-lg": ["Plus Jakarta Sans"],
+                        "furigana": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "headline-lg-mobile": ["26px", { "lineHeight": "34px", "letterSpacing": "0em", "fontWeight": "600" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "label-md": ["13px", { "lineHeight": "18px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+                        "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "500" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.05em", "fontWeight": "700" }],
+                        "kanji-hero-mobile": ["48px", { "lineHeight": "56px", "fontWeight": "400" }],
+                        "kanji-hero": ["64px", { "lineHeight": "72px", "fontWeight": "400" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "label-lg": ["15px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }],
+                        "display-lg-mobile": ["34px", { "lineHeight": "42px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "furigana": ["11px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+            line-height: 1;
+        }
+
+        .custom-scroll::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .custom-scroll::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .custom-scroll::-webkit-scrollbar-thumb {
+            background-color: #c0c8c3;
+            border-radius: 9999px;
+        }
+    </style>
+</head>
+
+<body class="bg-background text-on-surface antialiased h-full flex flex-col overflow-hidden">
+    <!-- ================= PERSISTENT SHARED COMPONENT: SideNavBar ================= -->
+    <!-- Target active tab: 'AI Sensei' (Matches index 2 exactly) -->
+    <aside
+        class="fixed top-0 left-0 h-screen w-64 flex flex-col justify-between bg-surface-bright dark:bg-surface-container-low border-r border-outline-variant dark:border-outline z-40">
+        <div class="h-full flex flex-col justify-between p-space-md">
+            <!-- Top Brand Stamp & Header -->
+            <div class="flex flex-col gap-space-lg">
+                <div class="flex items-center gap-space-sm pt-space-xs">
+                    <!-- Hanko Red Seal Stamp Icon / Logo -->
+                    <div
+                        class="w-10 h-10 rounded-lg overflow-hidden flex items-center justify-center shadow-sm select-none border border-outline-variant/60 bg-surface-container-lowest shrink-0">
+                        <img class="w-full h-full object-contain"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuAkKtNKA3sqSPR3xywtfUErrsUJSMFDNm7NU0-koQ-8JzknEYpNEzEV9Q2dw1m5LyHYEDYv-CZR7nzza0C8aub0N5gVY1vZkNFkxJ4_P3NC5dRO4pph0yA3301Nzjn99EfsN4UftsPxnYBY6zJiFh12ZE_qPN_V8wVVCdxIPGV4Nk8vTejPz1Q-1byzFD90tQPY3oSAdQNGmoUw7F9Zs5GA3ZwYiBlgzQrBgWXv8AmAX5pcSNiE2YrLYSAHlW242670dw"
+                            alt="Nipp-ON Logo"></div>
+                    <div class="flex flex-col">
+                        <span
+                            class="font-headline-md text-headline-md text-primary dark:text-primary-fixed tracking-tight leading-none">Nipp-ON</span>
+                        <span class="font-body-sm text-body-sm text-on-surface-variant font-medium mt-0.5">JLPT N5 •
+                            Hear it. Learn it. Say it.</span>
+                    </div>
+                </div>
+                <!-- Main Navigation Items -->
+                <nav aria-label="Main Navigation" class="flex flex-col gap-1.5">
+                    <!-- Item 0: Dashboard (Inactive) -->
+                    <a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant dark:text-outline font-label-md text-label-md hover:bg-surface-container-high dark:hover:bg-surface-container-highest hover:text-on-surface dark:hover:text-inverse-on-surface transition-colors active:scale-[0.99]"
+                        href="#">
+                        <span class="material-symbols-outlined text-[20px]"
+                            data-icon="space_dashboard">space_dashboard</span>
+                        <span class="">Dashboard</span>
+                    </a>
+                    <!-- Item 1: Daily Learn (Inactive) -->
+                    <a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant dark:text-outline font-label-md text-label-md hover:bg-surface-container-high dark:hover:bg-surface-container-highest hover:text-on-surface dark:hover:text-inverse-on-surface transition-colors active:scale-[0.99]"
+                        href="#">
+                        <span class="material-symbols-outlined text-[20px]" data-icon="auto_stories">auto_stories</span>
+                        <span class="">Daily Learn</span>
+                    </a>
+                    <!-- Item 2: AI Sensei (ACTIVE ITEM) -->
+                    <a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg bg-surface-container dark:bg-surface-container-high text-primary dark:text-primary-fixed font-label-md text-label-md font-semibold active:scale-[0.99] border border-outline-variant/40"
+                        href="#">
+                        <span class="material-symbols-outlined text-[20px]" data-icon="psychology" data-weight="fill"
+                            style="font-variation-settings: 'FILL' 1;">psychology</span>
+                        <span class="">AI Sensei</span>
+                    </a>
+                    <!-- Item 3: Notebook & Practice (Inactive) -->
+                    <a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant dark:text-outline font-label-md text-label-md hover:bg-surface-container-high dark:hover:bg-surface-container-highest hover:text-on-surface dark:hover:text-inverse-on-surface transition-colors active:scale-[0.99]"
+                        href="#">
+                        <span class="material-symbols-outlined text-[20px]" data-icon="menu_book">menu_book</span>
+                        <span class="">Notebook &amp; Practice</span>
+                    </a>
+                </nav>
+                <!-- Primary Quick Action CTA -->
+                <div class="px-space-xs mt-space-xs">
+                    <button
+                        class="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-primary-container text-surface-container-lowest font-label-md text-label-md font-semibold shadow-sm hover:brightness-110 active:scale-[0.98] transition-all border-b-2 border-primary">
+                        <span class="material-symbols-outlined text-[18px]" data-icon="school">school</span>
+                        <span class="">Practice Session</span>
+                    </button>
+                </div>
+            </div>
+            <!-- Footer Navigation Items -->
+            <div class="flex flex-col gap-1 border-t border-outline-variant/60 pt-space-md">
+                <!-- Audio Settings -->
+                <a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant dark:text-outline font-label-md text-label-md hover:bg-surface-container-high dark:hover:bg-surface-container-highest hover:text-on-surface dark:hover:text-inverse-on-surface transition-colors active:scale-[0.99]"
+                    href="#">
+                    <span class="material-symbols-outlined text-[20px]" data-icon="mic">mic</span>
+                    <span class="">Audio Settings</span>
+                </a>
+                <!-- Profile -->
+                <a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant dark:text-outline font-label-md text-label-md hover:bg-surface-container-high dark:hover:bg-surface-container-highest hover:text-on-surface dark:hover:text-inverse-on-surface transition-colors active:scale-[0.99]"
+                    href="#">
+                    <span class="material-symbols-outlined text-[20px]" data-icon="account_circle">account_circle</span>
+                    <span class="">Profile</span>
+                </a>
+            </div>
+        </div>
+    </aside>
+    <!-- ================= PERSISTENT SHARED COMPONENT: TopNavBar ================= -->
+    <header
+        class="fixed top-0 right-0 h-16 w-[calc(100%-16rem)] flex items-center bg-surface-bright dark:bg-surface-container-low border-b border-outline-variant dark:border-outline z-30">
+        <div class="flex justify-between items-center w-full px-space-lg max-w-full">
+            <!-- Left Context Branding & Status Indicator -->
+            <div class="flex items-center gap-space-md">
+                <div class="flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-primary animate-pulse"></span>
+                    <span class="font-headline-sm text-headline-sm text-primary dark:text-primary-fixed">AI Sensei Live
+                        Dialogue</span>
+                </div>
+                <span
+                    class="hidden lg:inline-flex items-center px-2.5 py-0.5 rounded-full bg-surface-container border border-outline-variant text-on-surface-variant font-label-sm text-label-sm">
+                    Natural Pronunciation Mode
+                </span>
+            </div>
+            <!-- Right Trailing Controls & Learner Avatar -->
+            <div class="flex items-center gap-space-md">
+                <!-- Daily Goal Pill -->
+                <div
+                    class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-container-low border border-outline-variant/70">
+                    <span class="material-symbols-outlined text-secondary text-[18px]" data-icon="local_fire_department"
+                        data-weight="fill" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+                    <span class="font-label-md text-label-md text-primary font-semibold">Daily Goal: 8/10</span>
+                </div>
+                <!-- Audio Volume & Feedback Actions -->
+                <div class="flex items-center gap-1">
+                    <button
+                        class="p-2 text-on-surface-variant hover:text-primary hover:bg-surface-container rounded-full transition-colors active:scale-[0.98]"
+                        title="Audio Control">
+                        <span class="material-symbols-outlined text-[20px]" data-icon="volume_up">volume_up</span>
+                    </button>
+                    <button
+                        class="p-2 text-on-surface-variant hover:text-primary hover:bg-surface-container rounded-full transition-colors active:scale-[0.98]"
+                        title="Give Feedback">
+                        <span class="material-symbols-outlined text-[20px]" data-icon="feedback">feedback</span>
+                    </button>
+                </div>
+                <!-- Learner Avatar Profile Badge -->
+                <div class="flex items-center pl-2 border-l border-outline-variant">
+                    <div
+                        class="w-9 h-9 rounded-full ring-2 ring-primary/20 bg-primary-fixed flex items-center justify-center font-label-md font-bold text-on-primary-fixed shadow-sm cursor-pointer hover:ring-primary transition-all">
+                        KA
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- ================= MAIN WORKSPACE: TWO-COLUMN SPLIT VIEW ================= -->
+    <!-- Margin-left 16rem (64 w-side-bar), Top padding 4rem (16 h-top-bar) -->
+    <main class="ml-64 mt-16 flex-1 flex overflow-hidden bg-background">
+        <div class="w-full h-full flex flex-col md:flex-row p-space-md gap-space-md max-w-[1520px] mx-auto">
+            <!-- ================= LEFT CONTEXT PANE (35% width, Sticky/Fixed height Card) ================= -->
+            <section aria-label="Word Context &amp; Quick Prompts"
+                class="w-full md:w-[35%] flex flex-col h-full bg-surface-container-lowest rounded-xl border border-outline-variant shadow-sm overflow-hidden">
+                <!-- Pane Header -->
+                <div
+                    class="px-space-md py-3.5 border-b border-outline-variant/60 flex items-center justify-between bg-surface-container-low/50">
+                    <div class="flex items-center gap-2">
+                        <span class="material-symbols-outlined text-primary text-[20px]"
+                            data-icon="dictionary">dictionary</span>
+                        <h2 class="font-label-md text-label-md uppercase tracking-wider text-on-surface-variant">Current
+                            Word Context</h2>
+                    </div>
+                    <span
+                        class="px-2 py-0.5 rounded-full bg-primary-fixed text-on-primary-fixed-variant font-label-sm text-label-sm font-bold border border-primary/20">
+                        JLPT N5
+                    </span>
+                </div>
+                <!-- Context Content Body -->
+                <div class="flex-1 overflow-y-auto custom-scroll p-space-md flex flex-col gap-space-md">
+                    <!-- Kanji Anchor Card -->
+                    <div
+                        class="bg-surface-bright rounded-xl p-space-md border border-outline-variant relative overflow-hidden">
+                        <div class="absolute -top-3 -right-3 w-16 h-16 rounded-full bg-primary/5 pointer-events-none">
+                        </div>
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <!-- Furigana -->
+                                <span
+                                    class="font-furigana text-furigana text-secondary font-semibold uppercase tracking-widest pl-1">たべる</span>
+                                <!-- Kanji & Romaji -->
+                                <div class="flex items-baseline gap-3">
+                                    <h1 class="font-kanji-hero text-kanji-hero text-primary leading-none">食べる</h1>
+                                    <span
+                                        class="font-headline-sm text-headline-sm text-on-surface-variant font-normal">(taberu)</span>
+                                </div>
+                                <p class="font-body-md text-body-md text-on-surface mt-2 font-medium">To eat; to consume
+                                    food</p>
+                            </div>
+                            <!-- Mini Audio Play Button -->
+                            <button
+                                class="w-11 h-11 rounded-full bg-primary-container text-on-primary flex items-center justify-center hover:bg-primary shadow-sm active:scale-95 transition-all"
+                                title="Listen to pronunciation">
+                                <span class="material-symbols-outlined text-[22px]" data-icon="volume_up"
+                                    data-weight="fill" style="font-variation-settings: 'FILL' 1;">volume_up</span>
+                            </button>
+                        </div>
+                        <!-- Pitch Accent & Grammatical Metadata -->
+                        <div class="mt-4 pt-3 border-t border-outline-variant/60 flex flex-wrap items-center gap-2">
+                            <span
+                                class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-surface-container font-label-sm text-label-sm text-on-surface-variant border border-outline-variant/60">
+                                <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                                Ichidan Verb (一段)
+                            </span>
+                            <span
+                                class="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-surface-container font-label-sm text-label-sm text-on-surface-variant border border-outline-variant/60">
+                                <span class="font-mono text-secondary font-bold">●○○</span> Nakadaka [2]
+                            </span>
+                            <span
+                                class="inline-flex items-center px-2 py-0.5 rounded text-label-sm text-on-surface-variant">
+                                Transitive (他動詞)
+                            </span>
+                        </div>
+                    </div>
+                    <!-- Quick Prompts Section -->
+                    <div class="flex flex-col gap-2.5">
+                        <div class="flex items-center justify-between">
+                            <span class="font-label-md text-label-md text-on-surface-variant font-medium">Interactive
+                                Quick Prompts</span>
+                            <span class="text-xs text-outline font-label-sm">Tap to inquire</span>
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <!-- Prompt Chip 1 -->
+                            <button
+                                class="group w-full text-left p-3 rounded-xl bg-surface hover:bg-surface-container border border-outline-variant hover:border-primary/40 transition-all active:scale-[0.99] flex items-center justify-between shadow-xs">
+                                <div class="flex items-center gap-2.5">
+                                    <span
+                                        class="w-6 h-6 rounded-md bg-secondary-fixed flex items-center justify-center text-on-secondary-fixed text-xs font-bold">1</span>
+                                    <span
+                                        class="font-body-sm text-body-sm text-on-surface font-medium group-hover:text-primary">How
+                                        to use in formal restaurant?</span>
+                                </div>
+                                <span
+                                    class="material-symbols-outlined text-outline group-hover:text-primary text-[18px] transition-transform group-hover:translate-x-0.5"
+                                    data-icon="arrow_forward">arrow_forward</span>
+                            </button>
+                            <!-- Prompt Chip 2 -->
+                            <button
+                                class="group w-full text-left p-3 rounded-xl bg-surface hover:bg-surface-container border border-outline-variant hover:border-primary/40 transition-all active:scale-[0.99] flex items-center justify-between shadow-xs">
+                                <div class="flex items-center gap-2.5">
+                                    <span
+                                        class="w-6 h-6 rounded-md bg-primary-fixed flex items-center justify-center text-on-primary-fixed text-xs font-bold">2</span>
+                                    <span
+                                        class="font-body-sm text-body-sm text-on-surface font-medium group-hover:text-primary">Explain
+                                        食べる vs 召し上がる (honorific)</span>
+                                </div>
+                                <span
+                                    class="material-symbols-outlined text-outline group-hover:text-primary text-[18px] transition-transform group-hover:translate-x-0.5"
+                                    data-icon="arrow_forward">arrow_forward</span>
+                            </button>
+                            <!-- Prompt Chip 3 -->
+                            <button
+                                class="group w-full text-left p-3 rounded-xl bg-surface hover:bg-surface-container border border-outline-variant hover:border-primary/40 transition-all active:scale-[0.99] flex items-center justify-between shadow-xs">
+                                <div class="flex items-center gap-2.5">
+                                    <span
+                                        class="w-6 h-6 rounded-md bg-surface-container-high flex items-center justify-center text-on-surface-variant text-xs font-bold">3</span>
+                                    <span
+                                        class="font-body-sm text-body-sm text-on-surface font-medium group-hover:text-primary">Give
+                                        3 casual slang examples</span>
+                                </div>
+                                <span
+                                    class="material-symbols-outlined text-outline group-hover:text-primary text-[18px] transition-transform group-hover:translate-x-0.5"
+                                    data-icon="arrow_forward">arrow_forward</span>
+                            </button>
+                            <!-- Prompt Chip 4 -->
+                            <button
+                                class="group w-full text-left p-3 rounded-xl bg-surface hover:bg-surface-container border border-outline-variant hover:border-primary/40 transition-all active:scale-[0.99] flex items-center justify-between shadow-xs">
+                                <div class="flex items-center gap-2.5">
+                                    <span
+                                        class="w-6 h-6 rounded-md bg-secondary-container/40 flex items-center justify-center text-on-secondary-container text-xs font-bold">4</span>
+                                    <span
+                                        class="font-body-sm text-body-sm text-on-surface font-medium group-hover:text-primary">Quiz
+                                        me on conjugations</span>
+                                </div>
+                                <span
+                                    class="material-symbols-outlined text-outline group-hover:text-primary text-[18px] transition-transform group-hover:translate-x-0.5"
+                                    data-icon="arrow_forward">arrow_forward</span>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Sensei Pedagogical Tip Card -->
+                    <div
+                        class="mt-auto p-3.5 rounded-xl bg-surface-container-low border border-outline-variant/70 flex items-start gap-3">
+                        <span class="material-symbols-outlined text-secondary text-[22px] shrink-0 mt-0.5"
+                            data-icon="lightbulb">lightbulb</span>
+                        <div class="flex flex-col">
+                            <span
+                                class="font-label-sm text-label-sm font-bold text-on-surface uppercase tracking-wide">Sensei's
+                                Tip</span>
+                            <p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5 leading-snug">
+                                Always pair 食べる with the direct object particle を (wo), e.g., リンゴを食べる (eat an apple).
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- ================= RIGHT CONVERSATION PANE (65% width) ================= -->
+            <section aria-label="AI Sensei Interactive Conversation Stream"
+                class="w-full md:w-[65%] flex flex-col h-full bg-surface-container-lowest rounded-xl border border-outline-variant shadow-sm overflow-hidden">
+                <!-- Conversation Header -->
+                <div
+                    class="px-space-lg py-3 border-b border-outline-variant/60 flex items-center justify-between bg-surface-container-low/40">
+                    <div class="flex items-center gap-3">
+                        <div class="relative">
+                            <div
+                                class="w-10 h-10 rounded-full bg-primary-container text-on-primary flex items-center justify-center font-serif text-lg font-bold shadow-sm">
+                                先
+                            </div>
+                            <span
+                                class="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-primary ring-2 ring-surface-container-lowest"></span>
+                        </div>
+                        <div class="flex flex-col">
+                            <div class="flex items-center gap-2">
+                                <h2 class="font-headline-sm text-headline-sm text-primary font-bold">Sensei AI</h2>
+                                <span class="text-on-surface-variant font-label-md text-label-md">• Japanese Language
+                                    Mentor</span>
+                            </div>
+                            <span
+                                class="font-body-sm text-body-sm text-primary font-medium flex items-center gap-1.5 leading-tight">
+                                <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                                Online • Voice &amp; Text mode ready
+                            </span>
+                        </div>
+                    </div>
+                    <!-- Voice Response Toggle Pill -->
+                    <div
+                        class="flex items-center gap-2 bg-surface-bright px-3 py-1.5 rounded-full border border-outline-variant">
+                        <span class="material-symbols-outlined text-primary text-[18px]"
+                            data-icon="record_voice_over">record_voice_over</span>
+                        <span class="font-label-sm text-label-sm text-on-surface font-semibold">Auto-speak
+                            responses:</span>
+                        <button aria-label="Toggle voice output"
+                            class="w-8 h-4 bg-primary rounded-full relative transition-colors focus:outline-none">
+                            <span
+                                class="w-3 h-3 bg-surface-container-lowest rounded-full absolute right-0.5 top-0.5 shadow-sm"></span>
+                        </button>
+                        <span class="font-label-sm text-label-sm text-primary font-bold">ON</span>
+                    </div>
+                </div>
+                <!-- Dialogue Stream (Scrollable) -->
+                <div class="flex-1 overflow-y-auto custom-scroll p-space-lg flex flex-col gap-space-lg bg-[#FAF8F5]/40">
+                    <!-- Turn 1: User Query -->
+                    <div class="flex flex-col items-end gap-1 max-w-[85%] self-end">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="font-label-sm text-label-sm text-outline">You • 10:42 AM</span>
+                        </div>
+                        <div
+                            class="bg-primary text-surface-container-lowest p-space-md rounded-2xl rounded-tr-xs shadow-sm border border-primary/20">
+                            <p class="font-body-md text-body-md leading-relaxed">
+                                Sensei, how is 食べる different when speaking with colleagues versus close friends?
+                            </p>
+                        </div>
+                    </div>
+                    <!-- Turn 2: AI Sensei Rich Response -->
+                    <div class="flex items-start gap-3 max-w-[92%] self-start">
+                        <div
+                            class="w-8 h-8 rounded-full bg-primary-container text-on-primary flex items-center justify-center font-serif text-sm font-bold shrink-0 mt-1 shadow-xs">
+                            先
+                        </div>
+                        <div class="flex flex-col gap-2 w-full">
+                            <div class="flex items-center gap-2">
+                                <span class="font-label-md text-label-md text-primary font-bold">Sensei AI</span>
+                                <span class="font-label-sm text-label-sm text-outline">10:43 AM</span>
+                            </div>
+                            <!-- Main Bubble -->
+                            <div
+                                class="bg-surface-container-lowest p-space-md rounded-2xl rounded-tl-xs border border-outline-variant shadow-sm flex flex-col gap-3">
+                                <p class="font-body-md text-body-md text-on-surface leading-relaxed">
+                                    Great question! Japanese verb levels depend heavily on your social distance (<span
+                                        class="font-semibold text-primary">Uchi</span> [内] vs. <span
+                                        class="font-semibold text-secondary">Soto</span> [外]):
+                                </p>
+                                <!-- Form Explanations List -->
+                                <div
+                                    class="flex flex-col gap-2.5 bg-surface-bright p-3.5 rounded-xl border border-outline-variant/60">
+                                    <div class="flex items-start gap-2">
+                                        <span class="w-2 h-2 rounded-full bg-primary mt-2 shrink-0"></span>
+                                        <p class="font-body-sm text-body-sm text-on-surface">
+                                            In polite business/colleague settings: Use polite ます form → <span
+                                                class="font-bold text-primary text-base">食べます (tabemasu)</span>.
+                                        </p>
+                                    </div>
+                                    <div class="flex items-start gap-2">
+                                        <span class="w-2 h-2 rounded-full bg-outline mt-2 shrink-0"></span>
+                                        <p class="font-body-sm text-body-sm text-on-surface">
+                                            With close friends/family: Use the dictionary form → <span
+                                                class="font-bold text-on-surface text-base">食べる (taberu)</span>.
+                                        </p>
+                                    </div>
+                                    <div class="flex items-start gap-2">
+                                        <span class="w-2 h-2 rounded-full bg-secondary mt-2 shrink-0"></span>
+                                        <p class="font-body-sm text-body-sm text-on-surface">
+                                            In business meetings referring to clients: You would use Sonkeigo
+                                            (honorific) → <span class="font-bold text-secondary text-base">召し上がる
+                                                (meshagaru)</span>!
+                                        </p>
+                                    </div>
+                                </div>
+                                <p class="font-body-md text-body-md text-on-surface">
+                                    Here is a quick sentence you can repeat aloud:
+                                </p>
+                                <!-- Interactive Audio Player Embed Inside Bubble -->
+                                <div
+                                    class="bg-surface-container-low rounded-xl p-3 border border-outline-variant flex items-center justify-between gap-3">
+                                    <div class="flex items-center gap-3">
+                                        <button
+                                            class="w-10 h-10 rounded-full bg-primary text-on-primary flex items-center justify-center hover:brightness-110 active:scale-95 transition-all shadow-xs"
+                                            title="Play phrase audio">
+                                            <span class="material-symbols-outlined text-[20px]" data-icon="play_arrow"
+                                                data-weight="fill"
+                                                style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+                                        </button>
+                                        <div>
+                                            <div
+                                                class="font-headline-sm text-headline-sm text-primary font-bold tracking-wide">
+                                                「一緒にお昼ご飯を食べませんか？」
+                                            </div>
+                                            <div class="font-body-sm text-body-sm text-on-surface-variant">
+                                                (Would you like to eat lunch together?)
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Audio waveform bars simulation & speed toggle -->
+                                    <div class="flex items-center gap-2">
+                                        <div class="hidden sm:flex items-center gap-0.5 h-6 px-2">
+                                            <span class="w-1 h-3 bg-primary rounded-full animate-pulse"></span>
+                                            <span class="w-1 h-5 bg-primary rounded-full"></span>
+                                            <span class="w-1 h-2 bg-primary rounded-full"></span>
+                                            <span class="w-1 h-6 bg-primary rounded-full animate-pulse"></span>
+                                            <span class="w-1 h-4 bg-primary rounded-full"></span>
+                                            <span class="w-1 h-2 bg-primary rounded-full"></span>
+                                        </div>
+                                        <button
+                                            class="px-2 py-1 rounded bg-surface border border-outline-variant text-label-sm font-semibold text-on-surface hover:bg-surface-container">
+                                            1.0x
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Turn 3: User Voice Recording & Waveform Analysis Card -->
+                    <div class="flex flex-col items-end gap-1 max-w-[85%] self-end">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="font-label-sm text-label-sm text-outline">Your Voice Submission • 10:44
+                                AM</span>
+                        </div>
+                        <div
+                            class="w-full bg-surface-container-lowest p-space-md rounded-2xl rounded-tr-xs border border-outline-variant shadow-sm flex flex-col gap-3">
+                            <!-- Waveform & Duration Row -->
+                            <div
+                                class="flex items-center justify-between gap-3 bg-surface-bright p-3 rounded-xl border border-outline-variant/60">
+                                <div class="flex items-center gap-2.5">
+                                    <div
+                                        class="w-8 h-8 rounded-full bg-secondary text-on-secondary flex items-center justify-center">
+                                        <span class="material-symbols-outlined text-[18px]" data-icon="mic"
+                                            data-weight="fill" style="font-variation-settings: 'FILL' 1;">mic</span>
+                                    </div>
+                                    <div>
+                                        <span
+                                            class="font-label-md text-label-md text-on-surface font-semibold block">Audio
+                                            submitted (1.8s)</span>
+                                        <span class="text-xs text-outline font-label-sm">High-fidelity voice
+                                            capture</span>
+                                    </div>
+                                </div>
+                                <!-- Simulated Recorded Waveform Display -->
+                                <div class="flex items-center gap-1 h-6">
+                                    <span class="w-1 h-2 bg-secondary rounded-full"></span>
+                                    <span class="w-1 h-4 bg-secondary rounded-full"></span>
+                                    <span class="w-1 h-6 bg-secondary rounded-full"></span>
+                                    <span class="w-1 h-3 bg-secondary rounded-full"></span>
+                                    <span class="w-1 h-5 bg-secondary rounded-full"></span>
+                                    <span class="w-1 h-2 bg-secondary rounded-full"></span>
+                                    <span class="w-1 h-4 bg-secondary rounded-full"></span>
+                                    <span class="w-1 h-1 bg-secondary rounded-full"></span>
+                                </div>
+                            </div>
+                            <!-- Pitch Score & Feedback Badge -->
+                            <div class="flex items-center justify-between pt-1">
+                                <div class="flex items-center gap-2">
+                                    <span
+                                        class="px-2.5 py-1 rounded-full bg-primary-fixed text-on-primary-fixed font-label-md text-label-md font-bold border border-primary/20 flex items-center gap-1">
+                                        <span class="material-symbols-outlined text-[16px]" data-icon="verified"
+                                            data-weight="fill"
+                                            style="font-variation-settings: 'FILL' 1;">verified</span>
+                                        Pitch score: 94%
+                                    </span>
+                                    <span class="font-label-sm text-label-sm text-outline">Native benchmark match</span>
+                                </div>
+                                <button
+                                    class="text-primary text-xs font-semibold hover:underline flex items-center gap-0.5">
+                                    Re-listen
+                                    <span class="material-symbols-outlined text-[14px]" data-icon="replay">replay</span>
+                                </button>
+                            </div>
+                            <!-- Sensei Analysis Feedback Bubble -->
+                            <div
+                                class="p-3 rounded-lg bg-surface-container-low border-l-4 border-primary flex items-start gap-2.5">
+                                <span class="material-symbols-outlined text-primary text-[20px] shrink-0 mt-0.5"
+                                    data-icon="sentiment_satisfied">sentiment_satisfied</span>
+                                <p class="font-body-sm text-body-sm text-on-surface leading-snug">
+                                    Sensei comment: <strong class="text-primary">"Excellent intonation on お昼 (ohiru)!
+                                        Clean mora transition to を食べませんか。"</strong>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- ================= BOTTOM INPUT DOCK ================= -->
+                <div class="p-space-md border-t border-outline-variant bg-surface-container-lowest">
+                    <form class="flex items-center gap-2.5" onsubmit="event.preventDefault();">
+                        <!-- Kanji / Photo Upload Icon Button -->
+                        <button
+                            class="p-2.5 text-on-surface-variant hover:text-primary hover:bg-surface-container rounded-xl border border-outline-variant/70 transition-colors"
+                            title="Upload Kanji Photo or Image" type="button">
+                            <span class="material-symbols-outlined text-[22px]"
+                                data-icon="add_photo_alternate">add_photo_alternate</span>
+                        </button>
+                        <!-- Text Input Container -->
+                        <div class="flex-1 relative flex items-center">
+                            <input
+                                class="w-full py-3 pl-4 pr-12 rounded-xl bg-surface-bright border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary text-body-md font-body-md placeholder-outline transition-all"
+                                placeholder="Ask Sensei anything about 食べる, grammar, or pitch..." type="text">
+                            <!-- Kana Romaji Indicator Badge -->
+                            <span
+                                class="absolute right-3 px-2 py-0.5 rounded bg-surface-container text-xs font-mono text-outline font-semibold border border-outline-variant">
+                                かな
+                            </span>
+                        </div>
+                        <!-- Quick Mic Record Button (Warm Terracotta Accent) -->
+                        <button
+                            class="w-12 h-12 rounded-xl bg-secondary text-on-secondary flex items-center justify-center hover:brightness-110 active:scale-95 transition-all shadow-sm relative group"
+                            title="Push to speak (Hold or Click)" type="button">
+                            <span class="material-symbols-outlined text-[24px]" data-icon="mic" data-weight="fill"
+                                style="font-variation-settings: 'FILL' 1;">mic</span>
+                            <!-- Subtle ripple pulse indicator -->
+                            <span
+                                class="absolute -inset-1 rounded-xl bg-secondary/20 group-hover:animate-ping -z-10 opacity-75"></span>
+                        </button>
+                        <!-- Send Button -->
+                        <button
+                            class="w-12 h-12 rounded-xl bg-primary text-on-primary flex items-center justify-center hover:bg-primary-container active:scale-95 transition-all shadow-sm border-b-2 border-primary/80"
+                            title="Send message" type="submit">
+                            <span class="material-symbols-outlined text-[22px]" data-icon="send">send</span>
+                        </button>
+                    </form>
+                    <!-- Input Footer Microcopy -->
+                    <div class="flex items-center justify-between mt-2 px-1 text-xs text-outline">
+                        <span class="font-label-sm text-label-sm">Press <kbd
+                                class="px-1 py-0.5 rounded bg-surface-container text-on-surface border border-outline-variant font-mono text-[10px]">Enter</kbd>
+                            to send • Speak Japanese or English naturally</span>
+                        <span class="font-label-sm text-label-sm">Sensei Audio Engine 4.2 • Pitch Realtime v2</span>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+
+</body>
+
+</html>

@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html class="h-full" lang="en" style="">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>VocabVoice — Learning Dashboard</title>
+    <!-- Google Fonts: Noto Serif & Plus Jakarta Sans -->
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,600;0,700;1,400&amp;family=Plus Jakarta+Sans:wght@400;500;600;700&amp;display=swap"
+        rel="stylesheet">
+    <!-- Material Symbols Outlined -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-error": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-variant": "#dde4df",
+                        "secondary-fixed-dim": "#ffb59f",
+                        "tertiary-container": "#404743",
+                        "tertiary": "#2a302d",
+                        "on-primary-fixed-variant": "#204f40",
+                        "primary-fixed-dim": "#a0d1bd",
+                        "error": "#ba1a1a",
+                        "inverse-surface": "#2b322f",
+                        "inverse-on-surface": "#ebf2ed",
+                        "on-tertiary-container": "#adb5b0",
+                        "primary": "#013628",
+                        "secondary-fixed": "#ffdbd0",
+                        "on-secondary": "#ffffff",
+                        "surface-bright": "#f4fbf6",
+                        "primary-fixed": "#bbedd8",
+                        "surface-dim": "#d4dcd7",
+                        "secondary-container": "#fe997a",
+                        "surface-container-high": "#e3eae5",
+                        "surface-tint": "#396757",
+                        "primary-container": "#1e4d3e",
+                        "on-error-container": "#93000a",
+                        "on-tertiary-fixed-variant": "#414845",
+                        "surface-container-low": "#eef5f0",
+                        "outline-variant": "#c0c8c3",
+                        "surface-container": "#e8f0ea",
+                        "tertiary-fixed-dim": "#c1c8c3",
+                        "on-secondary-container": "#772f18",
+                        "on-surface-variant": "#404945",
+                        "on-primary": "#ffffff",
+                        "on-primary-container": "#8dbda9",
+                        "on-surface": "#161d1a",
+                        "on-tertiary-fixed": "#161d1a",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary-fixed": "#3a0a00",
+                        "inverse-primary": "#a0d1bd",
+                        "surface-container-highest": "#dde4df",
+                        "tertiary-fixed": "#dde4df",
+                        "on-primary-fixed": "#002117",
+                        "surface": "#f4fbf6",
+                        "on-secondary-fixed-variant": "#793019",
+                        "outline": "#717974",
+                        "on-background": "#161d1a",
+                        "background": "#f4fbf6",
+                        "secondary": "#97472e",
+                        "error-container": "#ffdad6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-mobile": "1.25rem",
+                        "space-md": "1rem",
+                        "space-xl": "2.5rem",
+                        "gutter-mobile": "1rem",
+                        "space-lg": "1.5rem",
+                        "margin-tablet": "2rem",
+                        "margin": "3rem",
+                        "gutter": "1.5rem",
+                        "space-xs": "0.25rem",
+                        "space-sm": "0.5rem"
+                    },
+                    "fontFamily": {
+                        "headline-lg-mobile": ["Noto Serif"],
+                        "body-sm": ["Plus Jakarta Sans"],
+                        "label-md": ["Plus Jakarta Sans"],
+                        "headline-sm": ["Noto Serif"],
+                        "body-md": ["Plus Jakarta Sans"],
+                        "headline-md": ["Noto Serif"],
+                        "label-sm": ["Plus Jakarta Sans"],
+                        "kanji-hero-mobile": ["Noto Serif"],
+                        "kanji-hero": ["Noto Serif"],
+                        "display-lg": ["Noto Serif"],
+                        "headline-lg": ["Noto Serif"],
+                        "label-lg": ["Plus Jakarta Sans"],
+                        "display-lg-mobile": ["Noto Serif"],
+                        "body-lg": ["Plus Jakarta Sans"],
+                        "furigana": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "headline-lg-mobile": ["26px", { "lineHeight": "34px", "letterSpacing": "0em", "fontWeight": "600" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "label-md": ["13px", { "lineHeight": "18px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+                        "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "500" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.05em", "fontWeight": "700" }],
+                        "kanji-hero-mobile": ["48px", { "lineHeight": "56px", "fontWeight": "400" }],
+                        "kanji-hero": ["64px", { "lineHeight": "72px", "fontWeight": "400" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "label-lg": ["15px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }],
+                        "display-lg-mobile": ["34px", { "lineHeight": "42px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "furigana": ["11px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "600" }]
+                    }
+                }
+            }
+        };
+    </script>
+</head>
+
+<body class="bg-background text-on-surface antialiased h-full flex overflow-hidden">
+    <!-- ==================== SHARED COMPONENT: SideNavBar ==================== -->
+    <aside
+        class="fixed top-0 left-0 h-screen w-64 flex flex-col justify-between bg-surface-bright border-r border-outline-variant z-40">
+        <div class="h-full flex flex-col justify-between p-space-md">
+            <!-- Header Brand Block -->
+            <div>
+                <div class="flex items-center gap-space-sm mb-space-lg px-space-xs">
+                    <div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center p-1 border border-outline-variant shadow-sm flex-shrink-0 overflow-hidden"
+                        title="Nipp-ON Logo"><img
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuAUkTso4IMtFYkeQ3bfkkTCLApnLLiHDbDyhCFu8dj7McAiuDZyn0aaDausGKTgQnDRYfJ-5qHF184C1s3lNCtoSk3nntCNwnHxNkh1fOwVSx_NILrmt4TYC6T8Nt3CfIYehd-YGBndtpFb-RrQOqfLvKM57boLILc2l8mO2zoTXdBjaa2lfFAk0xUBHIOao_AdnSHn_iNvAFBF43-2bW1nnS3CbDp_oEKEg0bxgq1ZD6qBujy3ZkCH8Hcp-ENFLtg_YQ"
+                            alt="Nipp-ON Logo" class="w-full h-full object-contain"></div>
+                    <div class="flex flex-col min-w-0"><span
+                            class="font-headline-md text-headline-md text-primary tracking-tight font-semibold leading-tight">Nipp-ON</span><span
+                            class="font-label-sm text-label-sm text-outline truncate">JLPT N5 • Hear it. Learn it. Say
+                            it.</span></div>
+                </div>
+                <!-- Primary Navigation Links -->
+                <nav class="space-y-1">
+                    <!-- Active Tab: Dashboard -->
+                    <a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg bg-surface-container text-primary font-label-md text-label-md font-semibold hover:bg-surface-container-high transition-colors active:scale-[0.99]"
+                        href="#">
+                        <span class="material-symbols-outlined text-primary text-xl"
+                            data-icon="space_dashboard">space_dashboard</span>
+                        <span class="">Dashboard</span>
+                    </a>
+                    <!-- Inactive: Daily Learn -->
+                    <a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-high hover:text-on-surface transition-colors active:scale-[0.99]"
+                        href="#">
+                        <span class="material-symbols-outlined text-outline text-xl"
+                            data-icon="auto_stories">auto_stories</span>
+                        <span class="">Daily Learn</span>
+                    </a>
+                    <!-- Inactive: AI Sensei -->
+                    <a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-high hover:text-on-surface transition-colors active:scale-[0.99]"
+                        href="#">
+                        <span class="material-symbols-outlined text-outline text-xl"
+                            data-icon="psychology">psychology</span>
+                        <span class="">AI Sensei</span>
+                    </a>
+                    <!-- Inactive: Notebook & Practice -->
+                    <a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-high hover:text-on-surface transition-colors active:scale-[0.99]"
+                        href="#">
+                        <span class="material-symbols-outlined text-outline text-xl"
+                            data-icon="menu_book">menu_book</span>
+                        <span class="">Notebook &amp; Practice</span>
+                    </a>
+                </nav>
+                <!-- CTA Anchor -->
+                <div class="mt-space-lg pt-space-md border-t border-outline-variant">
+                    <button
+                        class="w-full flex items-center justify-center gap-space-xs py-2.5 px-space-md rounded-xl bg-primary-container text-on-primary font-label-md text-label-md shadow-sm hover:bg-primary transition-all active:scale-[0.98]">
+                        <span class="material-symbols-outlined text-lg"
+                            data-icon="record_voice_over">record_voice_over</span>
+                        <span class="">Practice Session</span>
+                    </button>
+                </div>
+            </div>
+            <!-- Footer Navigation Items -->
+            <div class="pt-space-md border-t border-outline-variant space-y-1">
+                <a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-high hover:text-on-surface transition-colors active:scale-[0.99]"
+                    href="#">
+                    <span class="material-symbols-outlined text-outline text-xl" data-icon="mic">mic</span>
+                    <span class="">Audio Settings</span>
+                </a>
+                <a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-high hover:text-on-surface transition-colors active:scale-[0.99]"
+                    href="#">
+                    <span class="material-symbols-outlined text-outline text-xl"
+                        data-icon="account_circle">account_circle</span>
+                    <span class="">Profile</span>
+                </a>
+            </div>
+        </div>
+    </aside>
+    <!-- ==================== SHARED COMPONENT: TopNavBar ==================== -->
+    <header
+        class="fixed top-0 right-0 h-16 w-[calc(100%-16rem)] flex items-center bg-surface-bright border-b border-outline-variant z-30">
+        <div class="flex justify-between items-center w-full px-space-lg max-w-full">
+            <!-- Left: Context Bar with Milestone & Daily Goal -->
+            <div class="flex items-center gap-space-lg">
+                <div class="flex items-center gap-space-sm">
+                    <span class="font-label-md text-label-md text-primary font-semibold">JLPT N5 Milestone</span>
+                    <div class="w-32 bg-surface-container rounded-full h-2 overflow-hidden relative">
+                        <div class="bg-primary-container h-full rounded-full transition-all duration-500"
+                            style="width: 68%;"></div>
+                    </div>
+                    <span class="font-label-sm text-label-sm text-outline">68%</span>
+                </div>
+                <div class="h-4 w-px bg-outline-variant"></div>
+                <!-- 14-Day Streak indicator with Inkan flame badge -->
+                <div
+                    class="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-secondary-fixed text-on-secondary-fixed">
+                    <span class="material-symbols-outlined text-sm text-secondary" data-icon="local_fire_department"
+                        data-weight="fill" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+                    <span class="font-label-sm text-label-sm font-semibold">14-Day Streak</span>
+                </div>
+            </div>
+            <!-- Right: Trailing Actions, Pronunciation Mode, Profile -->
+            <div class="flex items-center gap-space-md">
+                <!-- Daily Goal Pill Action -->
+                <div
+                    class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container text-primary font-label-md text-label-md">
+                    <span class="material-symbols-outlined text-base text-primary"
+                        data-icon="check_circle">check_circle</span>
+                    <span class="">Daily Goal: 8/10</span>
+                </div>
+                <!-- Trailing secondary action badge -->
+                <button
+                    class="hidden lg:flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container-high text-on-surface-variant hover:text-primary transition-colors font-label-md text-label-md">
+                    <span class="material-symbols-outlined text-base"
+                        data-icon="record_voice_over">record_voice_over</span>
+                    <span class="">Pronunciation Mode</span>
+                </button>
+                <!-- Trailing Icon Actions -->
+                <div class="flex items-center gap-1">
+                    <button
+                        class="w-9 h-9 flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-surface-container rounded-full transition-colors active:scale-[0.98]"
+                        title="Audio Settings">
+                        <span class="material-symbols-outlined text-xl" data-icon="volume_up">volume_up</span>
+                    </button>
+                    <button
+                        class="w-9 h-9 flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-surface-container rounded-full transition-colors active:scale-[0.98]"
+                        title="Give Feedback">
+                        <span class="material-symbols-outlined text-xl" data-icon="feedback">feedback</span>
+                    </button>
+                </div>
+                <div class="h-5 w-px bg-outline-variant"></div>
+                <!-- Learner Avatar Profile Badge -->
+                <div class="flex items-center gap-2 pl-1">
+                    <div
+                        class="relative w-8 h-8 rounded-full bg-surface-container-high border border-outline-variant overflow-hidden flex items-center justify-center text-primary font-semibold text-xs">
+                        <img class="w-full h-full object-cover"
+                            data-alt="Close up photographic portrait of Alex, an expressive adult language learner smiling in warm natural afternoon window lighting with subtle Japanese calligraphy scrolls softly blurred in the cozy study background."
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDYaUrPbNoX0yIVLZhM2xkU7mkaTo4lfSGxezaWrNV4Jh2EtgNyfSlB9qBEZ5hYT4ImAMv7wWRvVRmeoMLPS5l9XELCe944V550QT3Awt8ndHBlA-oXnug0tcUkl-nwFMS3jnsWFht7RsklpO_wgofPdDu46MQHrATBjILByV9haUwX-Kkcd8Q9ec0dj7olSIZEMUH827GIvZdHYqcYAGJ-HcZvkq_iZj0wBU3SujiTGbD5hK3On6kF">
+                    </div>
+                    <span class="font-label-md text-label-md text-on-surface font-semibold hidden xl:inline">Alex
+                        S.</span>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- ==================== MAIN DASHBOARD CONTENT CANVAS ==================== -->
+    <main class="ml-64 mt-16 flex-1 h-[calc(100vh-4rem)] overflow-y-auto bg-background p-space-lg xl:p-space-xl">
+        <div class="max-w-[1280px] mx-auto space-y-space-lg">
+            <!-- HERO SECTION: Warm Editorial Tactile Card -->
+            <section
+                class="relative bg-surface-container-lowest rounded-2xl border border-outline-variant p-space-lg xl:p-space-xl overflow-hidden shadow-sm">
+                <!-- Calligraphic Atmospheric Accent in Background -->
+                <div
+                    class="absolute -right-6 -bottom-10 pointer-events-none select-none opacity-[0.04] text-[180px] font-headline-lg font-bold text-primary leading-none">
+                    音声
+                </div>
+                <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-space-lg relative z-10">
+                    <!-- Text Greeting & Japanese Tip -->
+                    <div class="space-y-space-sm max-w-2xl">
+                        <div class="flex items-center gap-2">
+                            <span
+                                class="font-furigana text-furigana uppercase tracking-wider text-secondary font-bold">Speech
+                                Coach • Daily Ritual</span>
+                            <span
+                                class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-surface-container text-on-surface-variant font-label-sm text-label-sm">
+                                <span class="material-symbols-outlined text-xs text-primary"
+                                    data-icon="ac_unit">ac_unit</span>
+                                Streak Freeze Active
+                            </span>
+                        </div>
+                        <h1 class="font-headline-lg text-headline-lg text-primary tracking-tight">
+                            Okaeri, Alex! <span class="font-normal text-on-surface-variant font-headline-sm">Ready for
+                                today's speech session?</span>
+                        </h1>
+                        <!-- Tip of the Day Washi Paper Callout -->
+                        <div
+                            class="p-3.5 rounded-xl bg-surface-container-low border border-outline-variant/60 flex items-start gap-3">
+                            <span
+                                class="w-6 h-6 rounded-md bg-secondary-fixed flex items-center justify-center text-secondary text-xs font-bold flex-shrink-0 mt-0.5">意</span>
+                            <div class="space-y-0.5">
+                                <div class="flex items-center gap-2">
+                                    <span
+                                        class="font-headline-sm text-headline-sm text-primary font-medium text-sm">一期一会
+                                        (Ichigo Ichie)</span>
+                                    <span class="text-xs text-outline">—</span>
+                                    <span class="font-body-sm text-body-sm text-on-surface-variant">Cherish every
+                                        learning moment</span>
+                                </div>
+                                <p class="font-body-sm text-body-sm text-outline">
+                                    Focus on elongated vowel mora sounds today. Notice the soft drop on compound
+                                    sentences.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Hero Action Button & Stat Micro-Block -->
+                    <div
+                        class="flex flex-col sm:flex-row lg:flex-col gap-3 justify-center items-stretch sm:items-center lg:items-end flex-shrink-0">
+                        <button
+                            class="flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-2xl bg-primary-container text-on-primary font-label-lg text-label-lg shadow-md hover:bg-primary transition-all active:translate-y-0.5 border-b-2 border-primary">
+                            <span class="material-symbols-outlined text-xl" data-icon="volume_up">volume_up</span>
+                            <span class="">Start Daily Session (10 Mins)</span>
+                        </button>
+                        <span class="font-label-sm text-label-sm text-outline text-center lg:text-right">
+                            Today's Focus: 2 New Verbs + 4 SRS Reviews
+                        </span>
+                    </div>
+                </div>
+            </section>
+            <!-- BENTO GRID: Dashboard Core Modules -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg">
+                <!-- CARD 1: Daily Target & Pronunciation Readiness (4 Cols) -->
+                <div
+                    class="lg:col-span-4 bg-surface-container-lowest rounded-2xl border border-outline-variant p-space-lg flex flex-col justify-between shadow-sm">
+                    <div>
+                        <div class="flex items-center justify-between mb-space-md">
+                            <div class="flex items-center gap-2">
+                                <span class="material-symbols-outlined text-primary text-xl"
+                                    data-icon="speed">speed</span>
+                                <h2 class="font-headline-sm text-headline-sm text-primary">Readiness &amp; Goals</h2>
+                            </div>
+                            <span
+                                class="px-2 py-0.5 rounded-full bg-surface-container font-label-sm text-label-sm text-on-surface-variant">Realtime</span>
+                        </div>
+                        <!-- Circular Progress & Accent Accuracy Row -->
+                        <div class="flex items-center justify-around py-space-sm border-b border-outline-variant/60">
+                            <!-- Circular Progress Gauge -->
+                            <div class="flex flex-col items-center">
+                                <div class="relative w-24 h-24 flex items-center justify-center">
+                                    <!-- SVG Circular Ring -->
+                                    <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+                                        <path class="text-surface-container"
+                                            d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                                            fill="none" stroke="currentColor" stroke-width="3.5"></path>
+                                        <path class="text-primary-container"
+                                            d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                                            fill="none" stroke="currentColor" stroke-dasharray="80, 100"
+                                            stroke-linecap="round" stroke-width="3.5"></path>
+                                    </svg>
+                                    <div class="absolute flex flex-col items-center">
+                                        <span
+                                            class="font-headline-md text-headline-md text-primary font-bold leading-none">80%</span>
+                                        <span class="font-label-sm text-label-sm text-outline text-[10px]">TARGET</span>
+                                    </div>
+                                </div>
+                                <span class="mt-2 font-label-md text-label-md text-on-surface-variant">Daily
+                                    Target</span>
+                            </div>
+                            <!-- Pitch Accent Average Score Gauge -->
+                            <div class="flex flex-col items-center">
+                                <div
+                                    class="w-24 h-24 rounded-full bg-surface-container-low border border-outline-variant/60 flex flex-col items-center justify-center p-2 text-center">
+                                    <span
+                                        class="font-headline-md text-headline-md text-secondary font-bold leading-none">92%</span>
+                                    <span
+                                        class="font-label-sm text-label-sm text-outline text-[10px] mt-0.5">AVERAGE</span>
+                                </div>
+                                <span class="mt-2 font-label-md text-label-md text-on-surface-variant">Pitch
+                                    Accuracy</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Audio Input Diagnostic Test Pill -->
+                    <div class="mt-space-md pt-space-xs">
+                        <div class="p-3 rounded-xl bg-surface-container flex items-center justify-between">
+                            <div class="flex items-center gap-2.5">
+                                <div class="relative flex items-center justify-center">
+                                    <span class="w-3 h-3 rounded-full bg-primary-container animate-pulse"></span>
+                                </div>
+                                <div>
+                                    <div
+                                        class="font-label-md text-label-md text-primary font-semibold flex items-center gap-1">
+                                        <span class="material-symbols-outlined text-sm" data-icon="mic">mic</span>
+                                        Mic Ready: Rode NT-USB
+                                    </div>
+                                    <div class="font-label-sm text-label-sm text-outline">Noise Suppression: Clean
+                                        (48kHz)</div>
+                                </div>
+                            </div>
+                            <button
+                                class="px-2.5 py-1 text-xs rounded-lg bg-surface-container-high text-primary hover:bg-surface-container-highest transition-colors font-semibold"
+                                title="Test Voice Input">
+                                Test
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- CARD 2: Current Learning Track (4 Cols) -->
+                <div
+                    class="lg:col-span-4 bg-surface-container-lowest rounded-2xl border border-outline-variant p-space-lg flex flex-col justify-between shadow-sm">
+                    <div>
+                        <div class="flex items-center justify-between mb-space-sm">
+                            <div class="flex items-center gap-2">
+                                <span class="material-symbols-outlined text-primary text-xl"
+                                    data-icon="school">school</span>
+                                <h2 class="font-headline-sm text-headline-sm text-primary">Learning Track</h2>
+                            </div>
+                            <span
+                                class="px-2.5 py-0.5 rounded-full bg-secondary-fixed text-on-secondary-fixed font-label-sm text-label-sm font-semibold">JLPT
+                                N5</span>
+                        </div>
+                        <p class="font-body-sm text-body-sm text-outline mb-space-md">
+                            Essential Verbs &amp; Daily Life words
+                        </p>
+                        <!-- Next Up Vocabulary Cards List -->
+                        <div class="space-y-2.5">
+                            <div
+                                class="p-3 rounded-xl bg-surface-container-low border border-outline-variant/60 flex items-center justify-between hover:bg-surface-container transition-colors">
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center text-primary font-kanji-hero text-2xl font-medium">
+                                        食
+                                    </div>
+                                    <div>
+                                        <div class="flex items-center gap-1.5">
+                                            <span class="font-body-md text-body-md text-primary font-bold">食べる</span>
+                                            <span class="font-furigana text-furigana text-outline">(taberu)</span>
+                                        </div>
+                                        <span class="font-body-sm text-body-sm text-on-surface-variant">To eat •
+                                            Verb</span>
+                                    </div>
+                                </div>
+                                <span class="material-symbols-outlined text-primary text-lg"
+                                    data-icon="volume_up">volume_up</span>
+                            </div>
+                            <div
+                                class="p-3 rounded-xl bg-surface-container-low border border-outline-variant/60 flex items-center justify-between hover:bg-surface-container transition-colors">
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center text-primary font-kanji-hero text-2xl font-medium">
+                                        飲
+                                    </div>
+                                    <div>
+                                        <div class="flex items-center gap-1.5">
+                                            <span class="font-body-md text-body-md text-primary font-bold">飲む</span>
+                                            <span class="font-furigana text-furigana text-outline">(nomu)</span>
+                                        </div>
+                                        <span class="font-body-sm text-body-sm text-on-surface-variant">To drink •
+                                            Verb</span>
+                                    </div>
+                                </div>
+                                <span class="material-symbols-outlined text-primary text-lg"
+                                    data-icon="volume_up">volume_up</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Continue Track CTA Button -->
+                    <div class="mt-space-md pt-space-xs">
+                        <button
+                            class="w-full flex items-center justify-center gap-2 py-2.5 px-space-md rounded-xl bg-primary-container text-on-primary font-label-md text-label-md shadow-sm hover:bg-primary transition-colors active:scale-[0.98]">
+                            <span class="">Continue Track</span>
+                            <span class="material-symbols-outlined text-base"
+                                data-icon="arrow_forward">arrow_forward</span>
+                        </button>
+                    </div>
+                </div>
+                <!-- CARD 3: Quick Practice & Stats Widget (4 Cols) -->
+                <div
+                    class="lg:col-span-4 bg-surface-container-lowest rounded-2xl border border-outline-variant p-space-lg flex flex-col justify-between shadow-sm">
+                    <div>
+                        <div class="flex items-center justify-between mb-space-md">
+                            <div class="flex items-center gap-2">
+                                <span class="material-symbols-outlined text-primary text-xl"
+                                    data-icon="analytics">analytics</span>
+                                <h2 class="font-headline-sm text-headline-sm text-primary">Mastery Stats</h2>
+                            </div>
+                            <button class="text-xs text-outline hover:text-primary transition-colors font-semibold">View
+                                All</button>
+                        </div>
+                        <!-- Key Metric Metrics Cards -->
+                        <div class="grid grid-cols-1 gap-3">
+                            <div
+                                class="flex items-center justify-between p-3 rounded-xl bg-surface-container-low border border-outline-variant/40">
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="w-9 h-9 rounded-lg bg-surface-container flex items-center justify-center text-primary">
+                                        <span class="material-symbols-outlined text-xl"
+                                            data-icon="menu_book">menu_book</span>
+                                    </div>
+                                    <div>
+                                        <span
+                                            class="font-label-sm text-label-sm text-outline uppercase tracking-wider block">Mastered</span>
+                                        <span class="font-headline-sm text-headline-sm text-primary font-bold">248
+                                            Words</span>
+                                    </div>
+                                </div>
+                                <span
+                                    class="text-xs font-semibold text-primary bg-primary-fixed/40 px-2 py-0.5 rounded">+12
+                                    this week</span>
+                            </div>
+                            <div
+                                class="flex items-center justify-between p-3 rounded-xl bg-surface-container-low border border-outline-variant/40">
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="w-9 h-9 rounded-lg bg-surface-container flex items-center justify-center text-secondary">
+                                        <span class="material-symbols-outlined text-xl"
+                                            data-icon="headphones">headphones</span>
+                                    </div>
+                                    <div>
+                                        <span
+                                            class="font-label-sm text-label-sm text-outline uppercase tracking-wider block">Listening
+                                            Audio</span>
+                                        <span class="font-headline-sm text-headline-sm text-primary font-bold">14.2
+                                            Hours</span>
+                                    </div>
+                                </div>
+                                <span
+                                    class="text-xs font-semibold text-secondary bg-secondary-fixed/50 px-2 py-0.5 rounded">Native
+                                    Pitch</span>
+                            </div>
+                            <div
+                                class="flex items-center justify-between p-3 rounded-xl bg-surface-container-low border border-outline-variant/40">
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="w-9 h-9 rounded-lg bg-surface-container flex items-center justify-center text-primary">
+                                        <span class="material-symbols-outlined text-xl" data-icon="update">update</span>
+                                    </div>
+                                    <div>
+                                        <span
+                                            class="font-label-sm text-label-sm text-outline uppercase tracking-wider block">SRS
+                                            Reviews</span>
+                                        <span class="font-headline-sm text-headline-sm text-primary font-bold">12 Words
+                                            Due</span>
+                                    </div>
+                                </div>
+                                <span
+                                    class="text-xs font-semibold text-on-surface-variant bg-surface-container px-2 py-0.5 rounded">Spaced
+                                    Repeat</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Quick Action -->
+                    <div class="mt-space-md pt-space-xs">
+                        <button
+                            class="w-full flex items-center justify-center gap-2 py-2 px-space-md rounded-xl bg-surface-container text-primary font-label-md text-label-md hover:bg-surface-container-high transition-colors">
+                            <span class="material-symbols-outlined text-base" data-icon="replay">replay</span>
+                            <span class="">Start SRS Review Deck (12)</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- SECTION: Recently Learned Japanese Words (Interactive Card Grid / Table) -->
+            <section class="bg-surface-container-lowest rounded-2xl border border-outline-variant p-space-lg shadow-sm">
+                <div
+                    class="flex flex-col sm:flex-row sm:items-center justify-between pb-space-md border-b border-outline-variant gap-2">
+                    <div>
+                        <h2 class="font-headline-md text-headline-md text-primary font-semibold">Recently Learned
+                            Japanese Words</h2>
+                        <p class="font-body-sm text-body-sm text-outline">Real-time pitch pronunciation recordings &amp;
+                            accent contour scores</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="font-label-sm text-label-sm text-outline">Sort by:</span>
+                        <select
+                            class="text-xs bg-surface-container border-none rounded-lg text-primary font-semibold py-1.5 px-3 focus:ring-1 focus:ring-primary">
+                            <option>Latest Practice</option>
+                            <option>Lowest Score</option>
+                            <option>Alphabetical</option>
+                        </select>
+                    </div>
+                </div>
+                <!-- Words Table Container -->
+                <div class="overflow-x-auto mt-space-md">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="border-b border-outline-variant/60 font-label-sm text-label-sm text-outline">
+                                <th class="py-3 px-4 font-semibold uppercase tracking-wider">Word &amp; Meaning</th>
+                                <th class="py-3 px-4 font-semibold uppercase tracking-wider">Type</th>
+                                <th class="py-3 px-4 font-semibold uppercase tracking-wider">Pitch Pattern</th>
+                                <th class="py-3 px-4 font-semibold uppercase tracking-wider">Pronunciation Accuracy</th>
+                                <th class="py-3 px-4 font-semibold uppercase tracking-wider text-right">Practice Action
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-outline-variant/40 font-body-sm text-body-sm">
+                            <!-- WORD 1: 食べる -->
+                            <tr class="hover:bg-surface-container-low transition-colors group">
+                                <td class="py-4 px-4">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-11 h-11 rounded-xl bg-surface-container flex items-center justify-center font-kanji-hero text-2xl text-primary font-medium flex-shrink-0">
+                                            食
+                                        </div>
+                                        <div>
+                                            <div class="flex items-baseline gap-2">
+                                                <span
+                                                    class="font-headline-sm text-headline-sm text-primary font-semibold">食べる</span>
+                                                <span class="font-furigana text-furigana text-outline">たべる •
+                                                    taberu</span>
+                                            </div>
+                                            <span class="font-body-sm text-body-sm text-on-surface-variant">To
+                                                eat</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-4">
+                                    <span
+                                        class="px-2.5 py-1 rounded-full bg-surface-container text-primary font-label-sm text-label-sm font-semibold">Verb
+                                        (Ichidan)</span>
+                                </td>
+                                <td class="py-4 px-4">
+                                    <div class="flex items-center gap-2">
+                                        <span
+                                            class="font-label-sm text-label-sm font-semibold font-mono px-2 py-0.5 rounded bg-surface-container-low border border-outline-variant text-on-surface">
+                                            [低高高] Nakadaka
+                                        </span>
+                                        <!-- Pitch visualization dots -->
+                                        <div class="flex items-center gap-1">
+                                            <span class="w-2 h-2 rounded-full bg-outline"></span>
+                                            <span class="w-2 h-2 rounded-full bg-secondary"></span>
+                                            <span class="w-2 h-2 rounded-full bg-secondary"></span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-4">
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-20 bg-surface-container rounded-full h-2 overflow-hidden">
+                                            <div class="bg-primary-container h-full rounded-full" style="width: 96%;">
+                                            </div>
+                                        </div>
+                                        <span class="font-label-md text-label-md text-primary font-bold">96%</span>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-4 text-right">
+                                    <div class="flex items-center justify-end gap-2">
+                                        <button
+                                            class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-primary hover:bg-surface-container-high transition-colors"
+                                            title="Listen Audio">
+                                            <span class="material-symbols-outlined text-lg"
+                                                data-icon="volume_up">volume_up</span>
+                                        </button>
+                                        <button
+                                            class="px-3 py-1.5 rounded-lg bg-surface-container-high text-primary hover:bg-primary-container hover:text-on-primary font-label-sm text-label-sm transition-all"
+                                            title="Record Voice">
+                                            Record
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <!-- WORD 2: 水 -->
+                            <tr class="hover:bg-surface-container-low transition-colors group">
+                                <td class="py-4 px-4">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-11 h-11 rounded-xl bg-surface-container flex items-center justify-center font-kanji-hero text-2xl text-primary font-medium flex-shrink-0">
+                                            水
+                                        </div>
+                                        <div>
+                                            <div class="flex items-baseline gap-2">
+                                                <span
+                                                    class="font-headline-sm text-headline-sm text-primary font-semibold">水</span>
+                                                <span class="font-furigana text-furigana text-outline">みず • mizu</span>
+                                            </div>
+                                            <span class="font-body-sm text-body-sm text-on-surface-variant">Water</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-4">
+                                    <span
+                                        class="px-2.5 py-1 rounded-full bg-surface-container text-primary font-label-sm text-label-sm font-semibold">Noun</span>
+                                </td>
+                                <td class="py-4 px-4">
+                                    <div class="flex items-center gap-2">
+                                        <span
+                                            class="font-label-sm text-label-sm font-semibold font-mono px-2 py-0.5 rounded bg-surface-container-low border border-outline-variant text-on-surface">
+                                            [低高] Heiban
+                                        </span>
+                                        <div class="flex items-center gap-1">
+                                            <span class="w-2 h-2 rounded-full bg-outline"></span>
+                                            <span class="w-2 h-2 rounded-full bg-primary-container"></span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-4">
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-20 bg-surface-container rounded-full h-2 overflow-hidden">
+                                            <div class="bg-primary-container h-full rounded-full" style="width: 88%;">
+                                            </div>
+                                        </div>
+                                        <span class="font-label-md text-label-md text-primary font-bold">88%</span>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-4 text-right">
+                                    <div class="flex items-center justify-end gap-2">
+                                        <button
+                                            class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-primary hover:bg-surface-container-high transition-colors"
+                                            title="Listen Audio">
+                                            <span class="material-symbols-outlined text-lg"
+                                                data-icon="volume_up">volume_up</span>
+                                        </button>
+                                        <button
+                                            class="px-3 py-1.5 rounded-lg bg-surface-container-high text-primary hover:bg-primary-container hover:text-on-primary font-label-sm text-label-sm transition-all">
+                                            Record
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <!-- WORD 3: 友達 -->
+                            <tr class="hover:bg-surface-container-low transition-colors group">
+                                <td class="py-4 px-4">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-11 h-11 rounded-xl bg-surface-container flex items-center justify-center font-kanji-hero text-2xl text-primary font-medium flex-shrink-0">
+                                            友
+                                        </div>
+                                        <div>
+                                            <div class="flex items-baseline gap-2">
+                                                <span
+                                                    class="font-headline-sm text-headline-sm text-primary font-semibold">友達</span>
+                                                <span class="font-furigana text-furigana text-outline">ともだち •
+                                                    tomodachi</span>
+                                            </div>
+                                            <span
+                                                class="font-body-sm text-body-sm text-on-surface-variant">Friend</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-4">
+                                    <span
+                                        class="px-2.5 py-1 rounded-full bg-surface-container text-primary font-label-sm text-label-sm font-semibold">Noun</span>
+                                </td>
+                                <td class="py-4 px-4">
+                                    <div class="flex items-center gap-2">
+                                        <span
+                                            class="font-label-sm text-label-sm font-semibold font-mono px-2 py-0.5 rounded bg-surface-container-low border border-outline-variant text-on-surface">
+                                            [低高高高] Heiban
+                                        </span>
+                                        <div class="flex items-center gap-1">
+                                            <span class="w-2 h-2 rounded-full bg-outline"></span>
+                                            <span class="w-2 h-2 rounded-full bg-primary-container"></span>
+                                            <span class="w-2 h-2 rounded-full bg-primary-container"></span>
+                                            <span class="w-2 h-2 rounded-full bg-primary-container"></span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-4">
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-20 bg-surface-container rounded-full h-2 overflow-hidden">
+                                            <div class="bg-primary-container h-full rounded-full" style="width: 94%;">
+                                            </div>
+                                        </div>
+                                        <span class="font-label-md text-label-md text-primary font-bold">94%</span>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-4 text-right">
+                                    <div class="flex items-center justify-end gap-2">
+                                        <button
+                                            class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-primary hover:bg-surface-container-high transition-colors"
+                                            title="Listen Audio">
+                                            <span class="material-symbols-outlined text-lg"
+                                                data-icon="volume_up">volume_up</span>
+                                        </button>
+                                        <button
+                                            class="px-3 py-1.5 rounded-lg bg-surface-container-high text-primary hover:bg-primary-container hover:text-on-primary font-label-sm text-label-sm transition-all">
+                                            Record
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <!-- WORD 4: 行く (Needs practice badge) -->
+                            <tr class="hover:bg-surface-container-low transition-colors group">
+                                <td class="py-4 px-4">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-11 h-11 rounded-xl bg-secondary-fixed/50 flex items-center justify-center font-kanji-hero text-2xl text-secondary font-medium flex-shrink-0">
+                                            行
+                                        </div>
+                                        <div>
+                                            <div class="flex items-baseline gap-2">
+                                                <span
+                                                    class="font-headline-sm text-headline-sm text-primary font-semibold">行く</span>
+                                                <span class="font-furigana text-furigana text-outline">いく • iku</span>
+                                            </div>
+                                            <span class="font-body-sm text-body-sm text-on-surface-variant">To go</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-4">
+                                    <span
+                                        class="px-2.5 py-1 rounded-full bg-surface-container text-primary font-label-sm text-label-sm font-semibold">Verb
+                                        (Godan)</span>
+                                </td>
+                                <td class="py-4 px-4">
+                                    <div class="flex items-center gap-2">
+                                        <span
+                                            class="font-label-sm text-label-sm font-semibold font-mono px-2 py-0.5 rounded bg-surface-container-low border border-outline-variant text-on-surface">
+                                            [低高] Heiban
+                                        </span>
+                                        <div class="flex items-center gap-1">
+                                            <span class="w-2 h-2 rounded-full bg-outline"></span>
+                                            <span class="w-2 h-2 rounded-full bg-secondary"></span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-4">
+                                    <div class="flex items-center gap-2">
+                                        <span
+                                            class="px-2.5 py-0.5 rounded-full bg-secondary-fixed text-secondary font-label-sm text-label-sm font-bold flex items-center gap-1">
+                                            <span class="material-symbols-outlined text-xs"
+                                                data-icon="warning">warning</span>
+                                            Needs Practice
+                                        </span>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-4 text-right">
+                                    <div class="flex items-center justify-end gap-2">
+                                        <button
+                                            class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-primary hover:bg-surface-container-high transition-colors"
+                                            title="Listen Audio">
+                                            <span class="material-symbols-outlined text-lg"
+                                                data-icon="volume_up">volume_up</span>
+                                        </button>
+                                        <!-- Terracotta Highlight Button for Needs Practice -->
+                                        <button
+                                            class="px-3 py-1.5 rounded-lg bg-secondary text-on-secondary hover:bg-on-secondary-container font-label-sm text-label-sm font-semibold transition-all shadow-sm">
+                                            Re-record Now
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- Footer Card Meta -->
+                <div
+                    class="mt-space-md pt-space-sm border-t border-outline-variant/60 flex items-center justify-between text-xs text-outline">
+                    <span class="">Showing 4 of 248 vocabulary entries</span>
+                    <a class="text-primary hover:underline font-semibold flex items-center gap-1" href="#">
+                        Open Full Vocabulary Notebook
+                        <span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
+                    </a>
+                </div>
+            </section>
+        </div>
+    </main>
+    <script>
+        // Lightweight atmospheric mic micro-interaction demonstration
+        document.addEventListener('DOMContentLoaded', () => {
+            const audioButtons = document.querySelectorAll('[data-icon="volume_up"]');
+            audioButtons.forEach(btn => {
+                btn.parentElement.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    btn.style.transform = 'scale(1.2)';
+                    setTimeout(() => {
+                        btn.style.transform = 'scale(1)';
+                    }, 200);
+                });
+            });
+        });
+    </script>
+
+
+</body>
+
+</html>

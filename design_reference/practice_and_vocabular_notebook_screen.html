@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html class="h-full" lang="en" style="">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>VocabVoice - Practice and Vocabulary Notebook</title>
+    <!-- Material Symbols Outlined -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet">
+    <!-- Google Fonts: Noto Serif & Plus Jakarta Sans -->
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,500;0,600;0,700;1,400&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap"
+        rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <!-- Tailwind Configuration verbatim -->
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-error": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-variant": "#dde4df",
+                        "secondary-fixed-dim": "#ffb59f",
+                        "tertiary-container": "#404743",
+                        "tertiary": "#2a302d",
+                        "on-primary-fixed-variant": "#204f40",
+                        "primary-fixed-dim": "#a0d1bd",
+                        "error": "#ba1a1a",
+                        "inverse-surface": "#2b322f",
+                        "inverse-on-surface": "#ebf2ed",
+                        "on-tertiary-container": "#adb5b0",
+                        "primary": "#013628",
+                        "secondary-fixed": "#ffdbd0",
+                        "on-secondary": "#ffffff",
+                        "surface-bright": "#f4fbf6",
+                        "primary-fixed": "#bbedd8",
+                        "surface-dim": "#d4dcd7",
+                        "secondary-container": "#fe997a",
+                        "surface-container-high": "#e3eae5",
+                        "surface-tint": "#396757",
+                        "primary-container": "#1e4d3e",
+                        "on-error-container": "#93000a",
+                        "on-tertiary-fixed-variant": "#414845",
+                        "surface-container-low": "#eef5f0",
+                        "outline-variant": "#c0c8c3",
+                        "surface-container": "#e8f0ea",
+                        "tertiary-fixed-dim": "#c1c8c3",
+                        "on-secondary-container": "#772f18",
+                        "on-surface-variant": "#404945",
+                        "on-primary": "#ffffff",
+                        "on-primary-container": "#8dbda9",
+                        "on-surface": "#161d1a",
+                        "on-tertiary-fixed": "#161d1a",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary-fixed": "#3a0a00",
+                        "inverse-primary": "#a0d1bd",
+                        "surface-container-highest": "#dde4df",
+                        "tertiary-fixed": "#dde4df",
+                        "on-primary-fixed": "#002117",
+                        "surface": "#f4fbf6",
+                        "on-secondary-fixed-variant": "#793019",
+                        "outline": "#717974",
+                        "on-background": "#161d1a",
+                        "background": "#f4fbf6",
+                        "secondary": "#97472e",
+                        "error-container": "#ffdad6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-mobile": "1.25rem",
+                        "space-md": "1rem",
+                        "space-xl": "2.5rem",
+                        "gutter-mobile": "1rem",
+                        "space-lg": "1.5rem",
+                        "margin-tablet": "2rem",
+                        "margin": "3rem",
+                        "gutter": "1.5rem",
+                        "space-xs": "0.25rem",
+                        "space-sm": "0.5rem"
+                    },
+                    "fontFamily": {
+                        "headline-lg-mobile": ["Noto Serif"],
+                        "body-sm": ["Plus Jakarta Sans"],
+                        "label-md": ["Plus Jakarta Sans"],
+                        "headline-sm": ["Noto Serif"],
+                        "body-md": ["Plus Jakarta Sans"],
+                        "headline-md": ["Noto Serif"],
+                        "label-sm": ["Plus Jakarta Sans"],
+                        "kanji-hero-mobile": ["Noto Serif"],
+                        "kanji-hero": ["Noto Serif"],
+                        "display-lg": ["Noto Serif"],
+                        "headline-lg": ["Noto Serif"],
+                        "label-lg": ["Plus Jakarta Sans"],
+                        "display-lg-mobile": ["Noto Serif"],
+                        "body-lg": ["Plus Jakarta Sans"],
+                        "furigana": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "headline-lg-mobile": ["26px", { "lineHeight": "34px", "letterSpacing": "0em", "fontWeight": "600" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "label-md": ["13px", { "lineHeight": "18px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+                        "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "500" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.05em", "fontWeight": "700" }],
+                        "kanji-hero-mobile": ["48px", { "lineHeight": "56px", "fontWeight": "400" }],
+                        "kanji-hero": ["64px", { "lineHeight": "72px", "fontWeight": "400" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "label-lg": ["15px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }],
+                        "display-lg-mobile": ["34px", { "lineHeight": "42px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "furigana": ["11px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "600" }]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+            line-height: 1;
+        }
+
+        .washi-subtle-pattern {
+            background-color: #f4fbf6;
+            background-image: radial-gradient(#c0c8c3 0.65px, transparent 0.65px), radial-gradient(#c0c8c3 0.65px, #f4fbf6 0.65px);
+            background-size: 26px 26px;
+            background-position: 0 0, 13px 13px;
+        }
+    </style>
+</head>
+
+<body
+    class="bg-background text-on-surface font-body-md text-body-md antialiased min-h-screen washi-subtle-pattern flex">
+    <!-- ========================================== -->
+    <!-- LEFT SIDE NAVBAR (Shared Component from JSON) -->
+    <!-- ========================================== -->
+    <aside
+        class="fixed top-0 left-0 h-screen w-64 flex flex-col justify-between bg-surface-bright border-r border-outline-variant z-40">
+        <div class="h-full flex flex-col justify-between p-space-md z-40">
+            <!-- Top Branding Section -->
+            <div class="flex flex-col gap-space-lg">
+                <!-- Logo & Hanko Stamp -->
+                <div class="flex items-center gap-space-sm pt-space-xs">
+                    <div
+                        class="w-10 h-10 rounded-lg overflow-hidden flex items-center justify-center shadow-sm bg-surface-container">
+                        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAkKtNKA3sqSPR3xywtfUErrsUJSMFDNm7NU0-koQ-8JzknEYpNEzEV9Q2dw1m5LyHYEDYv-CZR7nzza0C8aub0N5gVY1vZkNFkxJ4_P3NC5dRO4pph0yA3301Nzjn99EfsN4UftsPxnYBY6zJiFh12ZE_qPN_V8wVVCdxIPGV4Nk8vTejPz1Q-1byzFD90tQPY3oSAdQNGmoUw7F9Zs5GA3ZwYiBlgzQrBgWXv8AmAX5pcSNiE2YrLYSAHlW242670dw"
+                            alt="Nipp-ON Logo" class="w-full h-full object-contain"></div>
+                    <div class="flex flex-col"><span
+                            class="font-headline-md text-headline-md text-primary tracking-tight font-bold">Nipp-ON</span><span
+                            class="font-label-sm text-label-sm text-on-surface-variant font-medium">JLPT N5 • Hear it.
+                            Learn it. Say it.</span></div>
+                </div>
+                <!-- Navigation Links Cluster (Exact labels & logic from JSON) -->
+                <nav aria-label="Main Navigation" class="flex flex-col gap-1.5">
+                    <!-- 1. Dashboard -->
+                    <a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant font-label-md text-label-md hover:bg-surface-container hover:text-on-surface transition-colors active:scale-[0.99] duration-150"
+                        href="#">
+                        <span class="material-symbols-outlined text-[20px]"
+                            data-icon="space_dashboard">space_dashboard</span>
+                        <span class="">Dashboard</span>
+                    </a>
+                    <!-- 2. Daily Learn -->
+                    <a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant font-label-md text-label-md hover:bg-surface-container hover:text-on-surface transition-colors active:scale-[0.99] duration-150"
+                        href="#">
+                        <span class="material-symbols-outlined text-[20px]" data-icon="auto_stories">auto_stories</span>
+                        <span class="">Daily Learn</span>
+                    </a>
+                    <!-- 3. AI Sensei -->
+                    <a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant font-label-md text-label-md hover:bg-surface-container hover:text-on-surface transition-colors active:scale-[0.99] duration-150"
+                        href="#">
+                        <span class="material-symbols-outlined text-[20px]" data-icon="psychology">psychology</span>
+                        <span class="">AI Sensei</span>
+                    </a>
+                    <!-- 4. Notebook & Practice (ACTIVE SELECTION) -->
+                    <a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg bg-surface-container text-primary font-label-md text-label-md font-semibold active:scale-[0.99] duration-150 shadow-sm border border-outline-variant/60"
+                        href="#">
+                        <span class="material-symbols-outlined text-[20px] text-primary" data-icon="menu_book"
+                            data-weight="fill" style="font-variation-settings: 'FILL' 1;">menu_book</span>
+                        <span class="">Notebook &amp; Practice</span>
+                    </a>
+                </nav>
+            </div>
+            <!-- Center SideNav CTA -->
+            <div class="my-auto py-space-md">
+                <button
+                    class="w-full py-2.5 px-space-md rounded-xl bg-primary-container text-on-primary font-label-md text-label-md font-medium hover:bg-primary transition-colors flex items-center justify-center gap-space-sm shadow-sm active:scale-[0.99]">
+                    <span class="material-symbols-outlined text-[18px]">play_circle</span>
+                    <span class="">Practice Session</span>
+                </button>
+            </div>
+            <!-- Footer Navigation Items (Exact footer labels from JSON) -->
+            <div class="pt-space-md border-t border-outline-variant flex flex-col gap-1.5">
+                <a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant font-label-md text-label-md hover:bg-surface-container hover:text-on-surface transition-colors"
+                    href="#">
+                    <span class="material-symbols-outlined text-[20px]" data-icon="mic">mic</span>
+                    <span class="">Audio Settings</span>
+                </a>
+                <a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant font-label-md text-label-md hover:bg-surface-container hover:text-on-surface transition-colors"
+                    href="#">
+                    <span class="material-symbols-outlined text-[20px]" data-icon="account_circle">account_circle</span>
+                    <span class="">Profile</span>
+                </a>
+            </div>
+        </div>
+    </aside>
+    <!-- ========================================== -->
+    <!-- TOP APP BAR (Shared Component from JSON)   -->
+    <!-- ========================================== -->
+    <header
+        class="fixed top-0 right-0 h-16 w-[calc(100%-16rem)] flex items-center bg-surface-bright border-b border-outline-variant z-30">
+        <div class="flex justify-between items-center w-full px-space-lg max-w-full">
+            <!-- Left side top bar title/breadcrumbs -->
+            <div class="flex items-center gap-space-md">
+                <span class="font-headline-sm text-headline-sm text-primary font-semibold">Notebook &amp;
+                    Practice</span>
+                <span class="text-outline-variant">/</span>
+                <span
+                    class="font-label-md text-label-md text-on-surface-variant bg-surface-container px-2.5 py-1 rounded-full border border-outline-variant">JLPT
+                    N5 Core Vocab</span>
+            </div>
+            <!-- Right side top bar actions from JSON -->
+            <div class="flex items-center gap-space-md">
+                <!-- Daily Goal pill: "Daily Goal: 8/10" -->
+                <div
+                    class="flex items-center gap-space-xs bg-surface-container-low px-3 py-1.5 rounded-full border border-outline-variant text-primary font-label-md text-label-md font-semibold">
+                    <span class="w-2 h-2 rounded-full bg-secondary"></span>
+                    <span class="">Daily Goal: 8/10</span>
+                </div>
+                <!-- Trailing secondary action: "Pronunciation Mode" -->
+                <button
+                    class="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-outline-variant text-on-surface-variant hover:text-primary hover:bg-surface-container transition-colors font-label-md text-label-md active:scale-[0.98]">
+                    <span class="material-symbols-outlined text-[18px]">graphic_eq</span>
+                    <span class="">Pronunciation Mode</span>
+                </button>
+                <!-- Trailing icons from JSON: volume_up, feedback -->
+                <button
+                    class="p-2 text-on-surface-variant hover:text-primary hover:bg-surface-container rounded-full transition-colors active:scale-[0.98]"
+                    title="Volume audio test">
+                    <span class="material-symbols-outlined text-[20px]" data-icon="volume_up">volume_up</span>
+                </button>
+                <button
+                    class="p-2 text-on-surface-variant hover:text-primary hover:bg-surface-container rounded-full transition-colors active:scale-[0.98]"
+                    title="Give feedback">
+                    <span class="material-symbols-outlined text-[20px]" data-icon="feedback">feedback</span>
+                </button>
+                <!-- Learner Profile Avatar -->
+                <div class="h-8 w-8 rounded-full bg-primary-fixed-dim border border-outline flex items-center justify-center text-primary font-bold text-xs"
+                    title="Learner Avatar profile badge">
+                    KN
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- ========================================== -->
+    <!-- MAIN WORKSPACE CANVAS                      -->
+    <!-- ========================================== -->
+    <main class="ml-64 mt-16 flex-1 min-h-[calc(100vh-4rem)] p-space-lg flex flex-col gap-space-lg">
+        <!-- Top Two-Tab Switcher -->
+        <section class="flex items-center justify-between border-b border-outline-variant pb-space-sm">
+            <div
+                class="flex items-center gap-space-sm bg-surface-container-low p-1 rounded-xl border border-outline-variant shadow-sm">
+                <!-- Active Practice Quiz Tab -->
+                <button
+                    class="flex items-center gap-2 px-space-md py-2 rounded-lg bg-surface-container-lowest text-primary shadow-sm font-label-md text-label-md font-semibold border border-outline-variant">
+                    <span class="material-symbols-outlined text-[18px] text-secondary"
+                        style="font-variation-settings: 'FILL' 1;">quiz</span>
+                    <span class="">Active Practice Quiz</span>
+                    <span
+                        class="bg-secondary-fixed text-on-secondary-fixed font-label-sm text-label-sm px-2 py-0.5 rounded-full">In
+                        Progress</span>
+                </button>
+                <!-- Saved Vocabulary Notebook Tab -->
+                <button
+                    class="flex items-center gap-2 px-space-md py-2 rounded-lg text-on-surface-variant font-label-md text-label-md hover:text-on-surface hover:bg-surface-container transition-colors">
+                    <span class="material-symbols-outlined text-[18px]">collections_bookmark</span>
+                    <span class="">Saved Vocabulary Notebook (248 words)</span>
+                </button>
+            </div>
+            <!-- Quick Session Controls -->
+            <div class="flex items-center gap-space-md text-body-sm font-body-sm text-on-surface-variant">
+                <span class="flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-[18px] text-outline">timer</span>
+                    <span class="">Session Time: <strong class="text-on-surface font-medium">08:42</strong></span>
+                </span>
+                <span class="text-outline-variant">•</span>
+                <span class="flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-[18px] text-secondary">local_fire_department</span>
+                    <span class="">Current Streak: <strong class="text-secondary font-semibold">14 days</strong></span>
+                </span>
+            </div>
+        </section>
+        <!-- Side-by-Side Dual Pane Layout -->
+        <div class="grid grid-cols-12 gap-space-lg items-start">
+            <!-- ======================================================= -->
+            <!-- LEFT / MAIN AREA: Interactive Quiz Interface (70% ~ 8 cols) -->
+            <!-- ======================================================= -->
+            <div class="col-span-12 lg:col-span-8 flex flex-col gap-space-lg">
+                <!-- Top Session Card Header & Progress Bar -->
+                <div
+                    class="bg-surface-container-lowest rounded-2xl p-space-md border border-outline-variant shadow-sm flex flex-col gap-space-sm">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-space-sm">
+                            <span
+                                class="bg-surface-container text-primary font-label-sm text-label-sm px-2.5 py-1 rounded-full uppercase tracking-wider font-semibold border border-outline-variant">Review
+                                Mode</span>
+                            <h2 class="font-headline-sm text-headline-sm text-on-surface font-semibold">JLPT N5 Daily
+                                Review • Question 6 of 10</h2>
+                        </div>
+                        <div class="flex items-center gap-space-xs font-label-md text-label-md text-on-surface-variant">
+                            <span class="">Progress:</span>
+                            <span class="font-bold text-primary">60%</span>
+                        </div>
+                    </div>
+                    <!-- Japanese Caligraphic Progress Track -->
+                    <div class="w-full bg-surface-container h-2 rounded-full overflow-hidden relative">
+                        <div class="bg-primary-container h-full rounded-full transition-all duration-300"
+                            style="width: 60%;"></div>
+                        <!-- Daily Goal Tick Marker at 80% -->
+                        <div class="absolute top-0 bottom-0 left-[80%] w-0.5 bg-secondary" title="Daily Target Tick">
+                        </div>
+                    </div>
+                </div>
+                <!-- Interactive Question Card -->
+                <div
+                    class="bg-surface-container-lowest rounded-2xl border border-outline-variant shadow-sm overflow-hidden flex flex-col">
+                    <!-- Category Prompt Banner -->
+                    <div
+                        class="bg-surface-container px-space-lg py-3 border-b border-outline-variant flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <span class="material-symbols-outlined text-[20px] text-primary">hearing</span>
+                            <span class="font-label-md text-label-md font-semibold text-primary">Listening &amp; Reading
+                                Comprehension</span>
+                        </div>
+                        <span class="text-xs text-on-surface-variant font-mono">Word ID: #N5-0142</span>
+                    </div>
+                    <div class="p-space-lg flex flex-col gap-space-lg">
+                        <!-- Audio Prompt Trigger Pill -->
+                        <div
+                            class="flex items-center justify-between p-space-md rounded-xl bg-surface-bright border border-outline-variant">
+                            <div class="flex items-center gap-3">
+                                <button
+                                    class="w-11 h-11 rounded-full bg-primary-container text-on-primary flex items-center justify-center hover:bg-primary transition-transform active:scale-95 shadow-sm"
+                                    title="Play natural speed audio">
+                                    <span class="material-symbols-outlined text-[24px]">volume_up</span>
+                                </button>
+                                <div class="flex flex-col">
+                                    <span class="font-body-md text-body-md font-medium text-on-surface">Listen to the
+                                        sentence and choose the correct meaning for the highlighted verb.</span>
+                                    <span
+                                        class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-2 mt-0.5">
+                                        <span class="">Native Tokyo Dialect</span> • <span class="">Normal speed
+                                            (1.0x)</span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-1.5">
+                                <button
+                                    class="px-2.5 py-1 text-xs font-semibold rounded-md bg-surface-container border border-outline-variant text-on-surface-variant hover:text-primary">0.75x</button>
+                                <button class="p-1.5 text-on-surface-variant hover:text-primary rounded-md"
+                                    title="Replay pitch curve">
+                                    <span class="material-symbols-outlined text-[18px]">replay</span>
+                                </button>
+                            </div>
+                        </div>
+                        <!-- Japanese Prompt Display with Pitch Accent & Furigana -->
+                        <div
+                            class="bg-surface-bright rounded-2xl p-space-lg border border-outline-variant/80 text-center flex flex-col items-center justify-center gap-2 shadow-inner">
+                            <!-- Furigana Line -->
+                            <div class="font-furigana text-furigana text-on-surface-variant tracking-wider">
+                                きのう、おいしい ラーメンを <span class="text-secondary font-bold">たべました</span>。
+                            </div>
+                            <!-- Kanji Sentence Display -->
+                            <div
+                                class="font-headline-lg text-headline-lg text-on-surface font-semibold tracking-wide flex items-baseline justify-center gap-1">
+                                <span class="">昨日、美味しいラーメンを</span>
+                                <span
+                                    class="text-secondary px-2 py-0.5 rounded-lg bg-secondary-fixed/50 border border-secondary/30 font-bold underline decoration-secondary decoration-2 underline-offset-8">食べました</span>
+                                <span class="">。</span>
+                            </div>
+                            <!-- Pitch Accent visualizer token note -->
+                            <div class="mt-2 flex items-center gap-2 text-xs font-mono text-outline">
+                                <span
+                                    class="px-2 py-0.5 rounded bg-surface-container border border-outline-variant">Accent:
+                                    たべま＼した (Nakadaka drop at ま)</span>
+                                <span class="">•</span>
+                                <span class="">Polite Style (丁寧語)</span>
+                            </div>
+                        </div>
+                        <!-- Question Headline -->
+                        <div class="pt-2">
+                            <h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold">What does
+                                「食べました」 mean in this sentence?</h3>
+                            <p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Select the single most
+                                precise English grammatical translation:</p>
+                        </div>
+                        <!-- 4 Styled Option Cards -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-space-md">
+                            <!-- Option A -->
+                            <button
+                                class="p-space-md rounded-xl border border-outline-variant bg-surface-container-lowest text-left hover:border-outline hover:bg-surface-container transition-all flex items-start gap-space-md group">
+                                <div
+                                    class="w-8 h-8 rounded-lg bg-surface-container border border-outline-variant flex items-center justify-center font-label-md text-label-md text-on-surface-variant font-bold group-hover:bg-surface-bright">
+                                    A</div>
+                                <div class="flex flex-col">
+                                    <span class="font-body-md text-body-md font-semibold text-on-surface">Drank (Past
+                                        tense)</span>
+                                    <span class="font-body-sm text-body-sm text-on-surface-variant">Associated verb:
+                                        飲みました</span>
+                                </div>
+                            </button>
+                            <!-- Option B (SELECTED & CORRECT STATE) -->
+                            <div
+                                class="p-space-md rounded-xl border-2 border-primary-container bg-surface-container-low text-left flex items-start gap-space-md relative shadow-sm ring-2 ring-primary-container/20">
+                                <div
+                                    class="w-8 h-8 rounded-lg bg-primary-container text-on-primary flex items-center justify-center font-label-md text-label-md font-bold">
+                                    <span class="material-symbols-outlined text-[18px]">check</span>
+                                </div>
+                                <div class="flex flex-col pr-6">
+                                    <div class="flex items-center gap-2">
+                                        <span class="font-body-md text-body-md font-bold text-primary">Ate (Polite past
+                                            tense)</span>
+                                        <span
+                                            class="bg-primary text-on-primary text-[10px] font-bold px-1.5 py-0.5 rounded uppercase">Your
+                                            Answer</span>
+                                    </div>
+                                    <span class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Direct match
+                                        for 食べる + ました</span>
+                                </div>
+                                <span
+                                    class="absolute top-3 right-3 text-primary-container material-symbols-outlined text-[20px]"
+                                    data-icon="check_circle" data-weight="fill"
+                                    style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                            </div>
+                            <!-- Option C -->
+                            <button
+                                class="p-space-md rounded-xl border border-outline-variant bg-surface-container-lowest text-left hover:border-outline hover:bg-surface-container transition-all flex items-start gap-space-md group opacity-75">
+                                <div
+                                    class="w-8 h-8 rounded-lg bg-surface-container border border-outline-variant flex items-center justify-center font-label-md text-label-md text-on-surface-variant font-bold group-hover:bg-surface-bright">
+                                    C</div>
+                                <div class="flex flex-col">
+                                    <span class="font-body-md text-body-md font-semibold text-on-surface">Will eat
+                                        (Future polite)</span>
+                                    <span class="font-body-sm text-body-sm text-on-surface-variant">Associated verb:
+                                        食べます</span>
+                                </div>
+                            </button>
+                            <!-- Option D -->
+                            <button
+                                class="p-space-md rounded-xl border border-outline-variant bg-surface-container-lowest text-left hover:border-outline hover:bg-surface-container transition-all flex items-start gap-space-md group opacity-75">
+                                <div
+                                    class="w-8 h-8 rounded-lg bg-surface-container border border-outline-variant flex items-center justify-center font-label-md text-label-md text-on-surface-variant font-bold group-hover:bg-surface-bright">
+                                    D</div>
+                                <div class="flex flex-col">
+                                    <span class="font-body-md text-body-md font-semibold text-on-surface">Cooked (Past
+                                        tense)</span>
+                                    <span class="font-body-sm text-body-sm text-on-surface-variant">Associated verb:
+                                        作りました</span>
+                                </div>
+                            </button>
+                        </div>
+                        <!-- Instant Feedback Drawer -->
+                        <div
+                            class="rounded-xl border border-primary-container/30 bg-surface-bright p-space-md flex flex-col gap-2 relative overflow-hidden">
+                            <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-primary-container"></div>
+                            <div class="flex items-center gap-2 pl-2">
+                                <span
+                                    class="flex items-center justify-center w-6 h-6 rounded-full bg-primary-container text-on-primary">
+                                    <span class="material-symbols-outlined text-[16px]">done_all</span>
+                                </span>
+                                <span class="font-headline-sm text-headline-sm font-bold text-primary">正解
+                                    (Correct)!</span>
+                                <span
+                                    class="font-label-sm text-label-sm bg-surface-container-high px-2 py-0.5 rounded text-on-surface font-semibold ml-2">+15
+                                    XP</span>
+                            </div>
+                            <p class="font-body-md text-body-md text-on-surface pl-2 leading-relaxed">
+                                <strong class="font-semibold text-primary">食べました</strong> is the polite past affirmative
+                                form of the ichidan verb <span class="underline font-medium">食べる</span> (to eat). The
+                                suffix <code
+                                    class="bg-surface-container px-1 py-0.5 rounded text-xs font-mono text-secondary">-ました (-mashita)</code>
+                                systematically replaces the polite present non-past marker <code
+                                    class="bg-surface-container px-1 py-0.5 rounded text-xs font-mono">-ます (-masu)</code>.
+                                Pitch accent analysis confirmed an accurate steady flat-down cadence.
+                            </p>
+                            <!-- Grammar breakdown badge tokens -->
+                            <div class="flex flex-wrap items-center gap-2 pt-1 pl-2">
+                                <span
+                                    class="text-xs px-2 py-0.5 rounded bg-surface-container border border-outline-variant text-on-surface-variant font-medium">Ichidan
+                                    Verb (一段)</span>
+                                <span
+                                    class="text-xs px-2 py-0.5 rounded bg-surface-container border border-outline-variant text-on-surface-variant font-medium">JLPT
+                                    N5 Core</span>
+                                <span
+                                    class="text-xs px-2 py-0.5 rounded bg-surface-container border border-outline-variant text-on-surface-variant font-medium">Formal
+                                    Register (Desu/Masu)</span>
+                            </div>
+                        </div>
+                        <!-- Action Button Tray -->
+                        <div class="pt-space-sm flex items-center justify-between border-t border-outline-variant">
+                            <button
+                                class="flex items-center gap-1.5 text-on-surface-variant hover:text-primary font-label-md text-label-md py-2 px-3 rounded-lg hover:bg-surface-container transition-colors">
+                                <span class="material-symbols-outlined text-[18px]">bookmark_add</span>
+                                <span class="">Flag for Re-practice</span>
+                            </button>
+                            <button
+                                class="py-3 px-space-xl rounded-xl bg-primary-container hover:bg-primary text-on-primary font-label-lg text-label-lg font-semibold flex items-center gap-2 shadow-sm transition-all transform active:translate-y-0.5">
+                                <span class="">Continue to Next Question (Spacebar ➔)</span>
+                                <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- ======================================================= -->
+            <!-- RIGHT SIDEBAR: Notebook Quick Reference (30% ~ 4 cols)  -->
+            <!-- ======================================================= -->
+            <aside class="col-span-12 lg:col-span-4 flex flex-col gap-space-lg">
+                <!-- Saved Words in this Session Card -->
+                <div
+                    class="bg-surface-container-lowest rounded-2xl border border-outline-variant shadow-sm p-space-md flex flex-col gap-space-md">
+                    <div class="flex items-center justify-between border-b border-outline-variant pb-3">
+                        <div class="flex items-center gap-2">
+                            <span class="material-symbols-outlined text-primary text-[20px]">bookmark</span>
+                            <h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold">Saved Words in
+                                this Session</h3>
+                        </div>
+                        <span
+                            class="text-xs font-semibold px-2 py-0.5 rounded-full bg-surface-container text-on-surface-variant">4
+                            Active</span>
+                    </div>
+                    <!-- Vocabulary items list -->
+                    <div class="flex flex-col gap-2.5">
+                        <!-- 1. 食べる -->
+                        <div
+                            class="p-3 rounded-xl bg-surface-container-low border border-outline-variant flex items-center justify-between hover:bg-surface-container transition-colors">
+                            <div class="flex items-center gap-3">
+                                <div
+                                    class="w-9 h-9 rounded-lg bg-surface-container flex items-center justify-center font-headline-md text-headline-md text-primary font-bold">
+                                    食
+                                </div>
+                                <div class="flex flex-col">
+                                    <div class="flex items-center gap-1.5">
+                                        <span class="font-bold text-on-surface text-base">食べる</span>
+                                        <span class="text-xs text-on-surface-variant font-mono">(taberu)</span>
+                                    </div>
+                                    <span class="text-xs text-on-surface-variant">To eat • Transitive</span>
+                                </div>
+                            </div>
+                            <div class="flex flex-col items-end gap-1">
+                                <span
+                                    class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-primary-fixed text-on-primary-fixed border border-primary-fixed-dim">
+                                    Mastered [Lv 4]
+                                </span>
+                                <span class="text-[10px] text-outline">Streak 8</span>
+                            </div>
+                        </div>
+                        <!-- 2. 飲む -->
+                        <div
+                            class="p-3 rounded-xl bg-surface-container-lowest border border-outline-variant flex items-center justify-between hover:bg-surface-container transition-colors">
+                            <div class="flex items-center gap-3">
+                                <div
+                                    class="w-9 h-9 rounded-lg bg-surface-container flex items-center justify-center font-headline-md text-headline-md text-on-surface font-bold">
+                                    飲
+                                </div>
+                                <div class="flex flex-col">
+                                    <div class="flex items-center gap-1.5">
+                                        <span class="font-bold text-on-surface text-base">飲む</span>
+                                        <span class="text-xs text-on-surface-variant font-mono">(nomu)</span>
+                                    </div>
+                                    <span class="text-xs text-on-surface-variant">To drink • Godan</span>
+                                </div>
+                            </div>
+                            <div class="flex flex-col items-end gap-1">
+                                <span
+                                    class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-surface-container text-on-surface-variant border border-outline-variant">
+                                    Review due tomorrow
+                                </span>
+                                <span class="text-[10px] text-outline">Streak 5</span>
+                            </div>
+                        </div>
+                        <!-- 3. 本 -->
+                        <div
+                            class="p-3 rounded-xl bg-surface-container-low border border-outline-variant flex items-center justify-between hover:bg-surface-container transition-colors">
+                            <div class="flex items-center gap-3">
+                                <div
+                                    class="w-9 h-9 rounded-lg bg-surface-container flex items-center justify-center font-headline-md text-headline-md text-primary font-bold">
+                                    本
+                                </div>
+                                <div class="flex flex-col">
+                                    <div class="flex items-center gap-1.5">
+                                        <span class="font-bold text-on-surface text-base">本</span>
+                                        <span class="text-xs text-on-surface-variant font-mono">(hon - Book)</span>
+                                    </div>
+                                    <span class="text-xs text-on-surface-variant">Origin / Book • Noun</span>
+                                </div>
+                            </div>
+                            <div class="flex flex-col items-end gap-1">
+                                <span
+                                    class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-primary-fixed text-on-primary-fixed border border-primary-fixed-dim">
+                                    Mastered [Lv 5]
+                                </span>
+                                <span class="text-[10px] text-outline">Streak 12</span>
+                            </div>
+                        </div>
+                        <!-- 4. 行く -->
+                        <div
+                            class="p-3 rounded-xl bg-surface-container-lowest border border-secondary-container/40 flex items-center justify-between hover:bg-surface-container transition-colors">
+                            <div class="flex items-center gap-3">
+                                <div
+                                    class="w-9 h-9 rounded-lg bg-secondary-fixed/50 text-secondary flex items-center justify-center font-headline-md text-headline-md font-bold">
+                                    行
+                                </div>
+                                <div class="flex flex-col">
+                                    <div class="flex items-center gap-1.5">
+                                        <span class="font-bold text-on-surface text-base">行く</span>
+                                        <span class="text-xs text-on-surface-variant font-mono">(iku)</span>
+                                    </div>
+                                    <span class="text-xs text-secondary font-medium">To go • Irregular Godan</span>
+                                </div>
+                            </div>
+                            <div class="flex flex-col items-end gap-1">
+                                <span
+                                    class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-secondary-fixed text-on-secondary-fixed border border-secondary-fixed-dim">
+                                    Needs review [Lv 2]
+                                </span>
+                                <span class="text-[10px] text-secondary">Streak 1</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button
+                        class="w-full py-2 rounded-lg text-xs font-semibold text-primary hover:bg-surface-container border border-outline-variant transition-colors flex items-center justify-center gap-1.5">
+                        <span class="">View All 248 Notebook Words</span>
+                        <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+                    </button>
+                </div>
+                <!-- SRS Mastery Progress Chart Card -->
+                <div
+                    class="bg-surface-container-lowest rounded-2xl border border-outline-variant shadow-sm p-space-md flex flex-col gap-space-md">
+                    <div class="flex items-center justify-between border-b border-outline-variant pb-2">
+                        <div class="flex items-center gap-2">
+                            <span class="material-symbols-outlined text-primary text-[20px]">equalizer</span>
+                            <h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold">SRS Mastery
+                                Progress</h3>
+                        </div>
+                        <span class="text-xs text-on-surface-variant font-mono">248 Total Words</span>
+                    </div>
+                    <!-- SRS Tier Breakdown Bars -->
+                    <div class="flex flex-col gap-3">
+                        <!-- Tier 1: Apprentice -->
+                        <div class="flex flex-col gap-1">
+                            <div class="flex justify-between items-center text-xs">
+                                <span class="font-medium text-on-surface flex items-center gap-1.5">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-secondary"></span>
+                                    <span class="">Apprentice</span>
+                                </span>
+                                <span class="font-bold text-on-surface font-mono">34</span>
+                            </div>
+                            <div class="w-full bg-surface-container h-2 rounded-full overflow-hidden">
+                                <div class="bg-secondary h-full rounded-full" style="width: 14%;"></div>
+                            </div>
+                        </div>
+                        <!-- Tier 2: Guru -->
+                        <div class="flex flex-col gap-1">
+                            <div class="flex justify-between items-center text-xs">
+                                <span class="font-medium text-on-surface flex items-center gap-1.5">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-primary-fixed-dim"></span>
+                                    <span class="">Guru</span>
+                                </span>
+                                <span class="font-bold text-on-surface font-mono">89</span>
+                            </div>
+                            <div class="w-full bg-surface-container h-2 rounded-full overflow-hidden">
+                                <div class="bg-primary-fixed-dim h-full rounded-full" style="width: 36%;"></div>
+                            </div>
+                        </div>
+                        <!-- Tier 3: Master -->
+                        <div class="flex flex-col gap-1">
+                            <div class="flex justify-between items-center text-xs">
+                                <span class="font-medium text-on-surface flex items-center gap-1.5">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-primary-container"></span>
+                                    <span class="">Master</span>
+                                </span>
+                                <span class="font-bold text-on-surface font-mono">125</span>
+                            </div>
+                            <div class="w-full bg-surface-container h-2 rounded-full overflow-hidden">
+                                <div class="bg-primary-container h-full rounded-full" style="width: 50%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="p-2.5 rounded-xl bg-surface-container text-xs text-on-surface-variant flex items-center gap-2">
+                        <span class="material-symbols-outlined text-primary text-[18px]">verified</span>
+                        <span class="">Next SRS batch unlocks at <strong>18:00 today</strong> (12 items)</span>
+                    </div>
+                    <!-- Quick Export Action -->
+                    <div class="pt-2 border-t border-outline-variant">
+                        <button
+                            class="w-full py-2.5 px-3 rounded-xl border border-outline-variant bg-surface-bright hover:bg-surface-container text-primary font-label-md text-label-md font-semibold flex items-center justify-center gap-2 transition-all active:scale-[0.98]">
+                            <span class="material-symbols-outlined text-[18px]">file_download</span>
+                            <span class="">Export to Anki / CSV</span>
+                        </button>
+                    </div>
+                </div>
+                <!-- Ambient Japanese Pedagogical Quote Note -->
+                <div
+                    class="p-space-md rounded-2xl bg-surface-container-low border border-outline-variant flex items-start gap-3">
+                    <span class="font-headline-md text-headline-md text-secondary leading-none">“</span>
+                    <div class="flex flex-col">
+                        <p class="font-body-sm text-body-sm italic text-on-surface-variant">
+                            「継続は力なり」 (Continuity is power). Regular spaced verbal repetition creates organic acoustic
+                            memory.
+                        </p>
+                        <span class="text-[11px] text-outline font-semibold mt-1">Sensei Hiroshi's Daily Advice</span>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </main>
+
+
+</body>
+
+</html>
