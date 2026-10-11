@@ -1,4 +1,4 @@
-# VocabVoice — Personal AI Japanese Vocabulary & Speech Coach
+# Nipp-ON — Personal AI Japanese Vocabulary & Speech Coach
 
 > **Prototype Submission for Product Operations Associate**  
 > Built with React, TypeScript, Vite, Tailwind CSS, Google Gemini API, and the Web Speech API. Styled with full visual fidelity to Google Stitch design systems.
@@ -7,7 +7,7 @@
 
 ## 1. Project Overview
 
-**VocabVoice** is an AI-powered vocabulary tutor designed to help English speakers learn Japanese vocabulary through multimodal interactions:
+**Nipp-ON** is an AI-powered vocabulary tutor designed to help English speakers learn Japanese vocabulary through multimodal interactions:
 * **English & Voice Input:** Search arbitrary words or speak into the microphone.
 * **Lexical & Linguistic Analysis:** Automatic Japanese writing (Kanji/Kana), Hiragana reading, Hepburn Romaji, Part of Speech, JLPT level classification, and pitch-accent mora curve graphs.
 * **Cultural & Grammar Nuances:** Pedagogical explanations of particle pairings, honorifics, and real-world example sentences.
@@ -45,7 +45,7 @@
 
 * **Server-Side Only:** `GEMINI_API_KEY` is loaded exclusively in server-side / serverless functions.
 * **No Client Leakage:** The API key is **never** prefixed with `VITE_`, never bundled into frontend JavaScript, and never returned in API responses.
-* **Graceful Degradation:** If deployed without an API key, VocabVoice operates transparently on a curated JLPT N5 database with contextual tutor dialogue, clearly badging live AI vs curated results.
+* **Graceful Degradation:** If deployed without an API key, Nipp-ON operates transparently on a curated JLPT N5 database with contextual tutor dialogue, clearly badging live AI vs curated results.
 
 ---
 
@@ -58,8 +58,8 @@
 ### Quick Start
 ```bash
 # 1. Clone repository
-git clone https://github.com/akhilkumar0024/Nihon-Go.git
-cd Nihon-Go
+git clone https://github.com/akhilkumar0024/Nihon-Go.git Nipp-ON
+cd Nipp-ON
 
 # 2. Install dependencies
 npm install
@@ -101,7 +101,7 @@ Visit **`http://localhost:5173`** in your browser.
 
 ## 7. Stitch Design Fidelity
 
-VocabVoice reproduces the exact design language from Google Stitch:
+Nipp-ON reproduces the exact design language from Google Stitch:
 * **Palette:** Pine Forest Green (`#013628`, `#1E4D3E`), Sunbaked Terracotta (`#97472E`, `#C86D51`), Celadon Mist (`#F4FBF6`, `#E8F0EA`), Sumi Ink typography (`#161D1A`).
 * **Typography:** `Noto Serif` & `Noto Serif JP` for literary authority in headings and kanji; `Plus Jakarta Sans` for clean, accessible interface body text.
 * **Tactile Interactions:** Custom tactile button depress animations (`tactile-depress`, `tactile-terracotta`), pulsing soundwave visualizers, and traditional washi callout panels.

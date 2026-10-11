@@ -1,13 +1,13 @@
-# VocabVoice (Nihon-Go) — Project Context & Developer Reference
+# Nipp-ON — Project Context & Developer Reference
 
-> **Quick Summary**: This document captures the complete architectural, design, algorithmic, and operational context for the **VocabVoice (Nihon-Go)** project. Read this file at the start of any new session or chat to immediately understand the system state, decisions, and patterns.
+> **Quick Summary**: This document captures the complete architectural, design, algorithmic, and operational context for the **Nipp-ON** project (stored in repository `Nihon-Go`). Read this file at the start of any new session or chat to immediately understand the system state, decisions, and patterns.
 
 ---
 
 ## 1. Project Overview & Identity
 
-* **Project Name**: VocabVoice (Repository: `Nihon-Go`)
-* **Brand In-App**: Nipp-ON • VocabVoice (JLPT N5 Japanese Language Learning Companion)
+* **Project Name**: Nipp-ON (Repository: `Nihon-Go`)
+* **Brand In-App**: Nipp-ON (JLPT N5 Japanese Language Learning Companion)
 * **Objective**: A high-fidelity, production-quality AI vocabulary learning application built to demonstrate product thinking, practical generative AI integration (Google Gemini), Web Speech audio capabilities, and strict adherence to Google Stitch UI designs.
 * **Git Repository**: `https://github.com/akhilkumar0024/Nihon-Go.git` (`branch: main`)
 

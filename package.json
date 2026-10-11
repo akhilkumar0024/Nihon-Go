@@ -1,6 +1,6 @@
 {
-  "name": "vocab-voice",
-  "description": "VocabVoice - AI-powered Japanese Vocabulary & Speech Coach",
+  "name": "nipp-on",
+  "description": "Nipp-ON - AI-powered Japanese Vocabulary & Speech Coach",
   "private": true,
   "version": "1.0.0",
   "type": "module",

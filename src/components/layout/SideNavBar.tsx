@@ -75,7 +75,7 @@ export const SideNavBar: React.FC<SideNavBarProps> = ({
                     Nipp-ON
                   </span>
                   <span className="font-label-sm text-label-sm text-outline truncate">
-                    JLPT N5 • VocabVoice
+                    JLPT N5 • Japanese Vocab
                   </span>
                 </div>
               </div>

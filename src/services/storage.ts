@@ -1,9 +1,12 @@
 import { UserProgress, VocabularyItem } from '../types';
 import { CURATED_VOCABULARY } from '../data/curatedVocab';
 
-const STORAGE_KEY_PROGRESS = 'vocabvoice_user_progress_v1';
-const STORAGE_KEY_SAVED_WORDS = 'vocabvoice_saved_words_v1';
-const STORAGE_KEY_CUSTOM_WORDS = 'vocabvoice_custom_words_v1';
+const STORAGE_KEY_PROGRESS = 'nippon_user_progress_v1';
+const LEGACY_STORAGE_KEY_PROGRESS = 'vocabvoice_user_progress_v1';
+const STORAGE_KEY_SAVED_WORDS = 'nippon_saved_words_v1';
+const LEGACY_STORAGE_KEY_SAVED_WORDS = 'vocabvoice_saved_words_v1';
+const STORAGE_KEY_CUSTOM_WORDS = 'nippon_custom_words_v1';
+const LEGACY_STORAGE_KEY_CUSTOM_WORDS = 'vocabvoice_custom_words_v1';
 
 export function getTodayDateString(): string {
   const d = new Date();
@@ -25,7 +28,7 @@ const DEFAULT_PROGRESS: UserProgress = {
 
 export function loadProgress(): UserProgress {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY_PROGRESS);
+    const raw = localStorage.getItem(STORAGE_KEY_PROGRESS) || localStorage.getItem(LEGACY_STORAGE_KEY_PROGRESS);
     if (!raw) {
       saveProgress(DEFAULT_PROGRESS);
       return DEFAULT_PROGRESS;
@@ -106,7 +109,7 @@ export function isWordSaved(wordId: string): boolean {
 
 export function getSavedWords(): VocabularyItem[] {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY_SAVED_WORDS);
+    const raw = localStorage.getItem(STORAGE_KEY_SAVED_WORDS) || localStorage.getItem(LEGACY_STORAGE_KEY_SAVED_WORDS);
     if (!raw) {
       // Initialize with default 4 words from curated list matching Stitch screens
       const initial = CURATED_VOCABULARY.slice(0, 4).map((w, idx) => ({
@@ -143,7 +146,7 @@ export function recordQuizResult(isCorrect: boolean): void {
 
 export function saveCustomWord(word: VocabularyItem): void {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY_CUSTOM_WORDS);
+    const raw = localStorage.getItem(STORAGE_KEY_CUSTOM_WORDS) || localStorage.getItem(LEGACY_STORAGE_KEY_CUSTOM_WORDS);
     const existing: VocabularyItem[] = raw ? JSON.parse(raw) : [];
     const filtered = existing.filter((w) => w.id !== word.id);
     localStorage.setItem(STORAGE_KEY_CUSTOM_WORDS, JSON.stringify([word, ...filtered]));
@@ -154,7 +157,7 @@ export function saveCustomWord(word: VocabularyItem): void {
 
 export function getCustomWord(wordId: string): VocabularyItem | null {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY_CUSTOM_WORDS);
+    const raw = localStorage.getItem(STORAGE_KEY_CUSTOM_WORDS) || localStorage.getItem(LEGACY_STORAGE_KEY_CUSTOM_WORDS);
     if (!raw) return null;
     const existing: VocabularyItem[] = JSON.parse(raw);
     return existing.find((w) => w.id === wordId) || null;

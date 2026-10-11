@@ -1,7 +1,7 @@
-# Agent Instructions & Project Context: VocabVoice (Nihon-Go)
+# Agent Instructions & Project Context: Nipp-ON
 
 ## Project Summary
-This workspace contains **VocabVoice**, an AI-powered Japanese vocabulary coach for JLPT N5 learners built with React 18, TypeScript, Vite, Tailwind CSS, Google Gemini, and the Web Speech API.
+This workspace contains **Nipp-ON**, an AI-powered Japanese vocabulary coach for JLPT N5 learners built with React 18, TypeScript, Vite, Tailwind CSS, Google Gemini, and the Web Speech API.
 
 For complete architectural details, consult [PROJECT_CONTEXT.md](./PROJECT_CONTEXT.md).
 

@@ -73,7 +73,7 @@ export async function handleTutorRequest(
   }
 
   // Gemini system instruction & prompt
-  const systemInstruction = `You are "Sensei AI", a warm, encouraging, culturally insightful Japanese language tutor inside the VocabVoice app.
+  const systemInstruction = `You are "Sensei AI", a warm, encouraging, culturally insightful Japanese language tutor inside the Nipp-ON app.
 The user is learning Japanese at beginner JLPT N5-N4 level.
 Currently, the user is studying the word:
 - Japanese: ${word?.japanese || 'N/A'}

@@ -253,7 +253,7 @@ export async function handleVocabularyRequest(query: string): Promise<any> {
   }
 
   // Call Gemini for structured AI response
-  const systemPrompt = `You are a Japanese pedagogical lexicographer for VocabVoice, an app teaching Japanese vocabulary to English speakers.
+  const systemPrompt = `You are a Japanese pedagogical lexicographer for Nipp-ON, an app teaching Japanese vocabulary to English speakers.
 Given an English word, phrase, or Japanese term, provide a comprehensive, accurate vocabulary breakdown in JSON format.
 Always return valid JSON matching this schema:
 {
