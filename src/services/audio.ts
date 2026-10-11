@@ -61,7 +61,13 @@ class AudioService {
     // Cancel any active utterance
     this.synth.cancel();
 
-    const utterance = new SpeechSynthesisUtterance(text);
+    // Strip markdown formatting symbols (*, _, ~, `, #) so speech engines never pronounce symbols aloud
+    const sanitizedText = text
+      .replace(/[*_#`~]/g, '')
+      .replace(/\s+/g, ' ')
+      .trim();
+
+    const utterance = new SpeechSynthesisUtterance(sanitizedText);
     utterance.lang = 'ja-JP';
     utterance.rate = options.rate ?? 1.0;
     utterance.pitch = options.pitch ?? 1.0;

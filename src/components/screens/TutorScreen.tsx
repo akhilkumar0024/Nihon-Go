@@ -8,6 +8,93 @@ interface TutorScreenProps {
   onSelectWord: (wordId: string) => void;
 }
 
+/**
+ * Parse inline markdown tokens: **bold**, *italic*, `code`
+ */
+function parseInlineMarkdown(text: string): React.ReactNode[] {
+  const parts: React.ReactNode[] = [];
+  const regex = /(\*\*[^*]+\*\*|\*[^*]+\*|`[^`]+`)/g;
+  let lastIndex = 0;
+  let match: RegExpExecArray | null;
+
+  while ((match = regex.exec(text)) !== null) {
+    if (match.index > lastIndex) {
+      parts.push(text.slice(lastIndex, match.index));
+    }
+    const token = match[0];
+    if (token.startsWith('**') && token.endsWith('**')) {
+      parts.push(
+        <strong key={`b-${match.index}`} className="font-bold text-primary">
+          {token.slice(2, -2)}
+        </strong>
+      );
+    } else if (token.startsWith('*') && token.endsWith('*')) {
+      parts.push(
+        <em key={`i-${match.index}`} className="italic text-on-surface-variant font-medium">
+          {token.slice(1, -1)}
+        </em>
+      );
+    } else if (token.startsWith('`') && token.endsWith('`')) {
+      parts.push(
+        <code
+          key={`c-${match.index}`}
+          className="px-1 py-0.5 rounded bg-surface-container font-mono text-xs text-secondary"
+        >
+          {token.slice(1, -1)}
+        </code>
+      );
+    }
+    lastIndex = regex.lastIndex;
+  }
+
+  if (lastIndex < text.length) {
+    parts.push(text.slice(lastIndex));
+  }
+
+  return parts;
+}
+
+/**
+ * Formats chat message content by rendering markdown bold/italics and paragraphs/lists
+ */
+function renderFormattedChatMessage(rawText: string): React.ReactNode {
+  // If there are no newlines and no markdown, return as is
+  if (!rawText.includes('\n') && !rawText.includes('*') && !rawText.includes('`')) {
+    return rawText;
+  }
+
+  const paragraphs = rawText.split(/\n\n+/);
+
+  return (
+    <div className="space-y-2">
+      {paragraphs.map((para, pIdx) => {
+        const lines = para.split('\n');
+        return (
+          <div key={pIdx} className="space-y-1">
+            {lines.map((line, lIdx) => {
+              const trimmed = line.trim();
+              const isBullet = trimmed.startsWith('•') || trimmed.startsWith('-');
+              const cleanLine = isBullet ? trimmed.replace(/^[•\-]\s*/, '') : line;
+              const content = parseInlineMarkdown(cleanLine);
+
+              if (isBullet) {
+                return (
+                  <div key={lIdx} className="flex items-start gap-2 pl-2">
+                    <span className="text-secondary font-bold select-none">•</span>
+                    <span className="flex-1">{content}</span>
+                  </div>
+                );
+              }
+
+              return <p key={lIdx}>{content}</p>;
+            })}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
 export const TutorScreen: React.FC<TutorScreenProps> = ({ currentWord }) => {
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
@@ -83,8 +170,23 @@ export const TutorScreen: React.FC<TutorScreenProps> = ({ currentWord }) => {
   };
 
   const handlePlayJapaneseInChat = (text: string) => {
-    // Extract Japanese or speak the whole sentence
-    audioService.speakJapanese(text);
+    // Extract only Japanese text (Kanji, Hiragana, Katakana, and Japanese particles/quotes)
+    // so the TTS only speaks the actual Japanese vocabulary taught, avoiding English mispronunciation
+    // and ensuring asterisks or markdown syntax are never read aloud.
+    const japaneseMatches = text.match(/[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF][\u3000-\u303F\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAFー\w]*/g);
+
+    if (japaneseMatches && japaneseMatches.length > 0) {
+      const cleanJapaneseList = Array.from(new Set(japaneseMatches))
+        .map((p) => p.replace(/[*_#`~[\]()]/g, '').trim())
+        .filter((p) => p.length > 0);
+
+      const phraseToSpeak = cleanJapaneseList.join('、 ');
+      audioService.speakJapanese(phraseToSpeak);
+    } else {
+      // Fallback: strip any markdown symbols so TTS never speaks "asterisk"
+      const sanitized = text.replace(/[*_#`~[\]()]/g, '');
+      audioService.speakJapanese(sanitized);
+    }
   };
 
   // Mic speech input for tutor
@@ -295,13 +397,13 @@ export const TutorScreen: React.FC<TutorScreenProps> = ({ currentWord }) => {
 
                 <div className="flex flex-col gap-1">
                   <div
-                    className={`p-3.5 sm:p-4 rounded-2xl border text-sm leading-relaxed whitespace-pre-wrap ${
+                    className={`p-3.5 sm:p-4 rounded-2xl border text-sm leading-relaxed ${
                       isUser
                         ? 'bg-surface-container text-on-surface border-outline-variant/80 rounded-tr-xs'
                         : 'bg-surface-bright text-on-surface border-outline-variant/60 shadow-2xs rounded-tl-xs'
                     }`}
                   >
-                    {msg.text}
+                    {renderFormattedChatMessage(msg.text)}
 
                     {/* Inline audio pronunciation button for Sensei responses */}
                     {!isUser && (

@@ -28,17 +28,37 @@ export async function handleTutorRequest(
       `What is the difference between casual and polite?`,
     ];
 
+    const isVerb = word?.partOfSpeech?.toLowerCase().includes('verb') || word?.partOfSpeech?.includes('動詞');
+
     if (lower.includes('restaurant') || lower.includes('formal') || lower.includes('order')) {
-      reply = `In a restaurant setting, Japanese speakers rarely use the plain form **${word?.japanese || '食べる'}** (${word?.romaji || 'taberu'}). Instead, use the polite form **${word?.japanese ? word.japanese.slice(0, -1) + 'ます' : '食べます'}** (${word?.romaji ? word.romaji.slice(0, -2) + 'masu' : 'tabemasu'}). When speaking respectfully to customers or elders, the honorific verb **召し上がる** (meshiagaru) is used!`;
-      suggestions = ['How do I ask for the bill?', 'How to say delicious in restaurant?', 'Tell me about itadakimasu'];
+      if (isVerb) {
+        const politeVerb = word?.japanese ? (word.japanese.endsWith('る') ? word.japanese.slice(0, -1) + 'ます' : word.japanese + 'ます') : '食べます';
+        reply = `In a restaurant setting, Japanese speakers rarely use the plain form **${word?.japanese || '食べる'}** (${word?.romaji || 'taberu'}). Instead, use the polite form **${politeVerb}**. When speaking respectfully to customers or elders, honorific keigo forms like **召し上がる** (meshiagaru) are used!`;
+        suggestions = ['How do I ask for the bill?', 'How to say delicious in a restaurant?', 'Tell me about itadakimasu'];
+      } else {
+        const politeNoun = `お${word?.japanese || '水'}`;
+        const politeRomaji = `o${word?.romaji || 'mizu'}`;
+        reply = `In a restaurant setting, it is customary to add the polite prefix **お-** (o-) when ordering. Instead of just saying **${word?.japanese || '水'}** (${word?.romaji || 'mizu'}), you should say **${politeNoun}** (${politeRomaji}). For example: **「${politeNoun}を一杯ください」** (*${politeRomaji} o ippai kudasai* — "A glass of water, please!").`;
+        suggestions = ['How do I ask for the bill?', 'How do I say "excuse me" to the waiter?', 'Can I get hot water (oyu)?'];
+      }
     } else if (lower.includes('slang') || lower.includes('casual')) {
-      reply = `Casual speech in Japanese removes polite endings like *desu* and *masu*. For example, among close friends, people simply say **「これ、食べる？」** (*Kore, taberu?* - "Wanna eat this?"). Young people also frequently use **食う** (*kuu*) for casual or rough speech!`;
-      suggestions = ['What about female casual speech?', 'Is kuu rude to say to elders?', 'Show another slang example'];
+      if (isVerb) {
+        reply = `Casual speech in Japanese removes polite endings like *desu* and *masu*. For example, among close friends, people simply say **「これ、${word?.japanese || '食べる'}？」** (*Kore, ${word?.romaji || 'taberu'}?* — "Wanna eat this?").`;
+        suggestions = ['What about female casual speech?', 'Is it rude to use casual form with coworkers?', 'Show another slang example'];
+      } else {
+        reply = `Among close friends and family, you don't need polite prefixes. You can casually say **「${word?.japanese || '水'}、ちょうだい」** (*${word?.romaji || 'mizu'}, choudai* — "Give me some water").`;
+        suggestions = ['How do I ask for water casually?', 'What is Kansai dialect for this?', 'Is choudai feminine or neutral?'];
+      }
     } else if (lower.includes('conjugat') || lower.includes('quiz') || lower.includes('tense')) {
-      reply = `Great question on verb conjugation! For **${word?.japanese || '食べる'}**:\n\n• **Present Polite:** 食べます (*tabemasu*)\n• **Past Polite:** 食べました (*tabemashita*)\n• **Negative Polite:** 食べません (*tabemasen*)\n• **Te-form (connecting):** 食べて (*tabete*)`;
-      suggestions = ['How to conjugate potential form (can eat)?', 'What is volitional form (let\'s eat)?', 'Quiz me on past negative'];
+      if (isVerb) {
+        reply = `Great question on verb conjugation for **${word?.japanese || '食べる'}**:\n\n• **Present Polite:** ${word?.japanese?.slice(0, -1) || '食べ'}ます (*${word?.romaji?.slice(0, -2) || 'tabe'}masu*)\n• **Past Polite:** ${word?.japanese?.slice(0, -1) || '食べ'}ました (*${word?.romaji?.slice(0, -2) || 'tabe'}mashita*)\n• **Negative Polite:** ${word?.japanese?.slice(0, -1) || '食べ'}ません (*${word?.romaji?.slice(0, -2) || 'tabe'}masen*)`;
+        suggestions = ['How to conjugate potential form (can do)?', 'What is the te-form?', 'Quiz me on past negative'];
+      } else {
+        reply = `As a noun, **${word?.japanese || '水'}** (*${word?.romaji || 'mizu'}*) uses the copula **です** (*desu*):\n\n• **Present Polite:** ${word?.japanese}です (*${word?.romaji} desu* — It is water)\n• **Past Polite:** ${word?.japanese}でした (*${word?.romaji} deshita* — It was water)\n• **Negative Polite:** ${word?.japanese}ではありません (*${word?.romaji} dewa arimasen* — It is not water)`;
+        suggestions = ['How to say "there is water"?', 'What particle does this take?', 'How to ask "is this water?"'];
+      }
     } else {
-      reply = `Hello! As your AI Sensei, I'm happy to help you master **${word?.japanese || 'this word'}** (${word?.hiragana || ''} / ${word?.romaji || ''}).\n\n${word?.nuance || 'Remember to practice the pronunciation and notice the pitch-accent cadence.'}\n\nWhat specific nuance, example, or grammar point would you like to explore?`;
+      reply = `Hello! As your AI Sensei, I'm happy to help you master **${word?.japanese || 'this word'}** (${word?.hiragana || ''} / ${word?.romaji || ''}).\n\n${word?.nuance || 'Remember to practice pronunciation and notice the pitch-accent cadence.'}\n\nWhat specific nuance, example, or grammar point would you like to explore?`;
     }
 
     return {
