@@ -1,9 +1,9 @@
 import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
 import type { Plugin } from 'vite';
-import { handleVocabularyRequest } from './api/vocabulary.ts';
-import { handleTutorRequest } from './api/tutor.ts';
-import { handleStatusRequest } from './api/status.ts';
+import vocabHandler from './api/vocabulary.ts';
+import tutorHandler from './api/tutor.ts';
+import statusHandler from './api/status.ts';
 
 function vercelApiMiddlewarePlugin(env: Record<string, string>): Plugin {
   return {
@@ -21,52 +21,36 @@ function vercelApiMiddlewarePlugin(env: Record<string, string>): Plugin {
         const url = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
         const pathname = url.pathname;
 
-        res.setHeader('Content-Type', 'application/json');
-
-        if (pathname === '/api/status' && req.method === 'GET') {
-          try {
-            const status = await handleStatusRequest();
-            res.statusCode = 200;
-            return res.end(JSON.stringify(status));
-          } catch (e: any) {
-            res.statusCode = 500;
-            return res.end(JSON.stringify({ success: false, error: e.message }));
-          }
+        // Polyfill express/Vercel helpers for ServerResponse
+        const resAny = res as any;
+        if (!resAny.status) {
+          resAny.status = (code: number) => {
+            res.statusCode = code;
+            return resAny;
+          };
+        }
+        if (!resAny.json) {
+          resAny.json = (data: any) => {
+            res.setHeader('Content-Type', 'application/json');
+            return res.end(JSON.stringify(data));
+          };
         }
 
-        if (pathname === '/api/vocabulary' && req.method === 'POST') {
+        if (pathname === '/api/status') {
+          return statusHandler(req, resAny);
+        }
+
+        if (pathname === '/api/vocabulary' || pathname === '/api/tutor') {
           let body = '';
           req.on('data', (chunk) => {
             body += chunk;
           });
           req.on('end', async () => {
-            try {
-              const parsed = JSON.parse(body || '{}');
-              const result = await handleVocabularyRequest(parsed.query || '');
-              res.statusCode = 200;
-              res.end(JSON.stringify(result));
-            } catch (err: any) {
-              res.statusCode = 500;
-              res.end(JSON.stringify({ success: false, error: err.message }));
-            }
-          });
-          return;
-        }
-
-        if (pathname === '/api/tutor' && req.method === 'POST') {
-          let body = '';
-          req.on('data', (chunk) => {
-            body += chunk;
-          });
-          req.on('end', async () => {
-            try {
-              const parsed = JSON.parse(body || '{}');
-              const result = await handleTutorRequest(parsed.word, parsed.message, parsed.history);
-              res.statusCode = 200;
-              res.end(JSON.stringify(result));
-            } catch (err: any) {
-              res.statusCode = 500;
-              res.end(JSON.stringify({ success: false, error: err.message }));
+            (req as any).body = body;
+            if (pathname === '/api/vocabulary') {
+              return vocabHandler(req, resAny);
+            } else {
+              return tutorHandler(req, resAny);
             }
           });
           return;

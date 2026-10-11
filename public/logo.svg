@@ -1,13 +1,28 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
-  <rect width="100" height="100" rx="22" fill="#FAF8F5" stroke="#E2DDD6" stroke-width="2"/>
-  <!-- Japanese Sun / Inkan Stamp circle -->
-  <circle cx="50" cy="50" r="32" fill="#97472E" opacity="0.12"/>
-  <circle cx="50" cy="50" r="24" fill="#97472E" opacity="0.2"/>
-  <!-- Central Kanji / Soundwave Emblem -->
-  <path d="M50 28V72" stroke="#013628" stroke-width="4.5" stroke-linecap="round"/>
-  <path d="M34 40C34 40 42 37 50 37C58 37 66 40 66 40" stroke="#013628" stroke-width="4" stroke-linecap="round"/>
-  <path d="M38 52C42 50 46 49 50 49C54 49 58 50 62 52" stroke="#97472E" stroke-width="3.5" stroke-linecap="round"/>
-  <path d="M30 64C36 62 43 61 50 61C57 61 64 62 70 64" stroke="#013628" stroke-width="4.5" stroke-linecap="round"/>
-  <!-- Microphone / Sound Pulse dot -->
-  <circle cx="50" cy="30" r="3.5" fill="#97472E"/>
+  <!-- Soft ivory rounded squircle tile -->
+  <rect width="100" height="100" rx="24" fill="#FBF9F5" stroke="#E6E0D6" stroke-width="2"/>
+  
+  <!-- Warm soft terracotta sun circle -->
+  <circle cx="50" cy="48" r="28" fill="#D97358" opacity="0.18"/>
+  <circle cx="50" cy="48" r="22" fill="#D97358" opacity="0.25"/>
+
+  <!-- Friendly Torii Shrine Gate with rounded joinery -->
+  <!-- Upper Kasagi curved beam -->
+  <path d="M26 32C34 29.5 66 29.5 74 32C75 32.3 75.5 33.5 74.8 34.3C74 35.2 72.5 35.5 70 35H30C27.5 35.5 26 35.2 25.2 34.3C24.5 33.5 25 32.3 26 32Z" fill="#013628"/>
+  <!-- Second Shimaki beam -->
+  <rect x="31" y="38" width="38" height="4" rx="2" fill="#97472E"/>
+  <!-- Two vertical pillars with slight inward taper -->
+  <path d="M37 38L35 72" stroke="#013628" stroke-width="4.5" stroke-linecap="round"/>
+  <path d="M63 38L65 72" stroke="#013628" stroke-width="4.5" stroke-linecap="round"/>
+  <!-- Central Gakuzuka nameplate tablet -->
+  <rect x="47.5" y="34" width="5" height="9" rx="1.5" fill="#97472E"/>
+
+  <!-- Cute soundwave voice pulse arcs -->
+  <path d="M44 54C47.5 52.5 52.5 52.5 56 54" stroke="#97472E" stroke-width="3" stroke-linecap="round"/>
+  <path d="M41 62C46.5 60 53.5 60 59 62" stroke="#013628" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- Cute friendly sakura blossom petal -->
+  <circle cx="72" cy="27" r="3" fill="#D97358" opacity="0.85"/>
+  <circle cx="76" cy="30" r="2" fill="#D97358" opacity="0.6"/>
+  <circle cx="26" cy="66" r="2.5" fill="#D97358" opacity="0.5"/>
 </svg>

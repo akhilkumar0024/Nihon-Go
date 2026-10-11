@@ -10,6 +10,7 @@ interface PracticeNotebookScreenProps {
   onRemoveWord: (word: VocabularyItem) => void;
   onSelectWordForStudy: (wordId: string) => void;
   onRecordQuizResult: (isCorrect: boolean) => void;
+  onLoadStarterWords?: () => void;
 }
 
 export const PracticeNotebookScreen: React.FC<PracticeNotebookScreenProps> = ({
@@ -18,6 +19,7 @@ export const PracticeNotebookScreen: React.FC<PracticeNotebookScreenProps> = ({
   onRemoveWord,
   onSelectWordForStudy,
   onRecordQuizResult,
+  onLoadStarterWords,
 }) => {
   const [activeTab, setActiveTab] = useState<'quiz' | 'notebook'>('quiz');
   const [questions, setQuestions] = useState<QuizQuestion[]>([]);
@@ -28,8 +30,8 @@ export const PracticeNotebookScreen: React.FC<PracticeNotebookScreenProps> = ({
   const [quizCompleted, setQuizCompleted] = useState<boolean>(false);
   const [searchNotebook, setSearchNotebook] = useState<string>('');
 
-  // Live session timer in MM:SS
-  const [sessionSeconds, setSessionSeconds] = useState<number>(522); // ~8m 42s initially
+  // Live session timer in MM:SS (tracks actual active session duration)
+  const [sessionSeconds, setSessionSeconds] = useState<number>(0);
   useEffect(() => {
     const timer = setInterval(() => {
       setSessionSeconds((prev) => prev + 1);
@@ -465,7 +467,29 @@ export const PracticeNotebookScreen: React.FC<PracticeNotebookScreenProps> = ({
               </div>
 
               <div className="space-y-2.5">
-                {filteredWords.length > 0 ? (
+                {savedWords.length === 0 ? (
+                  <div className="p-10 rounded-2xl bg-surface-container-low border border-dashed border-outline-variant text-center space-y-3">
+                    <span className="material-symbols-outlined text-4xl text-outline">
+                      collections_bookmark
+                    </span>
+                    <h3 className="font-headline-sm text-headline-sm text-primary font-bold">
+                      Your Vocabulary Notebook is Empty
+                    </h3>
+                    <p className="text-xs text-on-surface-variant max-w-sm mx-auto leading-relaxed">
+                      As you explore words in the <strong>Daily Learn</strong> tab, tap "Add to Notebook" to bookmark them here for spaced-repetition practice.
+                    </p>
+                    {onLoadStarterWords && (
+                      <div className="pt-2">
+                        <button
+                          onClick={onLoadStarterWords}
+                          className="px-4 py-2 rounded-xl bg-primary-container text-on-primary font-label-md text-xs font-semibold hover:bg-primary transition-all shadow-xs"
+                        >
+                          Load 4 Starter N5 Words (Sample Demo)
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                ) : filteredWords.length > 0 ? (
                   filteredWords.map((word) => (
                     <div
                       key={word.id}
@@ -540,35 +564,50 @@ export const PracticeNotebookScreen: React.FC<PracticeNotebookScreenProps> = ({
 
             {/* Quick Vocabulary List */}
             <div className="flex flex-col gap-2.5">
-              {savedWords.slice(0, 5).map((word, idx) => (
-                <div
-                  key={word.id}
-                  onClick={() => onSelectWordForStudy(word.id)}
-                  className="p-3 rounded-xl bg-surface-container-low border border-outline-variant flex items-center justify-between hover:bg-surface-container transition-colors cursor-pointer group"
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-lg bg-surface-container flex items-center justify-center font-headline-md text-primary font-bold">
-                      {word.japanese.charAt(0)}
-                    </div>
-                    <div className="flex flex-col">
-                      <div className="flex items-center gap-1.5">
-                        <span className="font-bold text-on-surface text-sm group-hover:text-primary transition-colors">
-                          {word.japanese}
-                        </span>
-                        <span className="text-xs text-on-surface-variant font-mono">({word.romaji})</span>
+              {savedWords.length > 0 ? (
+                savedWords.slice(0, 5).map((word, idx) => (
+                  <div
+                    key={word.id}
+                    onClick={() => onSelectWordForStudy(word.id)}
+                    className="p-3 rounded-xl bg-surface-container-low border border-outline-variant flex items-center justify-between hover:bg-surface-container transition-colors cursor-pointer group"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="w-9 h-9 rounded-lg bg-surface-container flex items-center justify-center font-headline-md text-primary font-bold">
+                        {word.japanese.charAt(0)}
                       </div>
-                      <span className="text-[11px] text-on-surface-variant line-clamp-1">{word.english}</span>
+                      <div className="flex flex-col">
+                        <div className="flex items-center gap-1.5">
+                          <span className="font-bold text-on-surface text-sm group-hover:text-primary transition-colors">
+                            {word.japanese}
+                          </span>
+                          <span className="text-xs text-on-surface-variant font-mono">({word.romaji})</span>
+                        </div>
+                        <span className="text-[11px] text-on-surface-variant line-clamp-1">{word.english}</span>
+                      </div>
+                    </div>
+
+                    <div className="flex flex-col items-end gap-1">
+                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-primary-fixed text-on-primary-fixed border border-primary-fixed-dim">
+                        Lv {word.masteryLevel || 3}
+                      </span>
+                      <span className="text-[10px] text-outline">Streak {word.streak || idx + 1}</span>
                     </div>
                   </div>
-
-                  <div className="flex flex-col items-end gap-1">
-                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-primary-fixed text-on-primary-fixed border border-primary-fixed-dim">
-                      Lv {word.masteryLevel || 3}
-                    </span>
-                    <span className="text-[10px] text-outline">Streak {word.streak || idx + 1}</span>
-                  </div>
+                ))
+              ) : (
+                <div className="p-5 rounded-xl bg-surface-container-low text-center text-xs text-outline space-y-1.5">
+                  <span className="block font-medium text-on-surface-variant">No saved words in queue</span>
+                  <span className="block text-[11px]">Bookmark words during study or load starters.</span>
+                  {onLoadStarterWords && (
+                    <button
+                      onClick={onLoadStarterWords}
+                      className="text-primary font-semibold hover:underline block mx-auto pt-1"
+                    >
+                      + Load Sample N5 Words
+                    </button>
+                  )}
                 </div>
-              ))}
+              )}
             </div>
 
             <button

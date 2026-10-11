@@ -11,11 +11,16 @@ export async function handleTutorRequest(
   history: TutorHistoryItem[] = []
 ): Promise<any> {
   const trimmedMessage = message.trim();
-  if (!trimmedMessage || trimmedMessage.length > 500) {
-    throw new Error('Message must be between 1 and 500 characters.');
+  if (!trimmedMessage || trimmedMessage.length > 300) {
+    throw new Error('Message must be between 1 and 300 characters.');
   }
 
-  const safeHistory = (history || []).slice(-8); // Keep last 8 turns
+  const safeHistory = (Array.isArray(history) ? history : [])
+    .slice(-8)
+    .map((h) => ({
+      sender: h.sender === 'user' ? ('user' as const) : ('sensei' as const),
+      text: String(h.text || '').slice(0, 300),
+    }));
   const apiKey = getGeminiApiKey();
 
   if (!apiKey) {
@@ -28,7 +33,13 @@ export async function handleTutorRequest(
       `What is the difference between casual and polite?`,
     ];
 
-    const isVerb = word?.partOfSpeech?.toLowerCase().includes('verb') || word?.partOfSpeech?.includes('動詞');
+    const isVerb =
+      word?.partOfSpeech?.toLowerCase().includes('verb') ||
+      word?.partOfSpeech?.includes('動詞') ||
+      word?.english?.toLowerCase().startsWith('to ') ||
+      ['taberu', 'nomu', 'iku', 'kuru', 'suru', 'miru', 'hanasu', 'kiku'].includes(word?.romaji?.toLowerCase() || '');
+
+    const englishMeaning = word?.english?.replace(/^to\s+/i, '') || word?.romaji || 'this';
 
     if (lower.includes('restaurant') || lower.includes('formal') || lower.includes('order')) {
       if (isVerb) {
@@ -38,7 +49,7 @@ export async function handleTutorRequest(
       } else {
         const politeNoun = `お${word?.japanese || '水'}`;
         const politeRomaji = `o${word?.romaji || 'mizu'}`;
-        reply = `In a restaurant setting, it is customary to add the polite prefix **お-** (o-) when ordering. Instead of just saying **${word?.japanese || '水'}** (${word?.romaji || 'mizu'}), you should say **${politeNoun}** (${politeRomaji}). For example: **「${politeNoun}を一杯ください」** (*${politeRomaji} o ippai kudasai* — "A glass of water, please!").`;
+        reply = `In a restaurant setting, it is customary to add the polite prefix **お-** (o-) when ordering. Instead of just saying **${word?.japanese || '水'}** (${word?.romaji || 'mizu'}), you should say **${politeNoun}** (${politeRomaji}). For example: **「${politeNoun}を一杯ください」** (*${politeRomaji} o ippai kudasai* — "A glass of ${englishMeaning}, please!").`;
         suggestions = ['How do I ask for the bill?', 'How do I say "excuse me" to the waiter?', 'Can I get hot water (oyu)?'];
       }
     } else if (lower.includes('slang') || lower.includes('casual')) {
@@ -46,16 +57,16 @@ export async function handleTutorRequest(
         reply = `Casual speech in Japanese removes polite endings like *desu* and *masu*. For example, among close friends, people simply say **「これ、${word?.japanese || '食べる'}？」** (*Kore, ${word?.romaji || 'taberu'}?* — "Wanna eat this?").`;
         suggestions = ['What about female casual speech?', 'Is it rude to use casual form with coworkers?', 'Show another slang example'];
       } else {
-        reply = `Among close friends and family, you don't need polite prefixes. You can casually say **「${word?.japanese || '水'}、ちょうだい」** (*${word?.romaji || 'mizu'}, choudai* — "Give me some water").`;
-        suggestions = ['How do I ask for water casually?', 'What is Kansai dialect for this?', 'Is choudai feminine or neutral?'];
+        reply = `Among close friends and family, you don't need polite prefixes. You can casually say **「${word?.japanese || '水'}、ちょうだい」** (*${word?.romaji || 'mizu'}, choudai* — "Give me some ${englishMeaning}").`;
+        suggestions = [`How do I ask for ${englishMeaning} casually?`, 'What is Kansai dialect for this?', 'Is choudai feminine or neutral?'];
       }
     } else if (lower.includes('conjugat') || lower.includes('quiz') || lower.includes('tense')) {
       if (isVerb) {
         reply = `Great question on verb conjugation for **${word?.japanese || '食べる'}**:\n\n• **Present Polite:** ${word?.japanese?.slice(0, -1) || '食べ'}ます (*${word?.romaji?.slice(0, -2) || 'tabe'}masu*)\n• **Past Polite:** ${word?.japanese?.slice(0, -1) || '食べ'}ました (*${word?.romaji?.slice(0, -2) || 'tabe'}mashita*)\n• **Negative Polite:** ${word?.japanese?.slice(0, -1) || '食べ'}ません (*${word?.romaji?.slice(0, -2) || 'tabe'}masen*)`;
         suggestions = ['How to conjugate potential form (can do)?', 'What is the te-form?', 'Quiz me on past negative'];
       } else {
-        reply = `As a noun, **${word?.japanese || '水'}** (*${word?.romaji || 'mizu'}*) uses the copula **です** (*desu*):\n\n• **Present Polite:** ${word?.japanese}です (*${word?.romaji} desu* — It is water)\n• **Past Polite:** ${word?.japanese}でした (*${word?.romaji} deshita* — It was water)\n• **Negative Polite:** ${word?.japanese}ではありません (*${word?.romaji} dewa arimasen* — It is not water)`;
-        suggestions = ['How to say "there is water"?', 'What particle does this take?', 'How to ask "is this water?"'];
+        reply = `As a noun, **${word?.japanese || '水'}** (*${word?.romaji || 'mizu'}*) uses the copula **です** (*desu*):\n\n• **Present Polite:** ${word?.japanese || '水'}です (*${word?.romaji || 'mizu'} desu* — It is ${englishMeaning})\n• **Past Polite:** ${word?.japanese || '水'}でした (*${word?.romaji || 'mizu'} deshita* — It was ${englishMeaning})\n• **Negative Polite:** ${word?.japanese || '水'}ではありません (*${word?.romaji || 'mizu'} dewa arimasen* — It is not ${englishMeaning})`;
+        suggestions = [`How to say "there is ${englishMeaning}"?`, 'What particle does this take?', `How to ask "is this ${englishMeaning}?"`];
       }
     } else {
       reply = `Hello! As your AI Sensei, I'm happy to help you master **${word?.japanese || 'this word'}** (${word?.hiragana || ''} / ${word?.romaji || ''}).\n\n${word?.nuance || 'Remember to practice pronunciation and notice the pitch-accent cadence.'}\n\nWhat specific nuance, example, or grammar point would you like to explore?`;
@@ -67,13 +78,13 @@ export async function handleTutorRequest(
         text: reply,
         suggestions,
         source: 'curated-fallback',
-        note: 'Live Gemini API key not configured on server; providing contextual pedagogical response.',
+        note: 'Serving verified contextual pedagogical response (server running without GEMINI_API_KEY).',
       },
     };
   }
 
   // Gemini system instruction & prompt
-  const systemInstruction = `You are "Sensei AI", a warm, encouraging, culturally insightful Japanese language tutor inside the Nipp-ON app.
+  const systemInstruction = `You are "Sensei AI", a warm, encouraging, culturally insightful Japanese language tutor inside the Nipp-On app.
 The user is learning Japanese at beginner JLPT N5-N4 level.
 Currently, the user is studying the word:
 - Japanese: ${word?.japanese || 'N/A'}
@@ -149,19 +160,38 @@ export default async function handler(req: any, res: any) {
   }
 
   try {
-    const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
+    let body = req.body;
+    if (typeof body === 'string') {
+      if (body.length > 8192) {
+        return res.status(413).json({ success: false, error: 'Payload too large. Max 8KB.' });
+      }
+      try {
+        body = JSON.parse(body || '{}');
+      } catch (e) {
+        return res.status(400).json({ success: false, error: 'Invalid JSON request body.' });
+      }
+    }
+
     const { word, message, history } = body || {};
 
-    if (!message) {
+    if (!message || typeof message !== 'string' || !message.trim()) {
       return res.status(400).json({ success: false, error: 'Missing "message" in request body.' });
+    }
+
+    if (message.trim().length > 300) {
+      return res.status(400).json({ success: false, error: 'Message too long. Max 300 characters.' });
     }
 
     const result = await handleTutorRequest(word, message, history);
     return res.status(200).json(result);
   } catch (err: any) {
-    return res.status(500).json({
+    const isRateLimit = err.message === 'RATE_LIMIT_EXCEEDED';
+    const statusCode = isRateLimit ? 429 : 500;
+    return res.status(statusCode).json({
       success: false,
-      error: err.message || 'Internal server error processing tutor dialogue.',
+      error: isRateLimit
+        ? 'Prototype request rate limit reached. Please wait a moment.'
+        : err.message || 'Internal server error processing tutor dialogue.',
     });
   }
 }

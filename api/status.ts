@@ -20,6 +20,10 @@ export default async function handler(req: any, res: any) {
     return res.status(200).end();
   }
 
+  if (req.method !== 'GET') {
+    return res.status(405).json({ success: false, error: 'Method not allowed. Use GET.' });
+  }
+
   const result = await handleStatusRequest();
   return res.status(200).json(result);
 }

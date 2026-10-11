@@ -62,17 +62,17 @@ export const SideNavBar: React.FC<SideNavBarProps> = ({
               >
                 <div
                   className="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center p-1 border border-outline-variant shadow-xs flex-shrink-0 overflow-hidden"
-                  title="Nipp-ON Logo"
+                  title="Nipp-On Logo"
                 >
                   <img
                     src="/logo.svg"
-                    alt="Nipp-ON Logo"
+                    alt="Nipp-On Logo"
                     className="w-full h-full object-contain"
                   />
                 </div>
                 <div className="flex flex-col min-w-0">
                   <span className="font-headline-md text-headline-md text-primary tracking-tight font-semibold leading-tight">
-                    Nipp-ON
+                    Nipp-On
                   </span>
                   <span className="font-label-sm text-label-sm text-outline truncate">
                     JLPT N5 • Japanese Vocab

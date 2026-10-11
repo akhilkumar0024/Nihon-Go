@@ -50,7 +50,7 @@ export const FeedbackModal: React.FC<FeedbackModalProps> = ({ isOpen, onClose, o
             </div>
             <h3 className="font-headline-sm text-primary font-bold">Thank You!</h3>
             <p className="text-sm text-on-surface-variant">
-              Your feedback helps shape Nipp-ON's learning experience.
+              Your feedback helps shape Nipp-On's learning experience.
             </p>
           </div>
         ) : (

@@ -1,4 +1,4 @@
-// Server-side Gemini API helper for Nipp-ON
+// Server-side Gemini API helper for Nipp-On
 // Note: This file only executes on the server / serverless functions.
 
 const GEMINI_MODELS = ['gemini-2.5-flash', 'gemini-1.5-flash'];

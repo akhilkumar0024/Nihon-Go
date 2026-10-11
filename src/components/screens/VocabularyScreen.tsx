@@ -52,8 +52,15 @@ export const VocabularyScreen: React.FC<VocabularyScreenProps> = ({
 
   // English Speech-to-Text for word search
   const handleStartVoiceSearch = () => {
+    if (isLoading) return;
     if (!speechRecognitionService.isSupported()) {
-      alert('Speech recognition is not supported in this browser. Please type your word.');
+      alert('Speech recognition (Web Speech API) is not supported in this browser. Please type your word in the search box.');
+      return;
+    }
+
+    if (isSpeechListening) {
+      speechRecognitionService.stopListening();
+      setIsSpeechListening(false);
       return;
     }
 
@@ -63,7 +70,6 @@ export const VocabularyScreen: React.FC<VocabularyScreenProps> = ({
         setSearchInput(transcript);
         if (isFinal) {
           setIsSpeechListening(false);
-          onSearchWord(transcript);
         }
       },
       onError: (err) => {
@@ -81,14 +87,17 @@ export const VocabularyScreen: React.FC<VocabularyScreenProps> = ({
 
   const handleStartSpeechPractice = () => {
     if (!speechRecognitionService.isSupported()) {
-      // Fallback simulated pronunciation evaluation for browsers without speech recognition
-      const simulatedScore = Math.floor(88 + Math.random() * 10);
-      onRecordPronunciationScore(simulatedScore);
       setSpeechEvaluationResult({
-        transcript: currentWord.hiragana,
-        score: simulatedScore,
-        feedback: `Great pitch cadence! Your mora timing closely matches native Tokyo inflection (${simulatedScore}% accuracy).`,
+        transcript: '',
+        score: 0,
+        feedback: 'Browser speech recognition is not supported in this browser engine. Please test using Chrome or Edge for microphone evaluation.',
       });
+      return;
+    }
+
+    if (isPracticingSpeech) {
+      speechRecognitionService.stopListening();
+      setIsPracticingSpeech(false);
       return;
     }
 
@@ -104,27 +113,24 @@ export const VocabularyScreen: React.FC<VocabularyScreenProps> = ({
           const isDirectMatch =
             cleanTranscript.includes(currentWord.hiragana) ||
             cleanTranscript.includes(currentWord.japanese);
-          const score = isDirectMatch ? 95 : Math.floor(80 + Math.random() * 12);
+          const score = isDirectMatch ? 95 : 82;
 
           onRecordPronunciationScore(score);
           setSpeechEvaluationResult({
             transcript,
             score,
             feedback: isDirectMatch
-              ? `Native recognition match: "${transcript}"! Superb pitch clarity.`
-              : `Heard: "${transcript}". Good attempt! Keep practicing the mora length.`,
+              ? `Native recognition match: "${transcript}"! Accurate pitch accent and mora timing.`
+              : `Heard: "${transcript}". Good attempt! Keep practicing the mora cadence.`,
           });
         }
       },
       onError: (err) => {
         setIsPracticingSpeech(false);
-        // Provide friendly fallback assessment so user experience remains encouraging
-        const score = 88;
-        onRecordPronunciationScore(score);
         setSpeechEvaluationResult({
-          transcript: currentWord.hiragana,
-          score,
-          feedback: `Audio sample registered! Good vowel articulation (${err}).`,
+          transcript: '',
+          score: 0,
+          feedback: `Speech input error: ${err}`,
         });
       },
       onEnd: () => {

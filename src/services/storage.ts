@@ -14,15 +14,15 @@ export function getTodayDateString(): string {
 }
 
 const DEFAULT_PROGRESS: UserProgress = {
-  wordsStudied: ['taberu', 'nomu', 'hon', 'iku'], // default initial baseline for demo
-  savedWordIds: ['taberu', 'nomu', 'hon', 'iku'],
-  quizzesTaken: 4,
-  quizCorrectCount: 3,
-  streakDays: 1,
+  wordsStudied: [],
+  savedWordIds: [],
+  quizzesTaken: 0,
+  quizCorrectCount: 0,
+  streakDays: 0,
   lastActiveDate: getTodayDateString(),
-  dailyGoal: 10,
-  pronunciationAttempts: 5,
-  pronunciationScores: [88, 92, 95, 85, 90],
+  dailyGoal: 5,
+  pronunciationAttempts: 0,
+  pronunciationScores: [],
   sessionStartTime: Date.now(),
 };
 
@@ -34,21 +34,33 @@ export function loadProgress(): UserProgress {
       return DEFAULT_PROGRESS;
     }
     const data: UserProgress = JSON.parse(raw);
-    // Check streak
+    // Sanitize in case fields are missing or malformed
+    const sanitized: UserProgress = {
+      wordsStudied: Array.isArray(data.wordsStudied) ? data.wordsStudied : [],
+      savedWordIds: Array.isArray(data.savedWordIds) ? data.savedWordIds : [],
+      quizzesTaken: typeof data.quizzesTaken === 'number' ? data.quizzesTaken : 0,
+      quizCorrectCount: typeof data.quizCorrectCount === 'number' ? data.quizCorrectCount : 0,
+      streakDays: typeof data.streakDays === 'number' ? data.streakDays : 0,
+      lastActiveDate: typeof data.lastActiveDate === 'string' ? data.lastActiveDate : getTodayDateString(),
+      dailyGoal: typeof data.dailyGoal === 'number' && data.dailyGoal > 0 ? data.dailyGoal : 5,
+      pronunciationAttempts: typeof data.pronunciationAttempts === 'number' ? data.pronunciationAttempts : 0,
+      pronunciationScores: Array.isArray(data.pronunciationScores) ? data.pronunciationScores : [],
+      sessionStartTime: typeof data.sessionStartTime === 'number' ? data.sessionStartTime : Date.now(),
+    };
+
+    // Calculate honest streak
     const today = getTodayDateString();
-    if (data.lastActiveDate !== today) {
-      const last = new Date(data.lastActiveDate);
+    if (sanitized.lastActiveDate !== today) {
+      const last = new Date(sanitized.lastActiveDate);
       const curr = new Date(today);
       const diffDays = Math.round((curr.getTime() - last.getTime()) / (1000 * 3600 * 24));
-      if (diffDays === 1) {
-        data.streakDays += 1;
-      } else if (diffDays > 1) {
-        data.streakDays = 1; // reset streak if missed more than 1 day
+      if (diffDays > 1) {
+        sanitized.streakDays = 0; // reset streak if missed more than 1 day
       }
-      data.lastActiveDate = today;
-      saveProgress(data);
+      sanitized.lastActiveDate = today;
+      saveProgress(sanitized);
     }
-    return data;
+    return sanitized;
   } catch (e) {
     console.error('Failed to load progress from localStorage', e);
     return DEFAULT_PROGRESS;
@@ -67,6 +79,9 @@ export function recordWordStudied(wordId: string): void {
   const progress = loadProgress();
   if (!progress.wordsStudied.includes(wordId)) {
     progress.wordsStudied.push(wordId);
+  }
+  if (progress.streakDays === 0) {
+    progress.streakDays = 1;
   }
   saveProgress(progress);
 }
@@ -111,21 +126,47 @@ export function getSavedWords(): VocabularyItem[] {
   try {
     const raw = localStorage.getItem(STORAGE_KEY_SAVED_WORDS) || localStorage.getItem(LEGACY_STORAGE_KEY_SAVED_WORDS);
     if (!raw) {
-      // Initialize with default 4 words from curated list matching Stitch screens
-      const initial = CURATED_VOCABULARY.slice(0, 4).map((w, idx) => ({
-        ...w,
-        savedAt: new Date(Date.now() - idx * 3600000).toISOString(),
-        masteryLevel: [4, 3, 5, 2][idx] || 3,
-        streak: [8, 5, 12, 1][idx] || 3,
-      }));
-      localStorage.setItem(STORAGE_KEY_SAVED_WORDS, JSON.stringify(initial));
-      return initial;
+      return [];
     }
-    return JSON.parse(raw);
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : [];
   } catch (e) {
     console.error('Failed to read saved words', e);
-    return CURATED_VOCABULARY.slice(0, 4);
+    return [];
   }
+}
+
+export function loadStarterCuratedWords(): VocabularyItem[] {
+  const initial = CURATED_VOCABULARY.slice(0, 4).map((w, idx) => ({
+    ...w,
+    savedAt: new Date(Date.now() - idx * 3600000).toISOString(),
+    masteryLevel: [3, 2, 4, 1][idx] || 2,
+    streak: [3, 1, 5, 1][idx] || 1,
+  }));
+  localStorage.setItem(STORAGE_KEY_SAVED_WORDS, JSON.stringify(initial));
+  const progress = loadProgress();
+  initial.forEach((w) => {
+    if (!progress.savedWordIds.includes(w.id)) {
+      progress.savedWordIds.push(w.id);
+    }
+    if (!progress.wordsStudied.includes(w.id)) {
+      progress.wordsStudied.push(w.id);
+    }
+  });
+  if (progress.streakDays === 0) {
+    progress.streakDays = 1;
+  }
+  saveProgress(progress);
+  return initial;
+}
+
+export function resetProgressToEmpty(): UserProgress {
+  localStorage.removeItem(STORAGE_KEY_PROGRESS);
+  localStorage.removeItem(LEGACY_STORAGE_KEY_PROGRESS);
+  localStorage.removeItem(STORAGE_KEY_SAVED_WORDS);
+  localStorage.removeItem(LEGACY_STORAGE_KEY_SAVED_WORDS);
+  saveProgress(DEFAULT_PROGRESS);
+  return DEFAULT_PROGRESS;
 }
 
 export function recordPronunciationScore(score: number): void {

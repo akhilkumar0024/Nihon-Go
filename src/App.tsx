@@ -19,6 +19,8 @@ import {
   recordPronunciationScore,
   recordQuizResult,
   getCustomWord,
+  loadStarterCuratedWords,
+  resetProgressToEmpty,
 } from './services/storage';
 import { fetchVocabulary, checkApiStatus } from './services/api';
 
@@ -111,12 +113,18 @@ export const App: React.FC = () => {
   };
 
   const handleResetProgress = () => {
-    localStorage.clear();
-    const fresh = loadProgress();
+    const fresh = resetProgressToEmpty();
     setProgress(fresh);
-    setSavedWords(getSavedWords());
+    setSavedWords([]);
     setCurrentWord(CURATED_VOCABULARY[0]);
-    showToast('Prototype progress reset to baseline!');
+    showToast('Prototype progress reset to fresh user state!');
+  };
+
+  const handleLoadStarterWords = () => {
+    const loaded = loadStarterCuratedWords();
+    setSavedWords(loaded);
+    setProgress(loadProgress());
+    showToast('Loaded 4 starter JLPT N5 words into notebook');
   };
 
   return (
@@ -189,6 +197,7 @@ export const App: React.FC = () => {
             onRemoveWord={handleToggleSave}
             onSelectWordForStudy={handleSelectWordById}
             onRecordQuizResult={handleRecordQuiz}
+            onLoadStarterWords={handleLoadStarterWords}
           />
         )}
       </main>

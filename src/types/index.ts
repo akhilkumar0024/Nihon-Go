@@ -44,6 +44,7 @@ export interface ChatMessage {
   timestamp: string;
   japanesePhrases?: string[];
   suggestions?: string[];
+  source?: 'live-ai' | 'curated-fallback';
 }
 
 export interface QuizOption {

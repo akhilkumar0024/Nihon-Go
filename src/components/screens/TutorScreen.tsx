@@ -74,7 +74,7 @@ function renderFormattedChatMessage(rawText: string): React.ReactNode {
             {lines.map((line, lIdx) => {
               const trimmed = line.trim();
               const isBullet = trimmed.startsWith('•') || trimmed.startsWith('-');
-              const cleanLine = isBullet ? trimmed.replace(/^[•\-]\s*/, '') : line;
+              const cleanLine = isBullet ? trimmed.replace(/^[•-]\s*/, '') : line;
               const content = parseInlineMarkdown(cleanLine);
 
               if (isBullet) {
@@ -144,6 +144,7 @@ export const TutorScreen: React.FC<TutorScreenProps> = ({ currentWord }) => {
         text: response.text,
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
         suggestions: response.suggestions,
+        source: response.source,
       };
 
       setMessages((prev) => [...prev, senseiMsg]);
@@ -416,7 +417,20 @@ export const TutorScreen: React.FC<TutorScreenProps> = ({ currentWord }) => {
                           <span className="material-symbols-outlined text-base">volume_up</span>
                           <span>Listen Pronunciation</span>
                         </button>
-                        <span className="text-[10px] text-outline font-mono">{msg.timestamp}</span>
+                        <div className="flex items-center gap-1.5">
+                          {msg.source && (
+                            <span
+                              className={`text-[9px] font-bold px-1.5 py-0.5 rounded-full ${
+                                msg.source === 'live-ai'
+                                  ? 'bg-emerald-100 text-emerald-800'
+                                  : 'bg-amber-100 text-amber-800'
+                              }`}
+                            >
+                              {msg.source === 'live-ai' ? 'Live AI' : 'Curated'}
+                            </span>
+                          )}
+                          <span className="text-[10px] text-outline font-mono">{msg.timestamp}</span>
+                        </div>
                       </div>
                     )}
                   </div>

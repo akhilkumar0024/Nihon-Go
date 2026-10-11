@@ -78,7 +78,7 @@ export const AudioSettingsModal: React.FC<AudioSettingsModalProps> = ({ isOpen, 
             </div>
 
             <p className="text-xs text-on-surface-variant leading-relaxed">
-              Nipp-ON uses the browser's native <strong>Web Speech API</strong> for zero-latency, private, client-side pronunciation playback and speech recognition.
+              Nipp-On uses the browser's native <strong>Web Speech API</strong> for zero-latency, private, client-side pronunciation playback and speech recognition.
             </p>
 
             {voices.length > 0 && (

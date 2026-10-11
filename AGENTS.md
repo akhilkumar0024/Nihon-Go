@@ -1,7 +1,7 @@
-# Agent Instructions & Project Context: Nipp-ON
+# Agent Instructions & Project Context: Nipp-On
 
 ## Project Summary
-This workspace contains **Nipp-ON**, an AI-powered Japanese vocabulary coach for JLPT N5 learners built with React 18, TypeScript, Vite, Tailwind CSS, Google Gemini, and the Web Speech API.
+This workspace contains **Nipp-On**, an AI-powered Japanese vocabulary coach for JLPT N5 learners built with React 18, TypeScript, Vite, Tailwind CSS, Google Gemini, and the Web Speech API.
 
 For complete architectural details, consult [PROJECT_CONTEXT.md](./PROJECT_CONTEXT.md).
 

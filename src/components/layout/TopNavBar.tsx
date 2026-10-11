@@ -67,7 +67,7 @@ export const TopNavBar: React.FC<TopNavBarProps> = ({
               local_fire_department
             </span>
             <span className="font-label-sm text-label-sm font-semibold">
-              {streakDays}-Day Streak
+              {streakDays > 0 ? `${streakDays}-Day Streak` : '0-Day Streak'}
             </span>
           </div>
         </div>
@@ -121,10 +121,10 @@ export const TopNavBar: React.FC<TopNavBarProps> = ({
             title="Learner Profile & Settings"
           >
             <div className="w-8 h-8 rounded-full bg-primary-container text-on-primary flex items-center justify-center font-label-sm font-bold shadow-xs group-hover:ring-2 ring-primary transition-all">
-              AS
+              NL
             </div>
             <span className="font-label-md text-label-md text-on-surface font-semibold hidden xl:inline group-hover:text-primary transition-colors">
-              Alex S.
+              Learner
             </span>
           </button>
         </div>

@@ -31,11 +31,11 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({
         <div className="flex items-center justify-between px-space-lg py-4 border-b border-outline-variant bg-surface-bright">
           <div className="flex items-center gap-2.5">
             <div className="w-10 h-10 rounded-full bg-primary-container text-on-primary flex items-center justify-center font-bold">
-              AS
+              NL
             </div>
             <div>
               <h2 className="font-headline-sm text-headline-sm text-primary font-bold">
-                Alex S.
+                Nipp-On Learner
               </h2>
               <span className="font-label-sm text-label-sm text-outline">
                 JLPT N5 Learner Profile

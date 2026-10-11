@@ -20,14 +20,14 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({
   const wordsLearnedToday = progress.wordsStudied.length;
   const targetPct = Math.min(100, Math.round((wordsLearnedToday / (progress.dailyGoal || 10)) * 100));
 
-  // Actual pitch accuracy score
+  // Actual pitch accuracy score (null if no attempts yet)
   const avgPitchScore =
     progress.pronunciationScores.length > 0
       ? Math.round(
           progress.pronunciationScores.reduce((a, b) => a + b, 0) /
             progress.pronunciationScores.length
         )
-      : 90;
+      : null;
 
   const handleQuickPlay = (e: React.MouseEvent, word: VocabularyItem) => {
     e.stopPropagation();
@@ -50,16 +50,22 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({
               <span className="font-furigana text-furigana uppercase tracking-wider text-secondary font-bold">
                 Speech Coach • Daily Ritual
               </span>
-              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-surface-container text-on-surface-variant font-label-sm text-label-sm">
-                <span className="material-symbols-outlined text-xs text-primary fill-icon">
-                  local_fire_department
+              {progress.streakDays > 0 ? (
+                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-surface-container text-on-surface-variant font-label-sm text-label-sm">
+                  <span className="material-symbols-outlined text-xs text-secondary fill-icon">
+                    local_fire_department
+                  </span>
+                  {progress.streakDays}-Day Streak Active
                 </span>
-                Streak Active
-              </span>
+              ) : (
+                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-surface-container text-on-surface-variant font-label-sm text-label-sm">
+                  Start Your Streak Today
+                </span>
+              )}
             </div>
 
             <h1 className="font-headline-lg text-headline-lg text-primary tracking-tight">
-              Okaeri, Alex!{' '}
+              {progress.wordsStudied.length > 0 ? 'Okaeri!' : 'Konnichiwa!'}{' '}
               <span className="font-normal text-on-surface-variant font-headline-sm block sm:inline">
                 Ready for today's speech session?
               </span>
@@ -159,10 +165,10 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({
               <div className="flex flex-col items-center">
                 <div className="w-24 h-24 rounded-full bg-surface-container-low border border-outline-variant/60 flex flex-col items-center justify-center p-2 text-center">
                   <span className="font-headline-md text-headline-md text-secondary font-bold leading-none">
-                    {avgPitchScore}%
+                    {avgPitchScore !== null ? `${avgPitchScore}%` : '—'}
                   </span>
                   <span className="font-label-sm text-label-sm text-outline text-[10px] mt-0.5">
-                    AVERAGE
+                    {avgPitchScore !== null ? 'AVERAGE' : 'READY'}
                   </span>
                 </div>
                 <span className="mt-2 font-label-md text-label-md text-on-surface-variant">
@@ -207,45 +213,67 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({
               </span>
             </div>
 
-            <div className="space-y-2.5">
-              {savedWords.slice(0, 4).map((word) => (
-                <div
-                  key={word.id}
-                  onClick={() => onStartSession(word.id)}
-                  className="p-3 rounded-xl bg-surface-container-low border border-outline-variant/60 flex items-center justify-between hover:bg-surface-container transition-all cursor-pointer group active:scale-[0.99]"
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-lg bg-surface-container flex items-center justify-center font-headline-md text-primary font-bold group-hover:scale-105 transition-transform">
-                      {word.japanese.charAt(0)}
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-1.5">
-                        <span className="font-bold text-on-surface text-base group-hover:text-primary transition-colors">
-                          {word.japanese}
-                        </span>
-                        <span className="text-xs text-outline font-mono">({word.romaji})</span>
+            {savedWords.length > 0 ? (
+              <div className="space-y-2.5">
+                {savedWords.slice(0, 4).map((word) => (
+                  <div
+                    key={word.id}
+                    onClick={() => onStartSession(word.id)}
+                    className="p-3 rounded-xl bg-surface-container-low border border-outline-variant/60 flex items-center justify-between hover:bg-surface-container transition-all cursor-pointer group active:scale-[0.99]"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="w-9 h-9 rounded-lg bg-surface-container flex items-center justify-center font-headline-md text-primary font-bold group-hover:scale-105 transition-transform">
+                        {word.japanese.charAt(0)}
                       </div>
-                      <span className="text-xs text-on-surface-variant line-clamp-1">
-                        {word.english}
+                      <div>
+                        <div className="flex items-center gap-1.5">
+                          <span className="font-bold text-on-surface text-base group-hover:text-primary transition-colors">
+                            {word.japanese}
+                          </span>
+                          <span className="text-xs text-outline font-mono">({word.romaji})</span>
+                        </div>
+                        <span className="text-xs text-on-surface-variant line-clamp-1">
+                          {word.english}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                      <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-primary-fixed text-on-primary-fixed border border-primary-fixed-dim">
+                        {word.jlptLevel}
                       </span>
+                      <button
+                        onClick={(e) => handleQuickPlay(e, word)}
+                        className="w-8 h-8 rounded-full flex items-center justify-center text-outline hover:text-primary hover:bg-surface-bright transition-colors"
+                        title="Pronounce"
+                      >
+                        <span className="material-symbols-outlined text-lg">volume_up</span>
+                      </button>
                     </div>
                   </div>
-
-                  <div className="flex items-center gap-2">
-                    <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-primary-fixed text-on-primary-fixed border border-primary-fixed-dim">
-                      {word.jlptLevel}
-                    </span>
-                    <button
-                      onClick={(e) => handleQuickPlay(e, word)}
-                      className="w-8 h-8 rounded-full flex items-center justify-center text-outline hover:text-primary hover:bg-surface-bright transition-colors"
-                      title="Pronounce"
-                    >
-                      <span className="material-symbols-outlined text-lg">volume_up</span>
-                    </button>
-                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="p-6 rounded-xl bg-surface-container-low border border-dashed border-outline-variant/80 text-center space-y-2">
+                <span className="material-symbols-outlined text-3xl text-outline">
+                  menu_book
+                </span>
+                <p className="font-body-sm text-body-sm text-on-surface-variant font-medium">
+                  Your Notebook is empty
+                </p>
+                <p className="text-xs text-outline max-w-xs mx-auto">
+                  Search or study words in <strong>Daily Learn</strong> to bookmark them for spaced repetition review.
+                </p>
+                <div className="pt-1">
+                  <button
+                    onClick={() => onStartSession()}
+                    className="px-3.5 py-1.5 rounded-lg bg-primary-container text-on-primary text-xs font-semibold hover:bg-primary transition-colors"
+                  >
+                    Explore Starter N5 Words
+                  </button>
                 </div>
-              ))}
-            </div>
+              </div>
+            )}
           </div>
 
           <div className="mt-space-md pt-2 border-t border-outline-variant/60 flex justify-between items-center">

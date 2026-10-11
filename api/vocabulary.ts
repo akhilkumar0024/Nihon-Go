@@ -245,7 +245,15 @@ export async function handleVocabularyRequest(query: string): Promise<any> {
   if (!apiKey) {
     const fallback = matchCurated(trimmed);
     if (fallback) {
-      return { success: true, data: fallback, note: 'Serving curated N5 vocabulary entry.' };
+      return {
+        success: true,
+        data: {
+          ...fallback,
+          source: 'curated-fallback',
+        },
+        source: 'curated-fallback',
+        note: 'Serving verified curated N5 vocabulary entry (server running without GEMINI_API_KEY).',
+      };
     }
     throw new Error(
       `GEMINI_API_KEY is not configured on the server. Try searching for curated words like 'eat', 'drink', 'book', 'water', 'cat', 'friend', or 'delicious', or configure GEMINI_API_KEY in the server environment.`
@@ -253,7 +261,7 @@ export async function handleVocabularyRequest(query: string): Promise<any> {
   }
 
   // Call Gemini for structured AI response
-  const systemPrompt = `You are a Japanese pedagogical lexicographer for Nipp-ON, an app teaching Japanese vocabulary to English speakers.
+  const systemPrompt = `You are a Japanese pedagogical lexicographer for Nipp-On, an app teaching Japanese vocabulary to English speakers.
 Given an English word, phrase, or Japanese term, provide a comprehensive, accurate vocabulary breakdown in JSON format.
 Always return valid JSON matching this schema:
 {
@@ -304,6 +312,7 @@ Ensure all JSON fields are filled with accurate, beginner-accessible Japanese li
         ...parsed,
         source: 'live-ai',
       },
+      source: 'live-ai',
     };
   } catch (err: any) {
     console.warn('Gemini call failed in vocabulary endpoint:', err.message);
@@ -313,8 +322,12 @@ Ensure all JSON fields are filled with accurate, beginner-accessible Japanese li
     if (fallback) {
       return {
         success: true,
-        data: fallback,
-        warning: `Live AI generation unavailable (${err.message}). Using verified curated vocabulary entry.`,
+        data: {
+          ...fallback,
+          source: 'curated-fallback',
+        },
+        source: 'curated-fallback',
+        warning: 'Live AI generation unavailable; displaying verified curated N5 vocabulary entry.',
       };
     }
 
@@ -338,18 +351,37 @@ export default async function handler(req: any, res: any) {
   }
 
   try {
-    const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
+    let body = req.body;
+    if (typeof body === 'string') {
+      if (body.length > 2048) {
+        return res.status(413).json({ success: false, error: 'Payload too large. Max 2KB.' });
+      }
+      try {
+        body = JSON.parse(body || '{}');
+      } catch (e) {
+        return res.status(400).json({ success: false, error: 'Invalid JSON request body.' });
+      }
+    }
+
     const query = body?.query;
-    if (!query) {
+    if (!query || typeof query !== 'string' || !query.trim()) {
       return res.status(400).json({ success: false, error: 'Missing required "query" in request body.' });
+    }
+
+    if (query.trim().length > 100) {
+      return res.status(400).json({ success: false, error: 'Query too long. Max 100 characters.' });
     }
 
     const result = await handleVocabularyRequest(query);
     return res.status(200).json(result);
   } catch (err: any) {
-    return res.status(500).json({
+    const isRateLimit = err.message === 'RATE_LIMIT_EXCEEDED';
+    const statusCode = isRateLimit ? 429 : 500;
+    return res.status(statusCode).json({
       success: false,
-      error: err.message || 'Internal server error processing vocabulary request.',
+      error: isRateLimit
+        ? 'Prototype request rate limit reached. Please wait a moment.'
+        : err.message || 'Internal server error processing vocabulary request.',
     });
   }
 }
