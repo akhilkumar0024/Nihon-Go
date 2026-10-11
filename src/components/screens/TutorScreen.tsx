@@ -171,7 +171,7 @@ export const TutorScreen: React.FC<TutorScreenProps> = ({ currentWord }) => {
 
               {/* Mini Audio Play Button */}
               <button
-                onClick={() => audioService.speakJapanese(currentWord.japanese)}
+                onClick={() => audioService.speakJapanese(currentWord.hiragana || currentWord.japanese)}
                 className="w-10 h-10 rounded-full bg-primary-container text-on-primary flex items-center justify-center hover:bg-primary shadow-xs active:scale-95 transition-all"
                 title="Listen to pronunciation"
               >

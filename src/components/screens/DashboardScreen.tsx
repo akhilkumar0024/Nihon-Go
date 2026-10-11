@@ -31,7 +31,7 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({
 
   const handleQuickPlay = (e: React.MouseEvent, word: VocabularyItem) => {
     e.stopPropagation();
-    audioService.speakJapanese(word.japanese);
+    audioService.speakJapanese(word.hiragana || word.japanese);
   };
 
   return (

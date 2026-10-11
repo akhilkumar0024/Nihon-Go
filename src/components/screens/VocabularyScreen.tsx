@@ -134,7 +134,9 @@ export const VocabularyScreen: React.FC<VocabularyScreenProps> = ({
   };
 
   const handlePlayWord = () => {
-    audioService.speakJapanese(currentWord.japanese, { rate: speed });
+    // Prefer hiragana reading for standalone words to ensure the TTS uses the intended
+    // native Japanese (kun'yomi) pronunciation (e.g., みず "mizu" instead of on'yomi すい "sui")
+    audioService.speakJapanese(currentWord.hiragana || currentWord.japanese, { rate: speed });
   };
 
   const handlePlaySentence = () => {

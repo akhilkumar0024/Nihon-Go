@@ -491,7 +491,7 @@ export const PracticeNotebookScreen: React.FC<PracticeNotebookScreenProps> = ({
 
                       <div className="flex items-center gap-2 self-end sm:self-center">
                         <button
-                          onClick={() => audioService.speakJapanese(word.japanese)}
+                          onClick={() => audioService.speakJapanese(word.hiragana || word.japanese)}
                           className="p-2 rounded-lg text-primary hover:bg-surface-container transition-colors"
                           title="Pronounce"
                         >
