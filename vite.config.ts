@@ -1,9 +1,9 @@
 import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
 import type { Plugin } from 'vite';
-import vocabHandler from './api/vocabulary.ts';
-import tutorHandler from './api/tutor.ts';
-import statusHandler from './api/status.ts';
+import vocabHandler from './api/vocabulary';
+import tutorHandler from './api/tutor';
+import statusHandler from './api/status';
 
 function vercelApiMiddlewarePlugin(env: Record<string, string>): Plugin {
   return {

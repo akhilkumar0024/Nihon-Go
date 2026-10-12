@@ -1,5 +1,6 @@
 // Server-side Gemini API helper for Nipp-On
 // Note: This file only executes on the server / serverless functions.
+declare const process: any;
 
 const GEMINI_MODELS = ['gemini-3.5-flash-lite', 'gemini-3.5-flash', 'gemini-flash-latest'];
 const REQUEST_TIMEOUT_MS = 15000;

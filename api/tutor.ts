@@ -1,4 +1,4 @@
-import { callGemini, getGeminiApiKey } from './_gemini.ts';
+import { callGemini, getGeminiApiKey } from './_gemini';
 
 export interface TutorHistoryItem {
   sender: 'user' | 'sensei';

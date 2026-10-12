@@ -1,4 +1,5 @@
-import { getGeminiApiKey } from './_gemini.ts';
+import { getGeminiApiKey } from './_gemini';
+declare const process: any;
 
 export async function handleStatusRequest() {
   const hasKey = !!getGeminiApiKey();

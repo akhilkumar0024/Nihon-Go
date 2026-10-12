@@ -1,4 +1,4 @@
-import { callGemini, getGeminiApiKey } from './_gemini.ts';
+import { callGemini, getGeminiApiKey } from './_gemini';
 
 // Curated fallback data for common words to ensure zero downtime
 const CURATED_FALLBACKS: Record<string, any> = {
