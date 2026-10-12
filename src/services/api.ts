@@ -6,12 +6,13 @@ export async function checkApiStatus(): Promise<{ geminiConfigured: boolean; mod
   try {
     const res = await fetch('/api/status');
     if (!res.ok) throw new Error('Status check failed');
-    const json = await res.json();
+    const text = await res.text();
+    const json = JSON.parse(text);
     return {
       geminiConfigured: !!json.geminiConfigured,
-      model: json.model || 'gemini-2.5-flash',
+      model: json.model || 'gemini-3.5-flash-lite',
     };
-  } catch (e) {
+  } catch {
     return { geminiConfigured: false, model: 'offline' };
   }
 }
@@ -31,7 +32,18 @@ export async function fetchVocabulary(query: string): Promise<VocabularyItem> {
       body: JSON.stringify({ query: trimmed }),
     });
 
-    const data = await res.json();
+    const rawText = await res.text();
+    let data: any = null;
+    try {
+      data = JSON.parse(rawText);
+    } catch {
+      // Non-JSON response (e.g. serverless cold start or platform 500)
+      const curated = findCuratedWord(trimmed);
+      if (curated) {
+        return curated;
+      }
+      throw new Error('Service temporarily unavailable. Please try again.');
+    }
 
     if (!res.ok || !data.success) {
       // Check client-side curated fallback as emergency fallback
@@ -83,7 +95,14 @@ export async function askTutor(
       }),
     });
 
-    const data = await res.json();
+    const rawText = await res.text();
+    let data: any = null;
+    try {
+      data = JSON.parse(rawText);
+    } catch {
+      throw new Error('Sensei AI service is momentarily unreachable. Please try again.');
+    }
+
     if (!res.ok || !data.success) {
       throw new Error(data.error || 'Sensei was unable to respond. Please try again.');
     }
