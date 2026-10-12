@@ -1,7 +1,7 @@
 # Agent Instructions & Project Context: Nipp-On
 
 ## Project Summary
-This workspace contains **Nipp-On**, an AI-powered Japanese vocabulary coach for JLPT N5 learners built with React 18, TypeScript, Vite, Tailwind CSS, Google Gemini, and the Web Speech API.
+This workspace contains **Nipp-On**, an AI-powered Japanese vocabulary coach for JLPT N5 learners built with React 19, TypeScript, Vite, Tailwind CSS, Google Gemini, and the Web Speech API.
 
 For complete architectural details, consult [PROJECT_CONTEXT.md](./PROJECT_CONTEXT.md).
 
@@ -29,4 +29,4 @@ For complete architectural details, consult [PROJECT_CONTEXT.md](./PROJECT_CONTE
    - Fixed `TopNavBar` is `h-16`. `<main>` in `App.tsx` must maintain `mt-16 min-h-[calc(100vh-4rem)]` to prevent fixed header overlap.
 
 6. **Git Remote**:
-   - `https://github.com/akhilkumar0024/Nihon-Go.git` (`main` branch).
+   - `https://github.com/akhilkumar0024/Nipp-On.git` (`main` branch).

@@ -9,20 +9,21 @@
 * **Project Name**: Nipp-On (Repository: `Nihon-Go`)
 * **Brand In-App**: Nipp-On (JLPT N5 Japanese Language Learning Companion)
 * **Objective**: A high-fidelity, production-quality AI vocabulary learning application built to demonstrate product thinking, practical generative AI integration (Google Gemini), Web Speech audio capabilities, and strict adherence to Google Stitch UI designs.
-* **Git Repository**: `https://github.com/akhilkumar0024/Nihon-Go.git` (`branch: main`)
+* **Git Repository**: `https://github.com/akhilkumar0024/Nipp-On.git` (`branch: main`)
+* **Live Production URL**: `https://nipp-on.vercel.app/`
 
 ---
 
 ## 2. Tech Stack & Environment
 
-* **Frontend**: React 18, TypeScript (`strict` mode), Vite 8, Tailwind CSS v3 with custom design tokens.
+* **Frontend**: React 19, TypeScript (`strict` mode), Vite 8, Tailwind CSS v3 with custom design tokens.
 * **Typography**: Google Fonts — `Plus Jakarta Sans` (UI / English body), `Noto Serif JP` (Kanji & Japanese hero typography), `Material Symbols Outlined` (Google Icons).
 * **Styling Paradigm**: Google Stitch Material 3 design tokens configured in `tailwind.config.js`:
   * Primary: Pine Forest Green (`#013628`)
   * Secondary / Accent: Terracotta Earth (`#97472E`)
   * Surface tokens: `surface-container-lowest`, `surface-container-low`, `surface`, `surface-container`, `surface-container-high`, `surface-bright`.
 * **Backend / API**: Vercel Serverless Functions (`/api/*.ts`) using Node runtime, zero external heavy dependencies.
-* **AI Provider**: Google Gemini API via native `fetch` in `/api/_gemini.ts`.
+* **AI Provider**: Google Gemini API (`gemini-3.5-flash-lite` with fallback to `gemini-3.5-flash`) via native `fetch`.
 * **Local Dev Server**: Runs on `http://localhost:5173/` (`npm run dev`).
 
 ---
@@ -93,8 +94,7 @@
 
 ```
 Nihon-Go/
-├── api/                           # Vercel serverless backend endpoints
-│   ├── _gemini.ts                 # Shared Gemini API caller with timeout & error handling
+├── api/                           # Vercel serverless backend endpoints (self-contained)
 │   ├── status.ts                  # GET /api/status - checks AI service health
 │   ├── tutor.ts                   # POST /api/tutor - Sensei conversation endpoint
 │   └── vocabulary.ts              # POST /api/vocabulary - word lookup endpoint
@@ -106,20 +106,23 @@ Nihon-Go/
 ├── src/
 │   ├── components/
 │   │   ├── layout/
-│   │   │   ├── NavigationSidebar.tsx # Left collapsible navigation drawer
+│   │   │   ├── SideNavBar.tsx         # Left collapsible navigation drawer
 │   │   │   └── TopNavBar.tsx          # Top header with streaks, goals, audio & profile
 │   │   ├── modals/
-│   │   │   └── AudioSettingsModal.tsx # TTS voice, pitch, and speed selector
+│   │   │   ├── AudioSettingsModal.tsx # TTS voice, pitch, and speed selector
+│   │   │   ├── FeedbackModal.tsx      # User feedback modal
+│   │   │   └── ProfileModal.tsx       # User profile & learner stats modal
 │   │   └── screens/
 │   │       ├── DashboardScreen.tsx        # Overview & daily flashcards
 │   │       ├── VocabularyScreen.tsx       # Search, kanji card & voice input
 │   │       ├── TutorScreen.tsx            # AI Sensei split-pane tutor
 │   │       └── PracticeNotebookScreen.tsx # Quiz session & saved notebook
 │   ├── data/
-│   │   └── mockData.ts            # Curated JLPT N5 vocabulary, questions, flashcards
+│   │   └── curatedVocab.ts        # Curated JLPT N5 vocabulary & starter dataset
 │   ├── services/
 │   │   ├── api.ts                 # Client fetch wrapper for /api endpoints
-│   │   └── audio.ts               # Web Speech Synthesis & Recognition service
+│   │   ├── audio.ts               # Web Speech Synthesis & Recognition service
+│   │   └── storage.ts             # LocalStorage manager for notebook & progress
 │   ├── types/
 │   │   └── index.ts               # Shared TypeScript interfaces (VocabularyItem, etc.)
 │   ├── App.tsx                    # Root component managing screen state & navigation

@@ -1,9 +1,10 @@
 # Nipp-On — Personal AI Japanese Vocabulary & Speech Coach
 
 > **Prototype Submission for Product Operations Associate**  
-> Built with React, TypeScript, Vite, Tailwind CSS, Google Gemini API, and the Web Speech API. Designed with high-fidelity adherence to Google Stitch design systems.
+> Built with React 19, TypeScript, Vite, Tailwind CSS, Google Gemini API, and the Web Speech API. Designed with high-fidelity adherence to Google Stitch design systems.
 >
-> **GitHub Repository:** [https://github.com/akhilkumar0024/Nihon-Go](https://github.com/akhilkumar0024/Nihon-Go)
+> **Live Production Demo:** [https://nipp-on.vercel.app/](https://nipp-on.vercel.app/)  
+> **GitHub Repository:** [https://github.com/akhilkumar0024/Nipp-On](https://github.com/akhilkumar0024/Nipp-On)
 
 ---
 
@@ -41,14 +42,14 @@ During our pre-submission audit, we eliminated misleading demonstration data:
 * **Design System & Typography:**
   * Primary Palette: Pine Forest Green (`#013628`, `#1E4D3E`), Sunbaked Terracotta (`#97472E`), Celadon Mist (`#F4FBF6`), Sumi Ink (`#161D1A`).
   * Fonts: `Noto Serif JP` & `Noto Serif` for Kanji hero characters; `Plus Jakarta Sans` for UI text; Google `Material Symbols Outlined` for iconography.
-* **Backend:** Node.js serverless functions running on Vercel (`/api/vocabulary.ts`, `/api/tutor.ts`, `/api/status.ts`).
-* **AI Provider:** Google Gemini API (`gemini-2.5-flash` with automatic fallback to `gemini-1.5-flash`).
+* **Backend:** Standalone Node.js serverless functions running on Vercel (`/api/vocabulary.ts`, `/api/tutor.ts`, `/api/status.ts`). Designed with zero cross-file import overhead to ensure rapid cold-starts and maximum reliability in ESM environments.
+* **AI Provider:** Google Gemini API (`gemini-3.5-flash-lite` for instantaneous low-latency generation, with automatic failover to `gemini-3.5-flash` and `gemini-flash-latest`).
 * **Audio Engine:** Client-side Web Speech API (`SpeechSynthesis` for Japanese TTS, `SpeechRecognition` for voice input).
 * **Storage:** Browser `localStorage` with error-resilient schema validation and corruption recovery.
 
 ---
 
-## 4. Real AI Functionality & Fallback Behaviour
+## 4. Real AI Functionality & Zero-Downtime Fallback
 
 Nipp-On supports both live AI generation and resilient offline exploration:
 
@@ -56,11 +57,11 @@ Nipp-On supports both live AI generation and resilient offline exploration:
    * The Gemini API key is loaded strictly on the server/serverless layer.
    * **Never** prefixed with `VITE_`, never bundled into client JavaScript, and never exposed in browser responses or error traces.
 2. **Transparent Content Attribution:**
-   * When `GEMINI_API_KEY` is present, responses are tagged with `source: 'live-ai'` and marked in the UI as **Live AI**.
-   * When running without an API key or when network/quota errors occur, the system serves verified JLPT N5 entries tagged with `source: 'curated-fallback'` and badged as **Curated**.
-   * Fallback answers are never misrepresented as live AI generations.
-3. **Robust Error Handling:**
-   * If an unindexed query is requested without an API key, the API returns a helpful 500 error recommending available curated words (e.g. *eat*, *drink*, *book*, *water*, *cat*, *friend*, *delicious*) without leaking stack traces or internal paths.
+   * When `GEMINI_API_KEY` is active and responsive, responses are tagged with `source: 'live-ai'` and badged in the UI with a green **Live AI** indicator.
+   * When running without an API key, or when API quota limits (`429 RESOURCE_EXHAUSTED`), timeouts, or network spikes occur, the system automatically falls back to curated JLPT N5 entries tagged with `source: 'curated-fallback'` and badged with an amber **Curated** indicator.
+3. **Automatic Quota Limit & Downtime Circuit Breaker:**
+   * **In Sensei Chat:** If live AI is unavailable or throttled, Sensei switches directly to contextual offline pedagogical guidance (covering restaurant etiquette, copula usage, verb conjugations, and slang) instead of failing.
+   * **In Vocabulary Search:** Verified JLPT N5 words provide instant pitch accent mora breakdowns, and unindexed queries receive a clean offline fallback card recommending N5 starter words. The application **never crashes or throws 500 errors to the user**.
 
 ---
 
@@ -76,7 +77,6 @@ Because this application runs a public demo endpoint without requiring user auth
 * **CORS & Origin Headers:** Explicit CORS headers (`Access-Control-Allow-Origin: *`, `POST, OPTIONS`, `Content-Type`) are returned.
 * **Burst Rate Guard & Cost Protection:**
   * Each serverless runtime maintains an in-memory rate limiter (60 req/min) returning `429 Too Many Requests`.
-  * *Note on Serverless Architecture:* In-memory rate limiters protect individual lambda instances from burst traffic, but are not global across ephemeral serverless instances. For zero-budget prototype deployment, this avoids introducing paid services (like Redis/Upstash).
   * *Cost Control Recommendation:* In Google AI Studio, set a spending cap or quota limit on your Gemini project to ensure total API usage remains bounded.
 
 ---
@@ -102,8 +102,8 @@ Because this application runs a public demo endpoint without requiring user auth
 ### Installation & Run
 ```bash
 # 1. Clone repository
-git clone https://github.com/akhilkumar0024/Nihon-Go.git
-cd Nihon-Go
+git clone https://github.com/akhilkumar0024/Nipp-On.git
+cd Nipp-On
 
 # 2. Install dependencies
 npm install
@@ -139,7 +139,7 @@ git push origin main
 ### Step 2: Import Project into Vercel
 1. Log in to [Vercel](https://vercel.com).
 2. Click **Add New...** ➔ **Project**.
-3. Select your repository `Nihon-Go` from GitHub.
+3. Select your repository `Nipp-On` from GitHub.
 4. Configure the project:
    * **Framework Preset:** Vite
    * **Root Directory:** `./` (or leave default)
@@ -160,7 +160,7 @@ If you update or add `GEMINI_API_KEY` after the initial deployment:
 3. *Vercel injects updated environment variables only into new builds/deployments.*
 
 ### Step 5: Verify the Live Public URL
-Open the generated `*.vercel.app` URL in a private/incognito browser window without being logged in to verify:
+Open the generated `*.vercel.app` URL (e.g. [https://nipp-on.vercel.app/](https://nipp-on.vercel.app/)) in a private/incognito browser window to verify:
 * Dashboard loads with clean `0-Day Streak` and `READY / NO ATTEMPTS` empty state.
 * Search a word (e.g. "cat" or "book") to verify live AI vocabulary analysis.
 * Click audio speaker button to verify Japanese speech synthesis.
@@ -173,5 +173,5 @@ Open the generated `*.vercel.app` URL in a private/incognito browser window with
 
 * **No Leaked Secrets:** Zero API keys in frontend code, git commits, or client-facing responses.
 * **No Fabricated Metrics:** Learner statistics reflect only authentic actions.
-* **Clear Attribution:** Curated fallbacks and Live AI are visibly distinguished.
+* **Clear Attribution:** Curated fallbacks and Live AI are visibly distinguished via distinct UI badges.
 * **Zero Cost Overruns:** Hard payload caps, character validation, and serverless timeout boundaries prevent uncontrolled resource consumption.
