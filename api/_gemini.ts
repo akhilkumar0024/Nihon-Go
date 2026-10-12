@@ -1,8 +1,8 @@
 // Server-side Gemini API helper for Nipp-On
 // Note: This file only executes on the server / serverless functions.
 
-const GEMINI_MODELS = ['gemini-2.5-flash', 'gemini-1.5-flash'];
-const REQUEST_TIMEOUT_MS = 12000;
+const GEMINI_MODELS = ['gemini-3.5-flash-lite', 'gemini-3.5-flash', 'gemini-flash-latest'];
+const REQUEST_TIMEOUT_MS = 15000;
 
 // Simple in-process burst rate guard (complementing platform limits)
 let lastRequestTimestamps: number[] = [];

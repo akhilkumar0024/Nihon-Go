@@ -5,7 +5,7 @@ export async function handleStatusRequest() {
   return {
     success: true,
     geminiConfigured: hasKey,
-    model: 'gemini-2.5-flash',
+    model: 'gemini-3.5-flash-lite',
     uptime: process.uptime(),
     timestamp: new Date().toISOString(),
   };
