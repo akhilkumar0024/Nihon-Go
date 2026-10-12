@@ -112,6 +112,69 @@ export interface TutorHistoryItem {
   text: string;
 }
 
+function generateCuratedTutorResponse(
+  word: any,
+  trimmedMessage: string,
+  note: string = 'Serving verified contextual pedagogical response (server running without GEMINI_API_KEY).'
+) {
+  const lower = trimmedMessage.toLowerCase();
+  let reply = '';
+  let suggestions = [
+    `How do I pronounce ${word?.romaji || 'this'}?`,
+    `Give me another example sentence`,
+    `What is the difference between casual and polite?`,
+  ];
+
+  const isVerb =
+    word?.partOfSpeech?.toLowerCase().includes('verb') ||
+    word?.partOfSpeech?.includes('動詞') ||
+    word?.english?.toLowerCase().startsWith('to ') ||
+    ['taberu', 'nomu', 'iku', 'kuru', 'suru', 'miru', 'hanasu', 'kiku'].includes(word?.romaji?.toLowerCase() || '');
+
+  const englishMeaning = word?.english?.replace(/^to\s+/i, '') || word?.romaji || 'this';
+
+  if (lower.includes('restaurant') || lower.includes('formal') || lower.includes('order')) {
+    if (isVerb) {
+      const politeVerb = word?.japanese ? (word.japanese.endsWith('る') ? word.japanese.slice(0, -1) + 'ます' : word.japanese + 'ます') : '食べます';
+      reply = `In a restaurant setting, Japanese speakers rarely use the plain form **${word?.japanese || '食べる'}** (${word?.romaji || 'taberu'}). Instead, use the polite form **${politeVerb}**. When speaking respectfully to customers or elders, honorific keigo forms like **召し上がる** (meshiagaru) are used!`;
+      suggestions = ['How do I ask for the bill?', 'How to say delicious in a restaurant?', 'Tell me about itadakimasu'];
+    } else {
+      const politeNoun = `お${word?.japanese || '水'}`;
+      const politeRomaji = `o${word?.romaji || 'mizu'}`;
+      reply = `In a restaurant setting, it is customary to add the polite prefix **お-** (o-) when ordering. Instead of just saying **${word?.japanese || '水'}** (${word?.romaji || 'mizu'}), you should say **${politeNoun}** (${politeRomaji}). For example: **「${politeNoun}を一杯ください」** (*${politeRomaji} o ippai kudasai* — "A glass of ${englishMeaning}, please!").`;
+      suggestions = ['How do I ask for the bill?', 'How do I say "excuse me" to the waiter?', 'Can I get hot water (oyu)?'];
+    }
+  } else if (lower.includes('slang') || lower.includes('casual')) {
+    if (isVerb) {
+      reply = `Casual speech in Japanese removes polite endings like *desu* and *masu*. For example, among close friends, people simply say **「これ、${word?.japanese || '食べる'}？」** (*Kore, ${word?.romaji || 'taberu'}?* — "Wanna eat this?").`;
+      suggestions = ['What about female casual speech?', 'Is it rude to use casual form with coworkers?', 'Show another slang example'];
+    } else {
+      reply = `Among close friends and family, you don't need polite prefixes. You can casually say **「${word?.japanese || '水'}、ちょうだい」** (*${word?.romaji || 'mizu'}, choudai* — "Give me some ${englishMeaning}").`;
+      suggestions = [`How do I ask for ${englishMeaning} casually?`, 'What is Kansai dialect for this?', 'Is choudai feminine or neutral?'];
+    }
+  } else if (lower.includes('conjugat') || lower.includes('quiz') || lower.includes('tense')) {
+    if (isVerb) {
+      reply = `Great question on verb conjugation for **${word?.japanese || '食べる'}**:\n\n• **Present Polite:** ${word?.japanese?.slice(0, -1) || '食べ'}ます (*${word?.romaji?.slice(0, -2) || 'tabe'}masu*)\n• **Past Polite:** ${word?.japanese?.slice(0, -1) || '食べ'}ました (*${word?.romaji?.slice(0, -2) || 'tabe'}mashita*)\n• **Negative Polite:** ${word?.japanese?.slice(0, -1) || '食べ'}ません (*${word?.romaji?.slice(0, -2) || 'tabe'}masen*)`;
+      suggestions = ['How to conjugate potential form (can do)?', 'What is the te-form?', 'Quiz me on past negative'];
+    } else {
+      reply = `As a noun, **${word?.japanese || '水'}** (*${word?.romaji || 'mizu'}*) uses the copula **です** (*desu*):\n\n• **Present Polite:** ${word?.japanese || '水'}です (*${word?.romaji || 'mizu'} desu* — It is ${englishMeaning})\n• **Past Polite:** ${word?.japanese || '水'}でした (*${word?.romaji || 'mizu'} deshita* — It was ${englishMeaning})\n• **Negative Polite:** ${word?.japanese || '水'}ではありません (*${word?.romaji || 'mizu'} dewa arimasen* — It is not ${englishMeaning})`;
+      suggestions = [`How to say "there is ${englishMeaning}"?`, 'What particle does this take?', `How to ask "is this ${englishMeaning}?"`];
+    }
+  } else {
+    reply = `Hello! As your AI Sensei, I'm happy to help you master **${word?.japanese || 'this word'}** (${word?.hiragana || ''} / ${word?.romaji || ''}).\n\n${word?.nuance || 'Remember to practice pronunciation and notice the pitch-accent cadence.'}\n\nWhat specific nuance, example, or grammar point would you like to explore?`;
+  }
+
+  return {
+    success: true,
+    data: {
+      text: reply,
+      suggestions,
+      source: 'curated-fallback',
+      note,
+    },
+  };
+}
+
 export async function handleTutorRequest(
   word: any,
   message: string,
@@ -131,63 +194,7 @@ export async function handleTutorRequest(
   const apiKey = getGeminiApiKey();
 
   if (!apiKey) {
-    // Intelligent contextual fallback based on user query and word
-    const lower = trimmedMessage.toLowerCase();
-    let reply = '';
-    let suggestions = [
-      `How do I pronounce ${word?.romaji || 'this'}?`,
-      `Give me another example sentence`,
-      `What is the difference between casual and polite?`,
-    ];
-
-    const isVerb =
-      word?.partOfSpeech?.toLowerCase().includes('verb') ||
-      word?.partOfSpeech?.includes('動詞') ||
-      word?.english?.toLowerCase().startsWith('to ') ||
-      ['taberu', 'nomu', 'iku', 'kuru', 'suru', 'miru', 'hanasu', 'kiku'].includes(word?.romaji?.toLowerCase() || '');
-
-    const englishMeaning = word?.english?.replace(/^to\s+/i, '') || word?.romaji || 'this';
-
-    if (lower.includes('restaurant') || lower.includes('formal') || lower.includes('order')) {
-      if (isVerb) {
-        const politeVerb = word?.japanese ? (word.japanese.endsWith('る') ? word.japanese.slice(0, -1) + 'ます' : word.japanese + 'ます') : '食べます';
-        reply = `In a restaurant setting, Japanese speakers rarely use the plain form **${word?.japanese || '食べる'}** (${word?.romaji || 'taberu'}). Instead, use the polite form **${politeVerb}**. When speaking respectfully to customers or elders, honorific keigo forms like **召し上がる** (meshiagaru) are used!`;
-        suggestions = ['How do I ask for the bill?', 'How to say delicious in a restaurant?', 'Tell me about itadakimasu'];
-      } else {
-        const politeNoun = `お${word?.japanese || '水'}`;
-        const politeRomaji = `o${word?.romaji || 'mizu'}`;
-        reply = `In a restaurant setting, it is customary to add the polite prefix **お-** (o-) when ordering. Instead of just saying **${word?.japanese || '水'}** (${word?.romaji || 'mizu'}), you should say **${politeNoun}** (${politeRomaji}). For example: **「${politeNoun}を一杯ください」** (*${politeRomaji} o ippai kudasai* — "A glass of ${englishMeaning}, please!").`;
-        suggestions = ['How do I ask for the bill?', 'How do I say "excuse me" to the waiter?', 'Can I get hot water (oyu)?'];
-      }
-    } else if (lower.includes('slang') || lower.includes('casual')) {
-      if (isVerb) {
-        reply = `Casual speech in Japanese removes polite endings like *desu* and *masu*. For example, among close friends, people simply say **「これ、${word?.japanese || '食べる'}？」** (*Kore, ${word?.romaji || 'taberu'}?* — "Wanna eat this?").`;
-        suggestions = ['What about female casual speech?', 'Is it rude to use casual form with coworkers?', 'Show another slang example'];
-      } else {
-        reply = `Among close friends and family, you don't need polite prefixes. You can casually say **「${word?.japanese || '水'}、ちょうだい」** (*${word?.romaji || 'mizu'}, choudai* — "Give me some ${englishMeaning}").`;
-        suggestions = [`How do I ask for ${englishMeaning} casually?`, 'What is Kansai dialect for this?', 'Is choudai feminine or neutral?'];
-      }
-    } else if (lower.includes('conjugat') || lower.includes('quiz') || lower.includes('tense')) {
-      if (isVerb) {
-        reply = `Great question on verb conjugation for **${word?.japanese || '食べる'}**:\n\n• **Present Polite:** ${word?.japanese?.slice(0, -1) || '食べ'}ます (*${word?.romaji?.slice(0, -2) || 'tabe'}masu*)\n• **Past Polite:** ${word?.japanese?.slice(0, -1) || '食べ'}ました (*${word?.romaji?.slice(0, -2) || 'tabe'}mashita*)\n• **Negative Polite:** ${word?.japanese?.slice(0, -1) || '食べ'}ません (*${word?.romaji?.slice(0, -2) || 'tabe'}masen*)`;
-        suggestions = ['How to conjugate potential form (can do)?', 'What is the te-form?', 'Quiz me on past negative'];
-      } else {
-        reply = `As a noun, **${word?.japanese || '水'}** (*${word?.romaji || 'mizu'}*) uses the copula **です** (*desu*):\n\n• **Present Polite:** ${word?.japanese || '水'}です (*${word?.romaji || 'mizu'} desu* — It is ${englishMeaning})\n• **Past Polite:** ${word?.japanese || '水'}でした (*${word?.romaji || 'mizu'} deshita* — It was ${englishMeaning})\n• **Negative Polite:** ${word?.japanese || '水'}ではありません (*${word?.romaji || 'mizu'} dewa arimasen* — It is not ${englishMeaning})`;
-        suggestions = [`How to say "there is ${englishMeaning}"?`, 'What particle does this take?', `How to ask "is this ${englishMeaning}?"`];
-      }
-    } else {
-      reply = `Hello! As your AI Sensei, I'm happy to help you master **${word?.japanese || 'this word'}** (${word?.hiragana || ''} / ${word?.romaji || ''}).\n\n${word?.nuance || 'Remember to practice pronunciation and notice the pitch-accent cadence.'}\n\nWhat specific nuance, example, or grammar point would you like to explore?`;
-    }
-
-    return {
-      success: true,
-      data: {
-        text: reply,
-        suggestions,
-        source: 'curated-fallback',
-        note: 'Serving verified contextual pedagogical response (server running without GEMINI_API_KEY).',
-      },
-    };
+    return generateCuratedTutorResponse(word, trimmedMessage);
   }
 
   // Gemini system instruction & prompt
@@ -247,8 +254,13 @@ Rules:
       },
     };
   } catch (err: any) {
-    console.warn('Gemini call failed in tutor endpoint:', err.message);
-    throw err;
+    console.warn('Gemini call failed in tutor endpoint; switching directly to offline mode:', err.message);
+    // Directly fall back to contextual offline Sensei instead of crashing
+    return generateCuratedTutorResponse(
+      word,
+      trimmedMessage,
+      'Live AI quota limit reached or busy; automatically switched to offline curated Sensei guidance.'
+    );
   }
 }
 
