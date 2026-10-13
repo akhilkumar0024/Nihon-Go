@@ -105,9 +105,9 @@ sequenceDiagram
     Client-->>User: Display Success Toast & Avatar
 ```
 
-### 4.2 Data & Information Requirements (Business & User Entities)
+### 4.2 Data & Information Requirements (Core Business Entities)
 
-Rather than prescribing physical database schemas (which is owned by Engineering in the Technical Design Doc), the product requires the persistence of two core business entities:
+To enable cross-device synchronization and reliable habit tracking, the application requires the persistence of two core entities:
 
 #### 1. User Profile Entity
 To support habit tracking and cross-device continuity, the system must maintain:
