@@ -6,7 +6,7 @@
 * **Type:** Zero-to-One Product Case Study & MVP Specification  
 * **Live Application:** [https://nipp-on.vercel.app/](https://nipp-on.vercel.app/)  
 * **GitHub Repository:** [https://github.com/akhilkumar0024/Nipp-On](https://github.com/akhilkumar0024/Nipp-On)  
-* **Architecture Reference:** [PROJECT_CONTEXT.md](./PROJECT_CONTEXT.md)  
+* **Architecture Reference:** [PROJECT_CONTEXT.md](../../PROJECT_CONTEXT.md)  
 
 ---
 
