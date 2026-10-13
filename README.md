@@ -4,7 +4,12 @@
 >
 > 🌐 **Live Demo:** [https://nipp-on.vercel.app/](https://nipp-on.vercel.app/)  
 > 📦 **GitHub Repository:** [https://github.com/akhilkumar0024/Nipp-On](https://github.com/akhilkumar0024/Nipp-On)  
-> 📖 **Technical Architecture & Developer Guide:** See [PROJECT_CONTEXT.md](./PROJECT_CONTEXT.md)
+>
+> 📋 **Product Management Portfolio & Case Studies:**
+> * 📄 **[Product Case Study (0-to-1 Strategy & MVP Teardown)](./PRODUCT_CASE_STUDY.md):** User problem discovery, target persona, end-to-end study journey, trade-offs, and A/B test framework.
+> * 📐 **[Product Requirements Document — Live MVP v1.0](./PRD_V1_CORE_MVP.md):** Specification of the current live production application (Voice search, Kanji cards, AI Sensei, Quizzes, and Fallback circuit breaker).
+> * 🚀 **[Product Requirements Document — Roadmap v1.1](./PRD_CLOUD_SYNC.md):** Next-release specification for engineering & design handoff (Cloud authentication, cross-device notebook sync, PostgreSQL schemas, and edge cases).
+> * ⚙️ **[Technical Architecture & Engineering Guide](./PROJECT_CONTEXT.md):** Serverless design, Web Speech API subsystems, and fallback circuit breaker.
 
 ---
 
